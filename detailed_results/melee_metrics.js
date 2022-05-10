@@ -59,14 +59,8 @@ export class MeleeMetricsTable extends MetricsTable {
             {
                 name: 'Hits',
                 tooltip: 'Hits + Crits + Glances + Blocks',
-                getValue: (metric) => metric.hits,
-                getDisplayString: (metric) => metric.hits.toFixed(1),
-            },
-            {
-                name: 'Crit %',
-                tooltip: 'Crits / Swings',
-                getValue: (metric) => metric.critPercent,
-                getDisplayString: (metric) => metric.critPercent.toFixed(2) + '%',
+                getValue: (metric) => metric.landedHits,
+                getDisplayString: (metric) => metric.landedHits.toFixed(1),
             },
             {
                 name: 'Miss %',
@@ -81,10 +75,30 @@ export class MeleeMetricsTable extends MetricsTable {
                 getDisplayString: (metric) => metric.dodgePercent.toFixed(2) + '%',
             },
             {
+                name: 'Parry %',
+                tooltip: 'Parries / Swings',
+                columnClass: 'in-front-of-target',
+                getValue: (metric) => metric.parryPercent,
+                getDisplayString: (metric) => metric.parryPercent.toFixed(2) + '%',
+            },
+            {
+                name: 'Block %',
+                tooltip: 'Blocks / Swings',
+                columnClass: 'in-front-of-target',
+                getValue: (metric) => metric.blockPercent,
+                getDisplayString: (metric) => metric.blockPercent.toFixed(2) + '%',
+            },
+            {
                 name: 'Glance %',
                 tooltip: 'Glances / Swings',
                 getValue: (metric) => metric.glancePercent,
                 getDisplayString: (metric) => metric.glancePercent.toFixed(2) + '%',
+            },
+            {
+                name: 'Crit %',
+                tooltip: 'Crits / Swings',
+                getValue: (metric) => metric.critPercent,
+                getDisplayString: (metric) => metric.critPercent.toFixed(2) + '%',
             },
         ]);
     }
@@ -94,15 +108,21 @@ export class MeleeMetricsTable extends MetricsTable {
             return [];
         }
         const player = players[0];
+        if (player.inFrontOfTarget) {
+            this.rootElem.classList.remove('hide-in-front-of-target');
+        }
+        else {
+            this.rootElem.classList.add('hide-in-front-of-target');
+        }
         const actions = player.getMeleeActions();
         const actionGroups = ActionMetrics.groupById(actions);
         const petGroups = player.pets.map(pet => pet.getMeleeActions());
         return actionGroups.concat(petGroups);
     }
     mergeMetrics(metrics) {
-        return ActionMetrics.merge(metrics, true, metrics[0].player?.petActionId || undefined);
+        return ActionMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
     }
     shouldCollapse(metric) {
-        return !metric.player?.isPet;
+        return !metric.unit?.isPet;
     }
 }

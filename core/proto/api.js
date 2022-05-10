@@ -9,6 +9,7 @@ import { Enchant } from './common.js';
 import { Item } from './common.js';
 import { Encounter } from './common.js';
 import { ActionID } from './common.js';
+import { RaidTarget } from './common.js';
 import { RaidBuffs } from './common.js';
 import { PartyBuffs } from './common.js';
 import { Cooldowns } from './common.js';
@@ -23,11 +24,13 @@ import { ShadowPriest } from './priest.js';
 import { RetributionPaladin } from './paladin.js';
 import { Mage } from './mage.js';
 import { Hunter } from './hunter.js';
+import { FeralDruid } from './druid.js';
 import { BalanceDruid } from './druid.js';
 import { IndividualBuffs } from './common.js';
 import { Consumes } from './common.js';
 import { EquipmentSpec } from './common.js';
 import { Class } from './common.js';
+import { ShattrathFaction } from './common.js';
 import { Race } from './common.js';
 /**
  * @generated from protobuf enum proto.ResourceType
@@ -65,12 +68,14 @@ class Player$Type extends MessageType {
         super("proto.Player", [
             { no: 16, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 1, name: "race", kind: "enum", T: () => ["proto.Race", Race] },
+            { no: 24, name: "shatt_faction", kind: "enum", T: () => ["proto.ShattrathFaction", ShattrathFaction] },
             { no: 2, name: "class", kind: "enum", T: () => ["proto.Class", Class] },
             { no: 3, name: "equipment", kind: "message", T: () => EquipmentSpec },
             { no: 4, name: "consumes", kind: "message", T: () => Consumes },
             { no: 5, name: "bonus_stats", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 1 /*ScalarType.DOUBLE*/ },
             { no: 15, name: "buffs", kind: "message", T: () => IndividualBuffs },
             { no: 6, name: "balance_druid", kind: "message", oneof: "spec", T: () => BalanceDruid },
+            { no: 22, name: "feral_druid", kind: "message", oneof: "spec", T: () => FeralDruid },
             { no: 7, name: "hunter", kind: "message", oneof: "spec", T: () => Hunter },
             { no: 8, name: "mage", kind: "message", oneof: "spec", T: () => Mage },
             { no: 9, name: "retribution_paladin", kind: "message", oneof: "spec", T: () => RetributionPaladin },
@@ -83,11 +88,12 @@ class Player$Type extends MessageType {
             { no: 14, name: "warrior", kind: "message", oneof: "spec", T: () => Warrior },
             { no: 21, name: "protection_warrior", kind: "message", oneof: "spec", T: () => ProtectionWarrior },
             { no: 17, name: "talentsString", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 19, name: "cooldowns", kind: "message", T: () => Cooldowns }
+            { no: 19, name: "cooldowns", kind: "message", T: () => Cooldowns },
+            { no: 23, name: "in_front_of_target", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { name: "", race: 0, class: 0, bonusStats: [], spec: { oneofKind: undefined }, talentsString: "" };
+        const message = { name: "", race: 0, shattFaction: 0, class: 0, bonusStats: [], spec: { oneofKind: undefined }, talentsString: "", inFrontOfTarget: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -103,6 +109,9 @@ class Player$Type extends MessageType {
                     break;
                 case /* proto.Race race */ 1:
                     message.race = reader.int32();
+                    break;
+                case /* proto.ShattrathFaction shatt_faction */ 24:
+                    message.shattFaction = reader.int32();
                     break;
                 case /* proto.Class class */ 2:
                     message.class = reader.int32();
@@ -127,6 +136,12 @@ class Player$Type extends MessageType {
                     message.spec = {
                         oneofKind: "balanceDruid",
                         balanceDruid: BalanceDruid.internalBinaryRead(reader, reader.uint32(), options, message.spec.balanceDruid)
+                    };
+                    break;
+                case /* proto.FeralDruid feral_druid */ 22:
+                    message.spec = {
+                        oneofKind: "feralDruid",
+                        feralDruid: FeralDruid.internalBinaryRead(reader, reader.uint32(), options, message.spec.feralDruid)
                     };
                     break;
                 case /* proto.Hunter hunter */ 7:
@@ -201,6 +216,9 @@ class Player$Type extends MessageType {
                 case /* proto.Cooldowns cooldowns */ 19:
                     message.cooldowns = Cooldowns.internalBinaryRead(reader, reader.uint32(), options, message.cooldowns);
                     break;
+                case /* bool in_front_of_target */ 23:
+                    message.inFrontOfTarget = reader.bool();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -219,6 +237,9 @@ class Player$Type extends MessageType {
         /* proto.Race race = 1; */
         if (message.race !== 0)
             writer.tag(1, WireType.Varint).int32(message.race);
+        /* proto.ShattrathFaction shatt_faction = 24; */
+        if (message.shattFaction !== 0)
+            writer.tag(24, WireType.Varint).int32(message.shattFaction);
         /* proto.Class class = 2; */
         if (message.class !== 0)
             writer.tag(2, WireType.Varint).int32(message.class);
@@ -241,6 +262,9 @@ class Player$Type extends MessageType {
         /* proto.BalanceDruid balance_druid = 6; */
         if (message.spec.oneofKind === "balanceDruid")
             BalanceDruid.internalBinaryWrite(message.spec.balanceDruid, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* proto.FeralDruid feral_druid = 22; */
+        if (message.spec.oneofKind === "feralDruid")
+            FeralDruid.internalBinaryWrite(message.spec.feralDruid, writer.tag(22, WireType.LengthDelimited).fork(), options).join();
         /* proto.Hunter hunter = 7; */
         if (message.spec.oneofKind === "hunter")
             Hunter.internalBinaryWrite(message.spec.hunter, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
@@ -280,6 +304,9 @@ class Player$Type extends MessageType {
         /* proto.Cooldowns cooldowns = 19; */
         if (message.cooldowns)
             Cooldowns.internalBinaryWrite(message.cooldowns, writer.tag(19, WireType.LengthDelimited).fork(), options).join();
+        /* bool in_front_of_target = 23; */
+        if (message.inFrontOfTarget !== false)
+            writer.tag(23, WireType.Varint).bool(message.inFrontOfTarget);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -350,11 +377,12 @@ class Raid$Type extends MessageType {
         super("proto.Raid", [
             { no: 1, name: "parties", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => Party },
             { no: 2, name: "buffs", kind: "message", T: () => RaidBuffs },
+            { no: 4, name: "tanks", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => RaidTarget },
             { no: 3, name: "stagger_stormstrikes", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { parties: [], staggerStormstrikes: false };
+        const message = { parties: [], tanks: [], staggerStormstrikes: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -370,6 +398,9 @@ class Raid$Type extends MessageType {
                     break;
                 case /* proto.RaidBuffs buffs */ 2:
                     message.buffs = RaidBuffs.internalBinaryRead(reader, reader.uint32(), options, message.buffs);
+                    break;
+                case /* repeated proto.RaidTarget tanks */ 4:
+                    message.tanks.push(RaidTarget.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 case /* bool stagger_stormstrikes */ 3:
                     message.staggerStormstrikes = reader.bool();
@@ -392,6 +423,9 @@ class Raid$Type extends MessageType {
         /* proto.RaidBuffs buffs = 2; */
         if (message.buffs)
             RaidBuffs.internalBinaryWrite(message.buffs, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* repeated proto.RaidTarget tanks = 4; */
+        for (let i = 0; i < message.tanks.length; i++)
+            RaidTarget.internalBinaryWrite(message.tanks[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         /* bool stagger_stormstrikes = 3; */
         if (message.staggerStormstrikes !== false)
             writer.tag(3, WireType.Varint).bool(message.staggerStormstrikes);
@@ -485,21 +519,12 @@ class ActionMetrics$Type extends MessageType {
     constructor() {
         super("proto.ActionMetrics", [
             { no: 1, name: "id", kind: "message", T: () => ActionID },
-            { no: 11, name: "is_melee", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 2, name: "casts", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 3, name: "hits", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 4, name: "crits", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 5, name: "misses", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 7, name: "dodges", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 8, name: "parries", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 9, name: "blocks", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 10, name: "glances", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 6, name: "damage", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 12, name: "threat", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+            { no: 2, name: "is_melee", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "targets", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => TargetedActionMetrics }
         ]);
     }
     create(value) {
-        const message = { isMelee: false, casts: 0, hits: 0, crits: 0, misses: 0, dodges: 0, parries: 0, blocks: 0, glances: 0, damage: 0, threat: 0 };
+        const message = { isMelee: false, targets: [] };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -513,38 +538,11 @@ class ActionMetrics$Type extends MessageType {
                 case /* proto.ActionID id */ 1:
                     message.id = ActionID.internalBinaryRead(reader, reader.uint32(), options, message.id);
                     break;
-                case /* bool is_melee */ 11:
+                case /* bool is_melee */ 2:
                     message.isMelee = reader.bool();
                     break;
-                case /* int32 casts */ 2:
-                    message.casts = reader.int32();
-                    break;
-                case /* int32 hits */ 3:
-                    message.hits = reader.int32();
-                    break;
-                case /* int32 crits */ 4:
-                    message.crits = reader.int32();
-                    break;
-                case /* int32 misses */ 5:
-                    message.misses = reader.int32();
-                    break;
-                case /* int32 dodges */ 7:
-                    message.dodges = reader.int32();
-                    break;
-                case /* int32 parries */ 8:
-                    message.parries = reader.int32();
-                    break;
-                case /* int32 blocks */ 9:
-                    message.blocks = reader.int32();
-                    break;
-                case /* int32 glances */ 10:
-                    message.glances = reader.int32();
-                    break;
-                case /* double damage */ 6:
-                    message.damage = reader.double();
-                    break;
-                case /* double threat */ 12:
-                    message.threat = reader.double();
+                case /* repeated proto.TargetedActionMetrics targets */ 3:
+                    message.targets.push(TargetedActionMetrics.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -561,39 +559,12 @@ class ActionMetrics$Type extends MessageType {
         /* proto.ActionID id = 1; */
         if (message.id)
             ActionID.internalBinaryWrite(message.id, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* bool is_melee = 11; */
+        /* bool is_melee = 2; */
         if (message.isMelee !== false)
-            writer.tag(11, WireType.Varint).bool(message.isMelee);
-        /* int32 casts = 2; */
-        if (message.casts !== 0)
-            writer.tag(2, WireType.Varint).int32(message.casts);
-        /* int32 hits = 3; */
-        if (message.hits !== 0)
-            writer.tag(3, WireType.Varint).int32(message.hits);
-        /* int32 crits = 4; */
-        if (message.crits !== 0)
-            writer.tag(4, WireType.Varint).int32(message.crits);
-        /* int32 misses = 5; */
-        if (message.misses !== 0)
-            writer.tag(5, WireType.Varint).int32(message.misses);
-        /* int32 dodges = 7; */
-        if (message.dodges !== 0)
-            writer.tag(7, WireType.Varint).int32(message.dodges);
-        /* int32 parries = 8; */
-        if (message.parries !== 0)
-            writer.tag(8, WireType.Varint).int32(message.parries);
-        /* int32 blocks = 9; */
-        if (message.blocks !== 0)
-            writer.tag(9, WireType.Varint).int32(message.blocks);
-        /* int32 glances = 10; */
-        if (message.glances !== 0)
-            writer.tag(10, WireType.Varint).int32(message.glances);
-        /* double damage = 6; */
-        if (message.damage !== 0)
-            writer.tag(6, WireType.Bit64).double(message.damage);
-        /* double threat = 12; */
-        if (message.threat !== 0)
-            writer.tag(12, WireType.Bit64).double(message.threat);
+            writer.tag(2, WireType.Varint).bool(message.isMelee);
+        /* repeated proto.TargetedActionMetrics targets = 3; */
+        for (let i = 0; i < message.targets.length; i++)
+            TargetedActionMetrics.internalBinaryWrite(message.targets[i], writer.tag(3, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -604,6 +575,123 @@ class ActionMetrics$Type extends MessageType {
  * @generated MessageType for protobuf message proto.ActionMetrics
  */
 export const ActionMetrics = new ActionMetrics$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TargetedActionMetrics$Type extends MessageType {
+    constructor() {
+        super("proto.TargetedActionMetrics", [
+            { no: 1, name: "casts", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "hits", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "crits", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 11, name: "crushes", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "misses", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 5, name: "dodges", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "parries", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 7, name: "blocks", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 8, name: "glances", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 9, name: "damage", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 10, name: "threat", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value) {
+        const message = { casts: 0, hits: 0, crits: 0, crushes: 0, misses: 0, dodges: 0, parries: 0, blocks: 0, glances: 0, damage: 0, threat: 0 };
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 casts */ 1:
+                    message.casts = reader.int32();
+                    break;
+                case /* int32 hits */ 2:
+                    message.hits = reader.int32();
+                    break;
+                case /* int32 crits */ 3:
+                    message.crits = reader.int32();
+                    break;
+                case /* int32 crushes */ 11:
+                    message.crushes = reader.int32();
+                    break;
+                case /* int32 misses */ 4:
+                    message.misses = reader.int32();
+                    break;
+                case /* int32 dodges */ 5:
+                    message.dodges = reader.int32();
+                    break;
+                case /* int32 parries */ 6:
+                    message.parries = reader.int32();
+                    break;
+                case /* int32 blocks */ 7:
+                    message.blocks = reader.int32();
+                    break;
+                case /* int32 glances */ 8:
+                    message.glances = reader.int32();
+                    break;
+                case /* double damage */ 9:
+                    message.damage = reader.double();
+                    break;
+                case /* double threat */ 10:
+                    message.threat = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* int32 casts = 1; */
+        if (message.casts !== 0)
+            writer.tag(1, WireType.Varint).int32(message.casts);
+        /* int32 hits = 2; */
+        if (message.hits !== 0)
+            writer.tag(2, WireType.Varint).int32(message.hits);
+        /* int32 crits = 3; */
+        if (message.crits !== 0)
+            writer.tag(3, WireType.Varint).int32(message.crits);
+        /* int32 crushes = 11; */
+        if (message.crushes !== 0)
+            writer.tag(11, WireType.Varint).int32(message.crushes);
+        /* int32 misses = 4; */
+        if (message.misses !== 0)
+            writer.tag(4, WireType.Varint).int32(message.misses);
+        /* int32 dodges = 5; */
+        if (message.dodges !== 0)
+            writer.tag(5, WireType.Varint).int32(message.dodges);
+        /* int32 parries = 6; */
+        if (message.parries !== 0)
+            writer.tag(6, WireType.Varint).int32(message.parries);
+        /* int32 blocks = 7; */
+        if (message.blocks !== 0)
+            writer.tag(7, WireType.Varint).int32(message.blocks);
+        /* int32 glances = 8; */
+        if (message.glances !== 0)
+            writer.tag(8, WireType.Varint).int32(message.glances);
+        /* double damage = 9; */
+        if (message.damage !== 0)
+            writer.tag(9, WireType.Bit64).double(message.damage);
+        /* double threat = 10; */
+        if (message.threat !== 0)
+            writer.tag(10, WireType.Bit64).double(message.threat);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.TargetedActionMetrics
+ */
+export const TargetedActionMetrics = new TargetedActionMetrics$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class AuraMetrics$Type extends MessageType {
     constructor() {
@@ -825,17 +913,18 @@ class DistributionMetrics$Type extends MessageType {
  */
 export const DistributionMetrics = new DistributionMetrics$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class PlayerMetrics$Type extends MessageType {
+class UnitMetrics$Type extends MessageType {
     constructor() {
-        super("proto.PlayerMetrics", [
+        super("proto.UnitMetrics", [
             { no: 9, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 1, name: "dps", kind: "message", T: () => DistributionMetrics },
             { no: 8, name: "threat", kind: "message", T: () => DistributionMetrics },
+            { no: 11, name: "dtps", kind: "message", T: () => DistributionMetrics },
             { no: 3, name: "seconds_oom_avg", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 5, name: "actions", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ActionMetrics },
             { no: 6, name: "auras", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AuraMetrics },
             { no: 10, name: "resources", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => ResourceMetrics },
-            { no: 7, name: "pets", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => PlayerMetrics }
+            { no: 7, name: "pets", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UnitMetrics }
         ]);
     }
     create(value) {
@@ -859,6 +948,9 @@ class PlayerMetrics$Type extends MessageType {
                 case /* proto.DistributionMetrics threat */ 8:
                     message.threat = DistributionMetrics.internalBinaryRead(reader, reader.uint32(), options, message.threat);
                     break;
+                case /* proto.DistributionMetrics dtps */ 11:
+                    message.dtps = DistributionMetrics.internalBinaryRead(reader, reader.uint32(), options, message.dtps);
+                    break;
                 case /* double seconds_oom_avg */ 3:
                     message.secondsOomAvg = reader.double();
                     break;
@@ -871,8 +963,8 @@ class PlayerMetrics$Type extends MessageType {
                 case /* repeated proto.ResourceMetrics resources */ 10:
                     message.resources.push(ResourceMetrics.internalBinaryRead(reader, reader.uint32(), options));
                     break;
-                case /* repeated proto.PlayerMetrics pets */ 7:
-                    message.pets.push(PlayerMetrics.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated proto.UnitMetrics pets */ 7:
+                    message.pets.push(UnitMetrics.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -895,6 +987,9 @@ class PlayerMetrics$Type extends MessageType {
         /* proto.DistributionMetrics threat = 8; */
         if (message.threat)
             DistributionMetrics.internalBinaryWrite(message.threat, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
+        /* proto.DistributionMetrics dtps = 11; */
+        if (message.dtps)
+            DistributionMetrics.internalBinaryWrite(message.dtps, writer.tag(11, WireType.LengthDelimited).fork(), options).join();
         /* double seconds_oom_avg = 3; */
         if (message.secondsOomAvg !== 0)
             writer.tag(3, WireType.Bit64).double(message.secondsOomAvg);
@@ -907,9 +1002,9 @@ class PlayerMetrics$Type extends MessageType {
         /* repeated proto.ResourceMetrics resources = 10; */
         for (let i = 0; i < message.resources.length; i++)
             ResourceMetrics.internalBinaryWrite(message.resources[i], writer.tag(10, WireType.LengthDelimited).fork(), options).join();
-        /* repeated proto.PlayerMetrics pets = 7; */
+        /* repeated proto.UnitMetrics pets = 7; */
         for (let i = 0; i < message.pets.length; i++)
-            PlayerMetrics.internalBinaryWrite(message.pets[i], writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+            UnitMetrics.internalBinaryWrite(message.pets[i], writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -917,15 +1012,15 @@ class PlayerMetrics$Type extends MessageType {
     }
 }
 /**
- * @generated MessageType for protobuf message proto.PlayerMetrics
+ * @generated MessageType for protobuf message proto.UnitMetrics
  */
-export const PlayerMetrics = new PlayerMetrics$Type();
+export const UnitMetrics = new UnitMetrics$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class PartyMetrics$Type extends MessageType {
     constructor() {
         super("proto.PartyMetrics", [
             { no: 1, name: "dps", kind: "message", T: () => DistributionMetrics },
-            { no: 2, name: "players", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => PlayerMetrics }
+            { no: 2, name: "players", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UnitMetrics }
         ]);
     }
     create(value) {
@@ -943,8 +1038,8 @@ class PartyMetrics$Type extends MessageType {
                 case /* proto.DistributionMetrics dps */ 1:
                     message.dps = DistributionMetrics.internalBinaryRead(reader, reader.uint32(), options, message.dps);
                     break;
-                case /* repeated proto.PlayerMetrics players */ 2:
-                    message.players.push(PlayerMetrics.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated proto.UnitMetrics players */ 2:
+                    message.players.push(UnitMetrics.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -961,9 +1056,9 @@ class PartyMetrics$Type extends MessageType {
         /* proto.DistributionMetrics dps = 1; */
         if (message.dps)
             DistributionMetrics.internalBinaryWrite(message.dps, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* repeated proto.PlayerMetrics players = 2; */
+        /* repeated proto.UnitMetrics players = 2; */
         for (let i = 0; i < message.players.length; i++)
-            PlayerMetrics.internalBinaryWrite(message.players[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+            UnitMetrics.internalBinaryWrite(message.players[i], writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1029,57 +1124,10 @@ class RaidMetrics$Type extends MessageType {
  */
 export const RaidMetrics = new RaidMetrics$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class TargetMetrics$Type extends MessageType {
-    constructor() {
-        super("proto.TargetMetrics", [
-            { no: 1, name: "auras", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => AuraMetrics }
-        ]);
-    }
-    create(value) {
-        const message = { auras: [] };
-        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
-        if (value !== undefined)
-            reflectionMergePartial(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader, length, options, target) {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* repeated proto.AuraMetrics auras */ 1:
-                    message.auras.push(AuraMetrics.internalBinaryRead(reader, reader.uint32(), options));
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message, writer, options) {
-        /* repeated proto.AuraMetrics auras = 1; */
-        for (let i = 0; i < message.auras.length; i++)
-            AuraMetrics.internalBinaryWrite(message.auras[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message proto.TargetMetrics
- */
-export const TargetMetrics = new TargetMetrics$Type();
-// @generated message type with reflection information, may provide speed optimized methods
 class EncounterMetrics$Type extends MessageType {
     constructor() {
         super("proto.EncounterMetrics", [
-            { no: 1, name: "targets", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => TargetMetrics }
+            { no: 1, name: "targets", kind: "message", repeat: 1 /*RepeatType.PACKED*/, T: () => UnitMetrics }
         ]);
     }
     create(value) {
@@ -1094,8 +1142,8 @@ class EncounterMetrics$Type extends MessageType {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* repeated proto.TargetMetrics targets */ 1:
-                    message.targets.push(TargetMetrics.internalBinaryRead(reader, reader.uint32(), options));
+                case /* repeated proto.UnitMetrics targets */ 1:
+                    message.targets.push(UnitMetrics.internalBinaryRead(reader, reader.uint32(), options));
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1109,9 +1157,9 @@ class EncounterMetrics$Type extends MessageType {
         return message;
     }
     internalBinaryWrite(message, writer, options) {
-        /* repeated proto.TargetMetrics targets = 1; */
+        /* repeated proto.UnitMetrics targets = 1; */
         for (let i = 0; i < message.targets.length; i++)
-            TargetMetrics.internalBinaryWrite(message.targets[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            UnitMetrics.internalBinaryWrite(message.targets[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

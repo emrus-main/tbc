@@ -712,6 +712,10 @@ input, select {
   display: none !important;
 }
 
+.hide-in-front-of-target .in-front-of-target {
+  display: none !important;
+}
+
 .dps-histogram-root {
   height: 30vh;
   width: 90vw;
@@ -1606,6 +1610,10 @@ input, select {
   content: " TPS";
 }
 
+.results-sim-dtps .topline-result-avg:after {
+  content: " DTPS";
+}
+
 .topline-result-stdev {
   font-size: 18px;
   font-weight: 700;
@@ -1735,6 +1743,19 @@ body.new-tab {
 .metrics-table {
   color: var(--main-text-color);
   width: 100%;
+  font-size: 16px;
+}
+
+.melee-metrics-root .metrics-table {
+  font-size: 12px;
+}
+
+.hide-in-front-of-target.melee-metrics-root .metrics-table, .hide-threat-metrics .melee-metrics-root .metrics-table {
+  font-size: 14px;
+}
+
+.hide-threat-metrics .hide-in-front-of-target.melee-metrics-root .metrics-table {
+  font-size: 16px;
 }
 
 .metrics-table-header-row {

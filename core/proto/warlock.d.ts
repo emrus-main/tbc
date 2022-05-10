@@ -19,6 +19,10 @@ export interface WarlockTalents {
      */
     improvedCorruption: number;
     /**
+     * @generated from protobuf field: int32 improved_drain_soul = 49;
+     */
+    improvedDrainSoul: number;
+    /**
      * @generated from protobuf field: int32 improved_life_tap = 3;
      */
     improvedLifeTap: number;
@@ -85,9 +89,9 @@ export interface WarlockTalents {
      */
     felIntellect: number;
     /**
-     * @generated from protobuf field: int32 improved_succubus = 19;
+     * @generated from protobuf field: int32 improved_sayaad = 19;
      */
-    improvedSuccubus: number;
+    improvedSayaad: number;
     /**
      * @generated from protobuf field: int32 fel_stamina = 20;
      */
@@ -159,6 +163,10 @@ export interface WarlockTalents {
      */
     improvedLashOfPain: number;
     /**
+     * @generated from protobuf field: int32 destructive_reach = 48;
+     */
+    destructiveReach: number;
+    /**
      * @generated from protobuf field: int32 devastation = 37;
      */
     devastation: number;
@@ -224,11 +232,139 @@ export interface Warlock {
  * @generated from protobuf message proto.Warlock.Rotation
  */
 export interface Warlock_Rotation {
+    /**
+     * @generated from protobuf field: proto.Warlock.Rotation.PrimarySpell primary_spell = 1;
+     */
+    primarySpell: Warlock_Rotation_PrimarySpell;
+    /**
+     * @generated from protobuf field: proto.Warlock.Rotation.Curse curse = 2;
+     */
+    curse: Warlock_Rotation_Curse;
+    /**
+     * @generated from protobuf field: bool immolate = 3;
+     */
+    immolate: boolean;
+    /**
+     * @generated from protobuf field: bool corruption = 4;
+     */
+    corruption: boolean;
+    /**
+     * @generated from protobuf field: bool detonate_seed = 5;
+     */
+    detonateSeed: boolean;
+}
+/**
+ * @generated from protobuf enum proto.Warlock.Rotation.PrimarySpell
+ */
+export declare enum Warlock_Rotation_PrimarySpell {
+    /**
+     * @generated from protobuf enum value: UnknownSpell = 0;
+     */
+    UnknownSpell = 0,
+    /**
+     * @generated from protobuf enum value: Shadowbolt = 1;
+     */
+    Shadowbolt = 1,
+    /**
+     * @generated from protobuf enum value: Incinerate = 2;
+     */
+    Incinerate = 2,
+    /**
+     * @generated from protobuf enum value: Seed = 3;
+     */
+    Seed = 3
+}
+/**
+ * @generated from protobuf enum proto.Warlock.Rotation.Curse
+ */
+export declare enum Warlock_Rotation_Curse {
+    /**
+     * @generated from protobuf enum value: NoCurse = 0;
+     */
+    NoCurse = 0,
+    /**
+     * @generated from protobuf enum value: Elements = 1;
+     */
+    Elements = 1,
+    /**
+     * @generated from protobuf enum value: Recklessness = 2;
+     */
+    Recklessness = 2,
+    /**
+     * @generated from protobuf enum value: Doom = 3;
+     */
+    Doom = 3,
+    /**
+     * @generated from protobuf enum value: Agony = 4;
+     */
+    Agony = 4,
+    /**
+     * @generated from protobuf enum value: Tongues = 5;
+     */
+    Tongues = 5
 }
 /**
  * @generated from protobuf message proto.Warlock.Options
  */
 export interface Warlock_Options {
+    /**
+     * @generated from protobuf field: proto.Warlock.Options.Armor armor = 1;
+     */
+    armor: Warlock_Options_Armor;
+    /**
+     * @generated from protobuf field: proto.Warlock.Options.Summon summon = 2;
+     */
+    summon: Warlock_Options_Summon;
+    /**
+     * @generated from protobuf field: bool sacrifice_summon = 3;
+     */
+    sacrificeSummon: boolean;
+}
+/**
+ * @generated from protobuf enum proto.Warlock.Options.Summon
+ */
+export declare enum Warlock_Options_Summon {
+    /**
+     * @generated from protobuf enum value: NoSummon = 0;
+     */
+    NoSummon = 0,
+    /**
+     * @generated from protobuf enum value: Imp = 1;
+     */
+    Imp = 1,
+    /**
+     * @generated from protobuf enum value: Voidwalker = 2;
+     */
+    Voidwalker = 2,
+    /**
+     * @generated from protobuf enum value: Succubus = 3;
+     */
+    Succubus = 3,
+    /**
+     * @generated from protobuf enum value: Felhound = 4;
+     */
+    Felhound = 4,
+    /**
+     * @generated from protobuf enum value: Felgaurd = 5;
+     */
+    Felgaurd = 5
+}
+/**
+ * @generated from protobuf enum proto.Warlock.Options.Armor
+ */
+export declare enum Warlock_Options_Armor {
+    /**
+     * @generated from protobuf enum value: NoArmor = 0;
+     */
+    NoArmor = 0,
+    /**
+     * @generated from protobuf enum value: FelArmor = 1;
+     */
+    FelArmor = 1,
+    /**
+     * @generated from protobuf enum value: DemonArmor = 2;
+     */
+    DemonArmor = 2
 }
 declare class WarlockTalents$Type extends MessageType<WarlockTalents> {
     constructor();

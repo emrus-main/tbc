@@ -55,6 +55,10 @@ export class ActionId {
                 baseName = 'Refund';
                 iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_coin_01.jpg';
                 break;
+            case OtherAction.OtherActionDamageTaken:
+                baseName = 'Damage Taken';
+                iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_sword_04.jpg';
+                break;
         }
         this.baseName = baseName;
         this.name = name || baseName;
@@ -187,6 +191,14 @@ export class ActionId {
             case 'Battle Shout':
                 if (this.tag == 1) {
                     name += ' (Snapshot)';
+                }
+                break;
+            case 'Seed of Corruption':
+                if (this.tag == 0) {
+                    name += ' (DoT)';
+                }
+                else if (this.tag == 1) {
+                    name += ' (Explosion)';
                 }
                 break;
             default:
@@ -348,6 +360,9 @@ const petNameToIcon = {
     'Warp Stalker': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_warpstalker.jpg',
     'Wind Serpent': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_windserpent.jpg',
     'Wolf': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_wolf.jpg',
+    'Succubus': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
+    'Felguard': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
+    'Imp': 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonimp.jpg',
 };
 export const resourceTypeToIcon = {
     [ResourceType.ResourceTypeNone]: '',

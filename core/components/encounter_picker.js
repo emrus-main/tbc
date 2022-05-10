@@ -1,6 +1,7 @@
 import { MobType } from '/tbc/core/proto/common.js';
 import { EnumPicker } from '/tbc/core/components/enum_picker.js';
 import { NumberPicker } from '/tbc/core/components/number_picker.js';
+import { statNames } from '/tbc/core/proto_utils/names.js';
 import { Component } from './component.js';
 export class EncounterPicker extends Component {
     constructor(parent, modEncounter, config) {
@@ -21,14 +22,30 @@ export class EncounterPicker extends Component {
                 encounter.setDurationVariation(eventID, newValue);
             },
         });
-        if (config.showTargetArmor) {
-            new NumberPicker(this.rootElem, modEncounter.primaryTarget, {
-                label: 'Target Armor',
-                changedEvent: (target) => target.armorChangeEmitter,
-                getValue: (target) => target.getArmor(),
-                setValue: (eventID, target, newValue) => {
-                    target.setArmor(eventID, newValue);
-                },
+        new EnumPicker(this.rootElem, modEncounter.primaryTarget, {
+            label: 'Target Level',
+            values: [
+                { name: '73', value: 73 },
+                { name: '72', value: 72 },
+                { name: '71', value: 71 },
+                { name: '70', value: 70 },
+            ],
+            changedEvent: (target) => target.levelChangeEmitter,
+            getValue: (target) => target.getLevel(),
+            setValue: (eventID, target, newValue) => {
+                target.setLevel(eventID, newValue);
+            },
+        });
+        if (config.simpleTargetStats) {
+            config.simpleTargetStats.forEach(stat => {
+                new NumberPicker(this.rootElem, modEncounter.primaryTarget, {
+                    label: statNames[stat],
+                    changedEvent: (target) => target.statsChangeEmitter,
+                    getValue: (target) => target.getStats().getStat(stat),
+                    setValue: (eventID, target, newValue) => {
+                        target.setStats(eventID, target.getStats().withStat(stat, newValue));
+                    },
+                });
             });
         }
         new EnumPicker(this.rootElem, modEncounter.primaryTarget, MobTypePickerConfig);

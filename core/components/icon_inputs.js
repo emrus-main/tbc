@@ -38,8 +38,8 @@ export const SanctityAura = makeTristatePartyBuffInput(ActionId.fromSpellId(2021
 export const TotemOfWrath = makeMultistatePartyBuffInput(ActionId.fromSpellId(30706), 5, 'totemOfWrath');
 export const TrueshotAura = makeBooleanPartyBuffInput(ActionId.fromSpellId(27066), 'trueshotAura');
 export const WrathOfAirTotem = makeTristatePartyBuffInput(ActionId.fromSpellId(3738), ActionId.fromSpellId(37212), 'wrathOfAirTotem');
-export const DrumsOfBattleBuff = makeEnumValuePartyBuffInput(ActionId.fromSpellId(35476), 'drums', Drums.DrumsOfBattle, ['Drums']);
-export const DrumsOfRestorationBuff = makeEnumValuePartyBuffInput(ActionId.fromSpellId(35478), 'drums', Drums.DrumsOfRestoration, ['Drums']);
+export const DrumsOfBattleBuff = makeEnumValuePartyBuffInput(ActionId.fromItemId(185848), 'drums', Drums.DrumsOfBattle, ['Drums']);
+export const DrumsOfRestorationBuff = makeEnumValuePartyBuffInput(ActionId.fromItemId(185850), 'drums', Drums.DrumsOfRestoration, ['Drums']);
 // Individual Buffs
 export const BlessingOfKings = makeBooleanIndividualBuffInput(ActionId.fromSpellId(25898), 'blessingOfKings');
 export const BlessingOfMight = makeTristateIndividualBuffInput(ActionId.fromSpellId(27140), ActionId.fromSpellId(20048), 'blessingOfMight');
@@ -56,12 +56,14 @@ export const ImprovedSealOfTheCrusader = makeBooleanDebuffInput(ActionId.fromSpe
 export const JudgementOfWisdom = makeBooleanDebuffInput(ActionId.fromSpellId(27164), 'judgementOfWisdom');
 export const Mangle = makeBooleanDebuffInput(ActionId.fromSpellId(33876), 'mangle');
 export const Misery = makeBooleanDebuffInput(ActionId.fromSpellId(33195), 'misery');
+export const ShadowWeaving = makeBooleanDebuffInput(ActionId.fromSpellId(15334), 'shadowWeaving');
 export const CurseOfElements = makeTristateDebuffInput(ActionId.fromSpellId(27228), ActionId.fromSpellId(32484), 'curseOfElements');
 export const CurseOfRecklessness = makeBooleanDebuffInput(ActionId.fromSpellId(27226), 'curseOfRecklessness');
 export const FaerieFire = makeTristateDebuffInput(ActionId.fromSpellId(26993), ActionId.fromSpellId(33602), 'faerieFire');
 export const ExposeArmor = makeTristateDebuffInput(ActionId.fromSpellId(26866), ActionId.fromSpellId(14169), 'exposeArmor');
 export const SunderArmor = makeBooleanDebuffInput(ActionId.fromSpellId(25225), 'sunderArmor');
 export const WintersChill = makeBooleanDebuffInput(ActionId.fromSpellId(28595), 'wintersChill');
+export const GiftOfArthas = makeBooleanDebuffInput(ActionId.fromSpellId(11374), 'giftOfArthas');
 // Consumes
 export const SuperSapper = makeBooleanConsumeInput(ActionId.fromItemId(23827), 'superSapper', [], onSetExplosives);
 export const GoblinSapper = makeBooleanConsumeInput(ActionId.fromItemId(10646), 'goblinSapper', [], onSetExplosives);
@@ -356,6 +358,7 @@ export const makePotionsInput = makeConsumeInputFactory('defaultPotion', [
     { actionId: ActionId.fromItemId(13442), value: Potions.MightyRagePotion },
     { actionId: ActionId.fromItemId(22832), value: Potions.SuperManaPotion },
     { actionId: ActionId.fromItemId(31677), value: Potions.FelManaPotion },
+    { actionId: ActionId.fromItemId(22828), value: Potions.InsaneStrengthPotion },
 ]);
 export const makeConjuredInput = makeConsumeInputFactory('defaultConjured', [
     { actionId: ActionId.fromItemId(12662), value: Conjured.ConjuredDarkRune },
@@ -434,8 +437,9 @@ function onSetDrums(eventID, player, newValue) {
 }
 ;
 export const DrumsInput = makeConsumeInput('drums', [
-    { actionId: ActionId.fromSpellId(35476), value: Drums.DrumsOfBattle },
-    { actionId: ActionId.fromSpellId(35478), value: Drums.DrumsOfRestoration },
+    { actionId: ActionId.fromItemId(185848), value: Drums.DrumsOfBattle },
+    { actionId: ActionId.fromItemId(185850), value: Drums.DrumsOfRestoration },
+    { actionId: ActionId.fromItemId(185852), value: Drums.DrumsOfWar },
 ], onSetDrums);
 function onSetExplosives(eventID, player, newValue) {
     if (newValue) {

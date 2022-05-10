@@ -10,6 +10,7 @@ import { Enchant } from "./common";
 import { Item } from "./common";
 import { Encounter } from "./common";
 import { ActionID } from "./common";
+import { RaidTarget } from "./common";
 import { RaidBuffs } from "./common";
 import { PartyBuffs } from "./common";
 import { Cooldowns } from "./common";
@@ -24,11 +25,13 @@ import { ShadowPriest } from "./priest";
 import { RetributionPaladin } from "./paladin";
 import { Mage } from "./mage";
 import { Hunter } from "./hunter";
+import { FeralDruid } from "./druid";
 import { BalanceDruid } from "./druid";
 import { IndividualBuffs } from "./common";
 import { Consumes } from "./common";
 import { EquipmentSpec } from "./common";
 import { Class } from "./common";
+import { ShattrathFaction } from "./common";
 import { Race } from "./common";
 /**
  * @generated from protobuf message proto.Player
@@ -44,6 +47,10 @@ export interface Player {
      * @generated from protobuf field: proto.Race race = 1;
      */
     race: Race;
+    /**
+     * @generated from protobuf field: proto.ShattrathFaction shatt_faction = 24;
+     */
+    shattFaction: ShattrathFaction;
     /**
      * @generated from protobuf field: proto.Class class = 2;
      */
@@ -73,6 +80,12 @@ export interface Player {
          * @generated from protobuf field: proto.BalanceDruid balance_druid = 6;
          */
         balanceDruid: BalanceDruid;
+    } | {
+        oneofKind: "feralDruid";
+        /**
+         * @generated from protobuf field: proto.FeralDruid feral_druid = 22;
+         */
+        feralDruid: FeralDruid;
     } | {
         oneofKind: "hunter";
         /**
@@ -152,6 +165,10 @@ export interface Player {
      * @generated from protobuf field: proto.Cooldowns cooldowns = 19;
      */
     cooldowns?: Cooldowns;
+    /**
+     * @generated from protobuf field: bool in_front_of_target = 23;
+     */
+    inFrontOfTarget: boolean;
 }
 /**
  * @generated from protobuf message proto.Party
@@ -178,6 +195,12 @@ export interface Raid {
      * @generated from protobuf field: proto.RaidBuffs buffs = 2;
      */
     buffs?: RaidBuffs;
+    /**
+     * Players who will be tanking mobs.
+     *
+     * @generated from protobuf field: repeated proto.RaidTarget tanks = 4;
+     */
+    tanks: RaidTarget[];
     /**
      * Staggers Stormstrike casts across Enhance Shaman to maximize charge usage.
      *
@@ -223,67 +246,88 @@ export interface ActionMetrics {
     /**
      * True if a melee action, false if a spell action.
      *
-     * @generated from protobuf field: bool is_melee = 11;
+     * @generated from protobuf field: bool is_melee = 2;
      */
     isMelee: boolean;
     /**
+     * Metrics for this action for each target.
+     * Note that some spells are untargeted, these will always have a single
+     * element in this array.
+     *
+     * @generated from protobuf field: repeated proto.TargetedActionMetrics targets = 3;
+     */
+    targets: TargetedActionMetrics[];
+}
+/**
+ * Metrics for a specific action, when cast at a particular target.
+ *
+ * @generated from protobuf message proto.TargetedActionMetrics
+ */
+export interface TargetedActionMetrics {
+    /**
      * # of times this action was used by the agent.
      *
-     * @generated from protobuf field: int32 casts = 2;
+     * @generated from protobuf field: int32 casts = 1;
      */
     casts: number;
     /**
      * # of times this action hit a target. For cleave spells this can be larger than casts.
      *
-     * @generated from protobuf field: int32 hits = 3;
+     * @generated from protobuf field: int32 hits = 2;
      */
     hits: number;
     /**
      * # of times this action was a critical strike.
      *
-     * @generated from protobuf field: int32 crits = 4;
+     * @generated from protobuf field: int32 crits = 3;
      */
     crits: number;
     /**
+     * # of times this action was a crushing blow.
+     *
+     * @generated from protobuf field: int32 crushes = 11;
+     */
+    crushes: number;
+    /**
      * # of times this action was a Miss or Resist.
      *
-     * @generated from protobuf field: int32 misses = 5;
+     * @generated from protobuf field: int32 misses = 4;
      */
     misses: number;
     /**
      * # of times this action was a Dodge.
      *
-     * @generated from protobuf field: int32 dodges = 7;
+     * @generated from protobuf field: int32 dodges = 5;
      */
     dodges: number;
     /**
      * # of times this action was a Parry.
      *
-     * @generated from protobuf field: int32 parries = 8;
+     * @generated from protobuf field: int32 parries = 6;
      */
     parries: number;
     /**
      * # of times this action was a Block.
      *
-     * @generated from protobuf field: int32 blocks = 9;
+     * @generated from protobuf field: int32 blocks = 7;
      */
     blocks: number;
     /**
      * # of times this action was a Glance.
      *
-     * @generated from protobuf field: int32 glances = 10;
+     * @generated from protobuf field: int32 glances = 8;
      */
     glances: number;
     /**
      * Total damage done to all targets by this action.
      *
-     * @generated from protobuf field: double damage = 6;
+     * @generated from protobuf field: double damage = 9;
      */
     damage: number;
     /**
      * Total threat done to all targets by this action.
      *
-     * @generated from protobuf field: double threat = 12;
+     * @generated from protobuf field: double threat = 10;
      */
     threat: number;
 }
@@ -359,11 +403,11 @@ export interface DistributionMetrics {
     };
 }
 /**
- * All the results for a single Player.
+ * All the results for a single Unit (player, target, or pet).
  *
- * @generated from protobuf message proto.PlayerMetrics
+ * @generated from protobuf message proto.UnitMetrics
  */
-export interface PlayerMetrics {
+export interface UnitMetrics {
     /**
      * @generated from protobuf field: string name = 9;
      */
@@ -376,6 +420,10 @@ export interface PlayerMetrics {
      * @generated from protobuf field: proto.DistributionMetrics threat = 8;
      */
     threat?: DistributionMetrics;
+    /**
+     * @generated from protobuf field: proto.DistributionMetrics dtps = 11;
+     */
+    dtps?: DistributionMetrics;
     /**
      * average seconds spent oom per iteration
      *
@@ -395,9 +443,9 @@ export interface PlayerMetrics {
      */
     resources: ResourceMetrics[];
     /**
-     * @generated from protobuf field: repeated proto.PlayerMetrics pets = 7;
+     * @generated from protobuf field: repeated proto.UnitMetrics pets = 7;
      */
-    pets: PlayerMetrics[];
+    pets: UnitMetrics[];
 }
 /**
  * Results for a whole raid.
@@ -410,9 +458,9 @@ export interface PartyMetrics {
      */
     dps?: DistributionMetrics;
     /**
-     * @generated from protobuf field: repeated proto.PlayerMetrics players = 2;
+     * @generated from protobuf field: repeated proto.UnitMetrics players = 2;
      */
-    players: PlayerMetrics[];
+    players: UnitMetrics[];
 }
 /**
  * Results for a whole raid.
@@ -430,22 +478,13 @@ export interface RaidMetrics {
     parties: PartyMetrics[];
 }
 /**
- * @generated from protobuf message proto.TargetMetrics
- */
-export interface TargetMetrics {
-    /**
-     * @generated from protobuf field: repeated proto.AuraMetrics auras = 1;
-     */
-    auras: AuraMetrics[];
-}
-/**
  * @generated from protobuf message proto.EncounterMetrics
  */
 export interface EncounterMetrics {
     /**
-     * @generated from protobuf field: repeated proto.TargetMetrics targets = 1;
+     * @generated from protobuf field: repeated proto.UnitMetrics targets = 1;
      */
-    targets: TargetMetrics[];
+    targets: UnitMetrics[];
 }
 /**
  * RPC RaidSim
@@ -768,6 +807,16 @@ declare class ActionMetrics$Type extends MessageType<ActionMetrics> {
  * @generated MessageType for protobuf message proto.ActionMetrics
  */
 export declare const ActionMetrics: ActionMetrics$Type;
+declare class TargetedActionMetrics$Type extends MessageType<TargetedActionMetrics> {
+    constructor();
+    create(value?: PartialMessage<TargetedActionMetrics>): TargetedActionMetrics;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TargetedActionMetrics): TargetedActionMetrics;
+    internalBinaryWrite(message: TargetedActionMetrics, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.TargetedActionMetrics
+ */
+export declare const TargetedActionMetrics: TargetedActionMetrics$Type;
 declare class AuraMetrics$Type extends MessageType<AuraMetrics> {
     constructor();
     create(value?: PartialMessage<AuraMetrics>): AuraMetrics;
@@ -799,16 +848,16 @@ declare class DistributionMetrics$Type extends MessageType<DistributionMetrics> 
  * @generated MessageType for protobuf message proto.DistributionMetrics
  */
 export declare const DistributionMetrics: DistributionMetrics$Type;
-declare class PlayerMetrics$Type extends MessageType<PlayerMetrics> {
+declare class UnitMetrics$Type extends MessageType<UnitMetrics> {
     constructor();
-    create(value?: PartialMessage<PlayerMetrics>): PlayerMetrics;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PlayerMetrics): PlayerMetrics;
-    internalBinaryWrite(message: PlayerMetrics, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+    create(value?: PartialMessage<UnitMetrics>): UnitMetrics;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UnitMetrics): UnitMetrics;
+    internalBinaryWrite(message: UnitMetrics, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
 }
 /**
- * @generated MessageType for protobuf message proto.PlayerMetrics
+ * @generated MessageType for protobuf message proto.UnitMetrics
  */
-export declare const PlayerMetrics: PlayerMetrics$Type;
+export declare const UnitMetrics: UnitMetrics$Type;
 declare class PartyMetrics$Type extends MessageType<PartyMetrics> {
     constructor();
     create(value?: PartialMessage<PartyMetrics>): PartyMetrics;
@@ -829,16 +878,6 @@ declare class RaidMetrics$Type extends MessageType<RaidMetrics> {
  * @generated MessageType for protobuf message proto.RaidMetrics
  */
 export declare const RaidMetrics: RaidMetrics$Type;
-declare class TargetMetrics$Type extends MessageType<TargetMetrics> {
-    constructor();
-    create(value?: PartialMessage<TargetMetrics>): TargetMetrics;
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TargetMetrics): TargetMetrics;
-    internalBinaryWrite(message: TargetMetrics, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
-}
-/**
- * @generated MessageType for protobuf message proto.TargetMetrics
- */
-export declare const TargetMetrics: TargetMetrics$Type;
 declare class EncounterMetrics$Type extends MessageType<EncounterMetrics> {
     constructor();
     create(value?: PartialMessage<EncounterMetrics>): EncounterMetrics;

@@ -1,3 +1,4 @@
+import { RaidTarget } from '/tbc/core/proto/common.js';
 import { Raid as RaidProto } from '/tbc/core/proto/api.js';
 import { RaidBuffs } from '/tbc/core/proto/common.js';
 import { NO_TARGET } from '/tbc/core/proto_utils/utils.js';
@@ -9,10 +10,12 @@ export const MAX_NUM_PARTIES = 5;
 export class Raid {
     constructor(sim) {
         this.buffs = RaidBuffs.create();
+        this.tanks = [];
         this.staggerStormstrikes = false;
         // Emits when a raid member is added/removed/moved.
         this.compChangeEmitter = new TypedEvent();
         this.buffsChangeEmitter = new TypedEvent();
+        this.tanksChangeEmitter = new TypedEvent();
         this.staggerStormstrikesChangeEmitter = new TypedEvent();
         this.sim = sim;
         this.parties = [...Array(MAX_NUM_PARTIES).keys()].map(i => {
@@ -24,6 +27,7 @@ export class Raid {
         this.changeEmitter = TypedEvent.onAny([
             this.compChangeEmitter,
             this.buffsChangeEmitter,
+            this.tanksChangeEmitter,
         ], 'RaidChange');
     }
     size() {
@@ -72,6 +76,17 @@ export class Raid {
         this.buffs = RaidBuffs.clone(newBuffs);
         this.buffsChangeEmitter.emit(eventID);
     }
+    getTanks() {
+        // Make a defensive copy
+        return this.tanks.map(tank => RaidTarget.clone(tank));
+    }
+    setTanks(eventID, newTanks) {
+        if (this.tanks.length == newTanks.length && this.tanks.every((tank, i) => RaidTarget.equals(tank, newTanks[i])))
+            return;
+        // Make a defensive copy
+        this.tanks = newTanks.map(tank => RaidTarget.clone(tank));
+        this.tanksChangeEmitter.emit(eventID);
+    }
     getStaggerStormstrikes() {
         return this.staggerStormstrikes;
     }
@@ -81,10 +96,11 @@ export class Raid {
         this.staggerStormstrikes = newValue;
         this.staggerStormstrikesChangeEmitter.emit(eventID);
     }
-    toProto() {
+    toProto(forExport) {
         return RaidProto.create({
-            parties: this.parties.map(party => party.toProto()),
+            parties: this.parties.map(party => party.toProto(forExport)),
             buffs: this.buffs,
+            tanks: this.tanks,
             staggerStormstrikes: this.staggerStormstrikes,
         });
     }
@@ -92,6 +108,7 @@ export class Raid {
         TypedEvent.freezeAllAndDo(() => {
             this.setBuffs(eventID, proto.buffs || RaidBuffs.create());
             this.setStaggerStormstrikes(eventID, proto.staggerStormstrikes);
+            this.setTanks(eventID, proto.tanks);
             for (let i = 0; i < MAX_NUM_PARTIES; i++) {
                 if (proto.parties[i]) {
                     this.parties[i].fromProto(eventID, proto.parties[i]);

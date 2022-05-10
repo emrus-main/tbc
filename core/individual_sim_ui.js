@@ -13,6 +13,7 @@ import { TypedEvent } from './typed_event.js';
 import { GearPicker } from '/tbc/core/components/gear_picker.js';
 import { IconEnumPicker } from '/tbc/core/components/icon_enum_picker.js';
 import { IconPicker } from '/tbc/core/components/icon_picker.js';
+import { ItemSlot } from '/tbc/core/proto/common.js';
 import { IndividualBuffs } from '/tbc/core/proto/common.js';
 import { IndividualSimSettings } from '/tbc/core/proto/ui.js';
 import { LogRunner } from '/tbc/core/components/log_runner.js';
@@ -25,7 +26,9 @@ import { SavedGearSet } from '/tbc/core/proto/ui.js';
 import { SavedSettings } from '/tbc/core/proto/ui.js';
 import { SavedTalents } from '/tbc/core/proto/ui.js';
 import { SettingsMenu } from '/tbc/core/components/settings_menu.js';
+import { ShattrathFaction } from '/tbc/core/proto/common.js';
 import { SimUI } from './sim_ui.js';
+import { nameToShattFaction } from '/tbc/core/proto_utils/utils.js';
 import { Stats } from '/tbc/core/proto_utils/stats.js';
 import { addRaidSimAction } from '/tbc/core/components/raid_sim_action.js';
 import { addStatWeightsAction } from '/tbc/core/components/stat_weights_action.js';
@@ -119,6 +122,7 @@ export class IndividualSimUI extends SimUI {
             this.addDetailedResultsTab();
             this.addLogTab();
         }
+        this.player.changeEmitter.on(() => this.recomputeSettingsLayout());
     }
     loadSettings() {
         const initEventID = TypedEvent.nextEventID();
@@ -247,7 +251,7 @@ export class IndividualSimUI extends SimUI {
 						<legend>Encounter</legend>
 					</fieldset>
 					<fieldset class="settings-section race-section">
-						<legend>Race</legend>
+						<legend>Player</legend>
 					</fieldset>
 					<fieldset class="settings-section rotation-section">
 						<legend>Rotation</legend>
@@ -452,6 +456,18 @@ export class IndividualSimUI extends SimUI {
             getValue: sim => sim.getRace(),
             setValue: (eventID, sim, newValue) => sim.setRace(eventID, newValue),
         });
+        const shattFactionPicker = new EnumPicker(this.rootElem.getElementsByClassName('race-section')[0], this.player, {
+            values: ["Scryer", "Aldor"].map(faction => {
+                return {
+                    name: faction,
+                    value: nameToShattFaction[faction],
+                };
+            }),
+            changedEvent: sim => sim.gearChangeEmitter,
+            getValue: sim => sim.getShattFaction(),
+            setValue: (eventID, sim, newValue) => sim.setShattFaction(eventID, newValue),
+            showWhen: (player) => this.player.getEquippedItem(ItemSlot.ItemSlotNeck)?.item.id == 34678 || this.player.getEquippedItem(ItemSlot.ItemSlotNeck)?.item.id == 34679,
+        });
         const encounterSectionElem = settingsTab.getElementsByClassName('encounter-section')[0];
         new EncounterPicker(encounterSectionElem, this.sim.encounter, this.individualConfig.encounterPicker);
         const savedEncounterManager = new SavedDataManager(this.rootElem.getElementsByClassName('saved-encounter-manager')[0], this.sim.encounter, {
@@ -471,9 +487,6 @@ export class IndividualSimUI extends SimUI {
             content: Tooltips.COOLDOWNS_SECTION,
             allowHTML: true,
             placement: 'left',
-        });
-        this.player.cooldownsChangeEmitter.on(() => {
-            this.recomputeSettingsLayout();
         });
         // Init Muuri layout only when settings tab is clicked, because it needs the elements
         // to be shown so it can calculate sizes.
@@ -584,7 +597,7 @@ export class IndividualSimUI extends SimUI {
                 talentsString: player.getTalentsString(),
             }),
             setData: (eventID, player, newTalents) => player.setTalentsString(eventID, newTalents.talentsString),
-            changeEmitters: [this.player.talentsStringChangeEmitter],
+            changeEmitters: [this.player.talentsChangeEmitter],
             equals: (a, b) => SavedTalents.equals(a, b),
             toJson: (a) => SavedTalents.toJson(a),
             fromJson: (obj) => SavedTalents.fromJson(obj),
@@ -625,7 +638,11 @@ export class IndividualSimUI extends SimUI {
     }
     applyDefaults(eventID) {
         TypedEvent.freezeAllAndDo(() => {
+            const tankSpec = isTankSpec(this.player.spec);
+            this.player.setRace(eventID, specToEligibleRaces[this.player.spec][0]);
+            this.player.setShattFaction(eventID, ShattrathFaction.ShattrathFactionAldor);
             this.player.setGear(eventID, this.sim.lookupEquipmentSpec(this.individualConfig.defaults.gear));
+            this.player.setBonusStats(eventID, new Stats());
             this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
             this.player.setRotation(eventID, this.individualConfig.defaults.rotation);
             this.player.setTalentsString(eventID, this.individualConfig.defaults.talents);
@@ -635,9 +652,18 @@ export class IndividualSimUI extends SimUI {
             this.player.getParty().setBuffs(eventID, this.individualConfig.defaults.partyBuffs);
             this.player.getRaid().setBuffs(eventID, this.individualConfig.defaults.raidBuffs);
             this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
-            this.sim.encounter.applyDefaults(eventID);
-            this.sim.encounter.primaryTarget.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
-            this.sim.applyDefaults(eventID, isTankSpec(this.player.spec));
+            this.player.setInFrontOfTarget(eventID, tankSpec);
+            if (!this.isWithinRaidSim) {
+                this.sim.encounter.applyDefaults(eventID);
+                this.sim.encounter.primaryTarget.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
+                this.sim.applyDefaults(eventID, tankSpec);
+                if (tankSpec) {
+                    this.sim.raid.setTanks(eventID, [this.player.makeRaidTarget()]);
+                }
+                else {
+                    this.sim.raid.setTanks(eventID, []);
+                }
+            }
         });
     }
     registerExclusiveEffect(effect) {
@@ -685,8 +711,9 @@ export class IndividualSimUI extends SimUI {
     toProto() {
         return IndividualSimSettings.create({
             settings: this.sim.toProto(),
-            player: this.player.toProto(),
+            player: this.player.toProto(true),
             raidBuffs: this.sim.raid.getBuffs(),
+            tanks: this.sim.raid.getTanks(),
             partyBuffs: this.player.getParty()?.getBuffs() || PartyBuffs.create(),
             encounter: this.sim.encounter.toProto(),
             epWeights: this.player.getEpWeights().asArray(),
@@ -708,6 +735,7 @@ export class IndividualSimUI extends SimUI {
                 this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
             }
             this.sim.raid.setBuffs(eventID, settings.raidBuffs || RaidBuffs.create());
+            this.sim.raid.setTanks(eventID, settings.tanks || []);
             const party = this.player.getParty();
             if (party) {
                 party.setBuffs(eventID, settings.partyBuffs || PartyBuffs.create());

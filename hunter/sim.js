@@ -147,6 +147,7 @@ export class HunterSimUI extends IndividualSimUI {
                 IconInputs.CurseOfRecklessness,
                 IconInputs.CurseOfElements,
                 IconInputs.Misery,
+                IconInputs.GiftOfArthas,
             ],
             // Which options are selectable in the 'Consumes' section.
             consumeOptions: {
@@ -208,11 +209,14 @@ export class HunterSimUI extends IndividualSimUI {
                     OtherInputs.SnapshotImprovedStrengthOfEarthTotem,
                     OtherInputs.SnapshotBsSolarianSapphire,
                     OtherInputs.SnapshotBsT2,
+                    OtherInputs.InFrontOfTarget,
                 ],
             },
             encounterPicker: {
-                // Whether to include 'Target Armor' in the 'Encounter' section of the settings tab.
-                showTargetArmor: true,
+                // Target stats to show for 'Simple' encounters.
+                simpleTargetStats: [
+                    Stat.StatArmor,
+                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
                 // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
@@ -234,10 +238,12 @@ export class HunterSimUI extends IndividualSimUI {
                     Presets.P2_BM_PRESET,
                     Presets.P3_BM_PRESET,
                     Presets.P4_BM_PRESET,
+                    Presets.P5_BM_PRESET,
                     Presets.P1_SV_PRESET,
                     Presets.P2_SV_PRESET,
                     Presets.P3_SV_PRESET,
                     Presets.P4_SV_PRESET,
+                    Presets.P5_SV_PRESET,
                 ],
             },
         });

@@ -2,8 +2,10 @@ import { BooleanPicker } from '/tbc/core/components/boolean_picker.js';
 import { EnumPicker } from '/tbc/core/components/enum_picker.js';
 import { Conjured } from '/tbc/core/proto/common.js';
 import { Potions } from '/tbc/core/proto/common.js';
-import { TristateEffect } from '/tbc/core/proto/common.js';
+import { RaidTarget } from '/tbc/core/proto/common.js';
 import { StrengthOfEarthType } from '/tbc/core/proto/common.js';
+import { TristateEffect } from '/tbc/core/proto/common.js';
+import { emptyRaidTarget } from '/tbc/core/proto_utils/utils.js';
 export function makeShow1hWeaponsSelector(parent, sim) {
     return new BooleanPicker(parent, sim, {
         extraCssClasses: [
@@ -304,5 +306,50 @@ export const SnapshotBsT2 = {
             party.setBuffs(eventID, buffs);
         },
         enableWhen: (party) => party.getBuffs().battleShout > 0,
+    },
+};
+export const InFrontOfTarget = {
+    type: 'boolean',
+    getModObject: (simUI) => simUI.player,
+    config: {
+        extraCssClasses: [
+            'in-front-of-target-picker',
+        ],
+        label: 'In Front of Target',
+        labelTooltip: 'Stand in front of the target, causing Blocks and Parries to be included in the attack table.',
+        changedEvent: (player) => player.inFrontOfTargetChangeEmitter,
+        getValue: (player) => player.getInFrontOfTarget(),
+        setValue: (eventID, player, newValue) => {
+            player.setInFrontOfTarget(eventID, newValue);
+        },
+    },
+};
+export const TankAssignment = {
+    type: 'enum',
+    getModObject: (simUI) => simUI.player,
+    config: {
+        extraCssClasses: [
+            'tank-selector',
+        ],
+        label: 'Tank Assignment',
+        labelTooltip: 'Determines which mobs will be tanked. Most mobs default to targeting the Main Tank, but in preset multi-target encounters this is not always true.',
+        values: [
+            { name: 'None', value: -1 },
+            { name: 'Main Tank', value: 0 },
+            { name: 'Tank 2', value: 1 },
+            { name: 'Tank 3', value: 2 },
+        ],
+        changedEvent: (player) => player.getRaid().tanksChangeEmitter,
+        getValue: (player) => player.getRaid().getTanks().findIndex(tank => RaidTarget.equals(tank, player.makeRaidTarget())),
+        setValue: (eventID, player, newValue) => {
+            const newTanks = [];
+            if (newValue != -1) {
+                for (let i = 0; i < newValue; i++) {
+                    newTanks.push(emptyRaidTarget());
+                }
+                newTanks.push(player.makeRaidTarget());
+            }
+            player.getRaid().setTanks(eventID, newTanks);
+        },
     },
 };

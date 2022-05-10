@@ -5,6 +5,7 @@ import { Debuffs } from '/tbc/core/proto/common.js';
 import { Stat } from '/tbc/core/proto/common.js';
 import { TristateEffect } from '/tbc/core/proto/common.js';
 import { Stats } from '/tbc/core/proto_utils/stats.js';
+import { TypedEvent } from '/tbc/core/typed_event.js';
 import { IndividualSimUI } from '/tbc/core/individual_sim_ui.js';
 import { BattleElixir } from '/tbc/core/proto/common.js';
 import { Flask } from '/tbc/core/proto/common.js';
@@ -23,6 +24,15 @@ export class WarriorSimUI extends IndividualSimUI {
             cssClass: 'warrior-sim-ui',
             // List any known bugs / issues here and they'll be shown on the site.
             knownIssues: [],
+            warnings: [
+                (simUI) => {
+                    return {
+                        updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter]),
+                        shouldDisplay: () => true,
+                        getContent: () => 'This sim is newly released, and there are likely a few bugs. Please let us know if you encounter any issues!',
+                    };
+                },
+            ],
             // All stats for which EP should be calculated.
             epStats: [
                 Stat.StatStrength,
@@ -53,23 +63,23 @@ export class WarriorSimUI extends IndividualSimUI {
                 gear: Presets.P1_FURY_PRESET.gear,
                 // Default EP weights for sorting gear in the gear picker.
                 epWeights: Stats.fromMap({
-                    [Stat.StatStrength]: 2.5,
-                    [Stat.StatAgility]: 1.75,
+                    [Stat.StatStrength]: 2.17,
+                    [Stat.StatAgility]: 1.4,
                     [Stat.StatAttackPower]: 1,
-                    [Stat.StatExpertise]: 3.75,
-                    [Stat.StatMeleeHit]: 1.5,
-                    [Stat.StatMeleeCrit]: 2.5,
-                    [Stat.StatMeleeHaste]: 3,
+                    [Stat.StatExpertise]: 3.29,
+                    [Stat.StatMeleeHit]: 0.41,
+                    [Stat.StatMeleeCrit]: 1.83,
+                    [Stat.StatMeleeHaste]: 2.07,
                     [Stat.StatArmorPenetration]: 0.5,
                 }),
                 // Default consumes settings.
-                consumes: Presets.DefaultFuryConsumes,
+                consumes: Presets.DefaultConsumes,
                 // Default rotation settings.
-                rotation: Presets.DefaultFuryRotation,
+                rotation: Presets.DefaultRotation,
                 // Default talents.
                 talents: Presets.FuryTalents.data,
                 // Default spec-specific settings.
-                specOptions: Presets.DefaultFuryOptions,
+                specOptions: Presets.DefaultOptions,
                 // Default raid/party buffs settings.
                 raidBuffs: RaidBuffs.create({
                     giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -102,7 +112,7 @@ export class WarriorSimUI extends IndividualSimUI {
             },
             // IconInputs to include in the 'Self Buffs' section on the settings tab.
             selfBuffInputs: [
-                // TODO: Move reck to cooldown tabs
+                WarriorInputs.ShoutPicker,
                 WarriorInputs.Recklessness,
             ],
             // IconInputs to include in the 'Other Buffs' section on the settings tab.
@@ -139,11 +149,14 @@ export class WarriorSimUI extends IndividualSimUI {
                 IconInputs.SunderArmor,
                 IconInputs.ExposeArmor,
                 IconInputs.CurseOfRecklessness,
+                IconInputs.GiftOfArthas,
             ],
             // Which options are selectable in the 'Consumes' section.
             consumeOptions: {
                 potions: [
                     Potions.HastePotion,
+                    Potions.InsaneStrengthPotion,
+                    Potions.MightyRagePotion,
                 ],
                 conjured: [
                     Conjured.ConjuredFlameCap,
@@ -156,6 +169,7 @@ export class WarriorSimUI extends IndividualSimUI {
                     BattleElixir.ElixirOfMajorStrength,
                     BattleElixir.ElixirOfMajorAgility,
                     BattleElixir.ElixirOfTheMongoose,
+                    BattleElixir.FelStrengthElixir,
                 ],
                 guardianElixirs: [],
                 food: [
@@ -168,6 +182,7 @@ export class WarriorSimUI extends IndividualSimUI {
                 weaponImbues: [
                     WeaponImbue.WeaponImbueAdamantiteSharpeningStone,
                     WeaponImbue.WeaponImbueAdamantiteWeightstone,
+                    WeaponImbue.WeaponImbueElementalSharpeningStone,
                 ],
                 other: [
                     IconInputs.ScrollOfAgilityV,
@@ -179,12 +194,21 @@ export class WarriorSimUI extends IndividualSimUI {
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
+                    WarriorInputs.StartingRage,
+                    WarriorInputs.PrecastShout,
+                    WarriorInputs.PrecastShoutWithSapphire,
+                    WarriorInputs.PrecastShoutWithT2,
+                    OtherInputs.ExposeWeaknessUptime,
+                    OtherInputs.ExposeWeaknessHunterAgility,
                     OtherInputs.SnapshotImprovedStrengthOfEarthTotem,
+                    OtherInputs.InFrontOfTarget,
                 ],
             },
             encounterPicker: {
-                // Whether to include 'Target Armor' in the 'Encounter' section of the settings tab.
-                showTargetArmor: true,
+                // Target stats to show for 'Simple' encounters.
+                simpleTargetStats: [
+                    Stat.StatArmor,
+                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: true,
                 // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
@@ -203,8 +227,15 @@ export class WarriorSimUI extends IndividualSimUI {
                 // Preset gear configurations that the user can quickly select.
                 gear: [
                     Presets.P1_FURY_PRESET,
-                    Presets.P1_ARMSSLAM_PRESET,
-                    Presets.P1_ARMSDW_PRESET,
+                    Presets.P2_FURY_PRESET,
+                    Presets.P3_FURY_PRESET,
+                    Presets.P4_FURY_PRESET,
+                    Presets.P5_FURY_PRESET,
+                    Presets.P1_ARMS_PRESET,
+                    Presets.P2_ARMS_PRESET,
+                    Presets.P3_ARMS_PRESET,
+                    Presets.P4_ARMS_PRESET,
+                    Presets.P5_ARMS_PRESET,
                 ],
             },
         });

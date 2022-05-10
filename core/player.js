@@ -1,5 +1,4 @@
 import { Cooldowns } from '/tbc/core/proto/common.js';
-import { Conjured } from '/tbc/core/proto/common.js';
 import { Consumes } from '/tbc/core/proto/common.js';
 import { IndividualBuffs } from '/tbc/core/proto/common.js';
 import { RangedWeaponType } from '/tbc/core/proto/common.js';
@@ -9,12 +8,12 @@ import { WeaponImbue } from '/tbc/core/proto/common.js';
 import { WeaponType } from '/tbc/core/proto/common.js';
 import { PlayerStats } from '/tbc/core/proto/api.js';
 import { Player as PlayerProto } from '/tbc/core/proto/api.js';
-import { Hunter_Rotation_WeaveType as WeaveType } from '/tbc/core/proto/hunter.js';
 import { getWeaponDPS } from '/tbc/core/proto_utils/equipped_item.js';
+import { talentStringToProto } from '/tbc/core/talents/factory.js';
 import { Gear } from '/tbc/core/proto_utils/gear.js';
 import { gemMatchesSocket, } from '/tbc/core/proto_utils/gems.js';
 import { Stats } from '/tbc/core/proto_utils/stats.js';
-import { canEquipEnchant, canEquipItem, classColors, getEligibleItemSlots, getTalentTree, getTalentTreeIcon, getMetaGemEffectEP, raceToFaction, specEPTransforms, specToClass, specToEligibleRaces, specTypeFunctions, withSpecProto, } from '/tbc/core/proto_utils/utils.js';
+import { canEquipEnchant, canEquipItem, classColors, emptyRaidTarget, getEligibleItemSlots, getTalentTree, getTalentTreeIcon, getMetaGemEffectEP, newRaidTarget, raceToFaction, specEPTransforms, specToClass, specToEligibleRaces, specTypeFunctions, withSpecProto, } from '/tbc/core/proto_utils/utils.js';
 import { TypedEvent } from './typed_event.js';
 import { MAX_PARTY_SIZE } from './party.js';
 import { sum } from './utils.js';
@@ -28,9 +27,11 @@ export class Player {
         this.gear = new Gear({});
         this.talentsString = '';
         this.cooldowns = Cooldowns.create();
+        this.inFrontOfTarget = false;
         this.itemEPCache = new Map();
         this.gemEPCache = new Map();
         this.enchantEPCache = new Map();
+        this.talents = null;
         this.epWeights = new Stats();
         this.epWeightsForCalc = new Stats();
         this.currentStats = PlayerStats.create();
@@ -42,10 +43,9 @@ export class Player {
         this.raceChangeEmitter = new TypedEvent('PlayerRace');
         this.rotationChangeEmitter = new TypedEvent('PlayerRotation');
         this.talentsChangeEmitter = new TypedEvent('PlayerTalents');
-        // Talents dont have all fields so we need this.
-        this.talentsStringChangeEmitter = new TypedEvent('PlayerTalentsString');
         this.specOptionsChangeEmitter = new TypedEvent('PlayerSpecOptions');
         this.cooldownsChangeEmitter = new TypedEvent('PlayerCooldowns');
+        this.inFrontOfTargetChangeEmitter = new TypedEvent('PlayerInFrontOfTarget');
         this.epWeightsChangeEmitter = new TypedEvent('PlayerEpWeights');
         this.currentStatsEmitter = new TypedEvent('PlayerCurrentStats');
         this.sim = sim;
@@ -53,9 +53,9 @@ export class Player {
         this.raid = null;
         this.spec = spec;
         this.race = specToEligibleRaces[this.spec][0];
+        this.shattFaction = 0;
         this.specTypeFunctions = specTypeFunctions[this.spec];
         this.rotation = this.specTypeFunctions.rotationCreate();
-        this.talents = this.specTypeFunctions.talentsCreate();
         this.specOptions = this.specTypeFunctions.optionsCreate();
         this.changeEmitter = TypedEvent.onAny([
             this.nameChangeEmitter,
@@ -66,9 +66,9 @@ export class Player {
             this.raceChangeEmitter,
             this.rotationChangeEmitter,
             this.talentsChangeEmitter,
-            this.talentsStringChangeEmitter,
             this.specOptionsChangeEmitter,
             this.cooldownsChangeEmitter,
+            this.inFrontOfTargetChangeEmitter,
             this.epWeightsChangeEmitter,
         ], 'PlayerChange');
     }
@@ -188,6 +188,15 @@ export class Player {
     setRace(eventID, newRace) {
         if (newRace != this.race) {
             this.race = newRace;
+            this.raceChangeEmitter.emit(eventID);
+        }
+    }
+    getShattFaction() {
+        return this.shattFaction;
+    }
+    setShattFaction(eventID, newFaction) {
+        if (newFaction != this.shattFaction) {
+            this.shattFaction = newFaction;
             this.raceChangeEmitter.emit(eventID);
         }
     }
@@ -311,13 +320,10 @@ export class Player {
         this.rotationChangeEmitter.emit(eventID);
     }
     getTalents() {
-        return this.specTypeFunctions.talentsCopy(this.talents);
-    }
-    setTalents(eventID, newTalents) {
-        if (this.specTypeFunctions.talentsEquals(newTalents, this.talents))
-            return;
-        this.talents = this.specTypeFunctions.talentsCopy(newTalents);
-        this.talentsChangeEmitter.emit(eventID);
+        if (this.talents == null) {
+            this.talents = talentStringToProto(this.spec, this.talentsString);
+        }
+        return this.talents;
     }
     getTalentsString() {
         return this.talentsString;
@@ -326,7 +332,8 @@ export class Player {
         if (newTalentsString == this.talentsString)
             return;
         this.talentsString = newTalentsString;
-        this.talentsStringChangeEmitter.emit(eventID);
+        this.talents = null;
+        this.talentsChangeEmitter.emit(eventID);
     }
     getTalentTree() {
         return getTalentTree(this.getTalentsString());
@@ -342,6 +349,15 @@ export class Player {
             return;
         this.specOptions = this.specTypeFunctions.optionsCopy(newSpecOptions);
         this.specOptionsChangeEmitter.emit(eventID);
+    }
+    getInFrontOfTarget() {
+        return this.inFrontOfTarget;
+    }
+    setInFrontOfTarget(eventID, newInFrontOfTarget) {
+        if (newInFrontOfTarget == this.inFrontOfTarget)
+            return;
+        this.inFrontOfTarget = newInFrontOfTarget;
+        this.inFrontOfTargetChangeEmitter.emit(eventID);
     }
     computeStatsEP(stats) {
         if (stats == undefined) {
@@ -382,7 +398,10 @@ export class Player {
         if (item.weaponType != WeaponType.WeaponTypeUnknown) {
             // Add weapon dps as attack power, so the EP is appropriate.
             const weaponDps = getWeaponDPS(item);
-            const effectiveAttackPower = itemStats.getStat(Stat.StatAttackPower) + weaponDps * 14;
+            let effectiveAttackPower = itemStats.getStat(Stat.StatAttackPower);
+            if (this.spec != Spec.SpecFeralDruid) {
+                effectiveAttackPower += weaponDps * 14;
+            }
             itemStats = itemStats.withStat(Stat.StatAttackPower, effectiveAttackPower);
         }
         else if (![RangedWeaponType.RangedWeaponTypeUnknown, RangedWeaponType.RangedWeaponTypeThrown].includes(item.rangedWeaponType)) {
@@ -440,10 +459,19 @@ export class Player {
         parts.push('pcs=' + this.gear.asArray().filter(ei => ei != null).map(ei => ei.item.id).join(':'));
         elem.setAttribute('data-wowhead', parts.join('&'));
     }
-    toProto() {
+    makeRaidTarget() {
+        if (this.party == null) {
+            return emptyRaidTarget();
+        }
+        else {
+            return newRaidTarget(this.getRaidIndex());
+        }
+    }
+    toProto(forExport) {
         return withSpecProto(this.spec, PlayerProto.create({
             name: this.getName(),
             race: this.getRace(),
+            shattFaction: this.getShattFaction(),
             class: this.getClass(),
             equipment: this.getGear().asSpec(),
             consumes: this.getConsumes(),
@@ -451,64 +479,23 @@ export class Player {
             buffs: this.getBuffs(),
             cooldowns: this.getCooldowns(),
             talentsString: this.getTalentsString(),
-        }), this.getRotation(), this.getTalents(), this.getSpecOptions());
+            inFrontOfTarget: this.getInFrontOfTarget(),
+        }), this.getRotation(), forExport ? this.specTypeFunctions.talentsCreate() : this.getTalents(), this.getSpecOptions());
     }
     fromProto(eventID, proto) {
         TypedEvent.freezeAllAndDo(() => {
-            let rotation = this.specTypeFunctions.rotationFromPlayer(proto);
-            let options = this.specTypeFunctions.optionsFromPlayer(proto);
-            // TODO: Remove this on 3/14/2022 (1 month).
-            if (this.spec == Spec.SpecHunter) {
-                const hunterRotation = rotation;
-                const hunterOptions = options;
-                if (hunterOptions.petUptime == 0) {
-                    hunterOptions.petUptime = 1;
-                }
-                if (hunterRotation.meleeWeave) {
-                    hunterRotation.meleeWeave = false;
-                    if (hunterRotation.useRaptorStrike) {
-                        hunterRotation.weave = WeaveType.WeaveFull;
-                    }
-                    else {
-                        hunterRotation.weave = WeaveType.WeaveAutosOnly;
-                    }
-                }
-                options = hunterOptions;
-                rotation = hunterRotation;
-            }
-            // TODO: Remove this on 3/21 (1 month).
-            if (this.spec == Spec.SpecMage) {
-                const mageOptions = options;
-                if (mageOptions.useManaEmeralds && proto.consumes) {
-                    proto.consumes.defaultConjured = Conjured.ConjuredMageManaEmerald;
-                    mageOptions.useManaEmeralds = false;
-                }
-                options = mageOptions;
-            }
-            // TODO: Remove this on 3/21 (1 month).
-            if (this.spec == Spec.SpecEnhancementShaman) {
-                const enhOptions = options;
-                if (proto.consumes && enhOptions.mainHandImbue != 0) {
-                    proto.consumes.mainHandImbue = 5 + enhOptions.mainHandImbue;
-                    enhOptions.mainHandImbue = 0;
-                }
-                if (proto.consumes && enhOptions.offHandImbue != 0) {
-                    proto.consumes.offHandImbue = 5 + enhOptions.offHandImbue;
-                    enhOptions.offHandImbue = 0;
-                }
-                options = enhOptions;
-            }
             this.setName(eventID, proto.name);
             this.setRace(eventID, proto.race);
+            this.setShattFaction(eventID, proto.shattFaction);
             this.setGear(eventID, proto.equipment ? this.sim.lookupEquipmentSpec(proto.equipment) : new Gear({}));
             this.setConsumes(eventID, proto.consumes || Consumes.create());
             this.setBonusStats(eventID, new Stats(proto.bonusStats));
             this.setBuffs(eventID, proto.buffs || IndividualBuffs.create());
             this.setCooldowns(eventID, proto.cooldowns || Cooldowns.create());
             this.setTalentsString(eventID, proto.talentsString);
-            this.setRotation(eventID, rotation);
-            this.setTalents(eventID, this.specTypeFunctions.talentsFromPlayer(proto));
-            this.setSpecOptions(eventID, options);
+            this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
+            this.setRotation(eventID, this.specTypeFunctions.rotationFromPlayer(proto));
+            this.setSpecOptions(eventID, this.specTypeFunctions.optionsFromPlayer(proto));
         });
     }
     clone(eventID) {

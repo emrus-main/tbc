@@ -757,6 +757,10 @@ input, select {
   display: none !important;
 }
 
+.hide-in-front-of-target .in-front-of-target {
+  display: none !important;
+}
+
 .bonus-stats-root {
   margin: 10px;
 }
@@ -1664,6 +1668,8 @@ input, select {
   background-color: black;
   color: lawngreen;
   border: none;
+  width: auto;
+  padding: 0 2px;
 }
 
 .icon-input:not(.use-counter) .icon-input-counter {
@@ -1990,6 +1996,10 @@ input, select {
 
 .results-sim-tps .topline-result-avg:after {
   content: " TPS";
+}
+
+.results-sim-dtps .topline-result-avg:after {
+  content: " DTPS";
 }
 
 .topline-result-stdev {
@@ -2655,6 +2665,10 @@ input, select {
   display: none;
 }
 
+.not-within-raid-sim .not-within-raid-sim-hide {
+  display: none;
+}
+
 .character-stats-header {
   padding: 5px;
   font-size: 14px;
@@ -2898,7 +2912,7 @@ input, select {
 }
 
 .hunter-sim-ui .debuffs-section {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .hunter-sim-ui .PetBuffs-section {
@@ -3067,7 +3081,7 @@ input, select {
 }
 
 .rogue-sim-ui .debuffs-section {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .rogue-sim-ui .character-stats-table-row {
@@ -3181,6 +3195,72 @@ input, select {
 }
 
 .smite-priest-sim-ui .results-ep-table tr td:nth-child(3), .results-ep-table tr td:nth-child(5) {
+  font-size: 10px;
+}
+
+.warrior-sim-ui {
+  --theme-color-primary: #e2563f;
+  --theme-color-background: #1e0f0c;
+  --theme-color-background-raw: 29, 21, 16;
+  --theme-background-image: url("/tbc/assets/warrior_background.jpg");
+  --theme-background-opacity: 0.95;
+  --main-text-color: White;
+}
+
+.warrior-sim-ui .self-buffs-section {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.warrior-sim-ui .buffs-section {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.warrior-sim-ui .debuffs-section {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.retribution-paladin-sim-ui {
+  --theme-color-primary: #cc48a4;
+  --theme-color-background: rgb(20, 13, 18);
+  --theme-color-background-raw: 20, 13, 18;
+  --theme-background-image: url("/tbc/assets/retribution_paladin.jpg");
+  --theme-background-opacity: 0.95;
+  --main-text-color: White;
+}
+
+.retribution-paladin-sim-ui .self-buffs-section {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.retribution-paladin-sim-ui .buffs-section {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.retribution-paladin-sim-ui .debuffs-section {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.retribution-paladin-sim-ui .character-stats-table-row {
+  font-size: 11px;
+}
+
+.retribution-paladin-sim-ui .results-ep-table tr td:nth-child(1) {
+  font-size: 11px;
+}
+
+.retribution-paladin-sim-ui .results-ep-table tr td:nth-child(2), .results-ep-table tr td:nth-child(4) {
+  font-size: 11px;
+}
+
+.retribution-paladin-sim-ui .results-ep-table tr td:nth-child(2):after {
+  font-size: 11px;
+}
+
+.retribution-paladin-sim-ui .results-ep-table tr td:nth-child(4):after {
+  font-size: 11px;
+}
+
+.retribution-paladin-sim-ui .results-ep-table tr td:nth-child(3), .results-ep-table tr td:nth-child(5) {
   font-size: 10px;
 }
 

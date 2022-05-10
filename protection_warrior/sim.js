@@ -147,6 +147,7 @@ export class ProtectionWarriorSimUI extends IndividualSimUI {
                 IconInputs.SunderArmor,
                 IconInputs.ExposeArmor,
                 IconInputs.CurseOfRecklessness,
+                IconInputs.GiftOfArthas,
             ],
             // Which options are selectable in the 'Consumes' section.
             consumeOptions: {
@@ -191,12 +192,18 @@ export class ProtectionWarriorSimUI extends IndividualSimUI {
                     ProtectionWarriorInputs.PrecastShout,
                     ProtectionWarriorInputs.PrecastShoutWithSapphire,
                     ProtectionWarriorInputs.PrecastShoutWithT2,
+                    OtherInputs.ExposeWeaknessUptime,
+                    OtherInputs.ExposeWeaknessHunterAgility,
                     OtherInputs.SnapshotImprovedStrengthOfEarthTotem,
+                    OtherInputs.TankAssignment,
+                    OtherInputs.InFrontOfTarget,
                 ],
             },
             encounterPicker: {
-                // Whether to include 'Target Armor' in the 'Encounter' section of the settings tab.
-                showTargetArmor: true,
+                // Target stats to show for 'Simple' encounters.
+                simpleTargetStats: [
+                    Stat.StatArmor,
+                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: true,
                 // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.

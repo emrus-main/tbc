@@ -156,6 +156,10 @@ export interface PartyBuffs {
      */
     snapshotBsT2: boolean;
     /**
+     * @generated from protobuf field: int32 snapshot_bs_booming_voice_rank = 33;
+     */
+    snapshotBsBoomingVoiceRank: number;
+    /**
      * Mitigation buffs
      *
      * @generated from protobuf field: proto.TristateEffect commanding_shout = 32;
@@ -329,6 +333,10 @@ export interface Debuffs {
      */
     isbUptime: number;
     /**
+     * @generated from protobuf field: bool shadow_weaving = 18;
+     */
+    shadowWeaving: boolean;
+    /**
      * @generated from protobuf field: bool improved_scorch = 6;
      */
     improvedScorch: boolean;
@@ -340,6 +348,10 @@ export interface Debuffs {
      * @generated from protobuf field: bool blood_frenzy = 8;
      */
     bloodFrenzy: boolean;
+    /**
+     * @generated from protobuf field: bool gift_of_arthas = 17;
+     */
+    giftOfArthas: boolean;
     /**
      * @generated from protobuf field: bool mangle = 16;
      */
@@ -378,6 +390,8 @@ export interface Debuffs {
  */
 export interface Target {
     /**
+     * TODO: Deprecate this after 1 month (2022/6/6)
+     *
      * @generated from protobuf field: double armor = 1;
      */
     armor: number;
@@ -389,6 +403,17 @@ export interface Target {
      * @generated from protobuf field: proto.MobType mob_type = 3;
      */
     mobType: MobType;
+    /**
+     * @generated from protobuf field: repeated double stats = 5;
+     */
+    stats: number[];
+    /**
+     * Index in Raid.tanks indicating the player tanking this mob.
+     * -1 or invalid index indicates not being tanked.
+     *
+     * @generated from protobuf field: int32 tank_index = 6;
+     */
+    tankIndex: number;
     /**
      * @generated from protobuf field: proto.Debuffs debuffs = 2;
      */
@@ -714,6 +739,10 @@ export declare enum Spec {
      */
     SpecEnhancementShaman = 9,
     /**
+     * @generated from protobuf enum value: SpecFeralDruid = 12;
+     */
+    SpecFeralDruid = 12,
+    /**
      * @generated from protobuf enum value: SpecHunter = 8;
      */
     SpecHunter = 8,
@@ -802,6 +831,19 @@ export declare enum Race {
      * @generated from protobuf enum value: RaceUndead = 11;
      */
     RaceUndead = 11
+}
+/**
+ * @generated from protobuf enum proto.ShattrathFaction
+ */
+export declare enum ShattrathFaction {
+    /**
+     * @generated from protobuf enum value: ShattrathFactionAldor = 0;
+     */
+    ShattrathFactionAldor = 0,
+    /**
+     * @generated from protobuf enum value: ShattrathFactionScryer = 1;
+     */
+    ShattrathFactionScryer = 1
 }
 /**
  * @generated from protobuf enum proto.Class
@@ -1015,7 +1057,11 @@ export declare enum Stat {
     /**
      * @generated from protobuf enum value: StatShadowResistance = 40;
      */
-    StatShadowResistance = 40
+    StatShadowResistance = 40,
+    /**
+     * @generated from protobuf enum value: StatFeralAttackPower = 41;
+     */
+    StatFeralAttackPower = 41
 }
 /**
  * @generated from protobuf enum proto.ItemType
@@ -1397,7 +1443,11 @@ export declare enum Drums {
     /**
      * @generated from protobuf enum value: DrumsOfRestoration = 2;
      */
-    DrumsOfRestoration = 2
+    DrumsOfRestoration = 2,
+    /**
+     * @generated from protobuf enum value: DrumsOfWar = 3;
+     */
+    DrumsOfWar = 3
 }
 /**
  * @generated from protobuf enum proto.Explosive
@@ -1451,7 +1501,11 @@ export declare enum Potions {
     /**
      * @generated from protobuf enum value: FelManaPotion = 5;
      */
-    FelManaPotion = 5
+    FelManaPotion = 5,
+    /**
+     * @generated from protobuf enum value: InsaneStrengthPotion = 6;
+     */
+    InsaneStrengthPotion = 6
 }
 /**
  * @generated from protobuf enum proto.Conjured
@@ -1816,7 +1870,13 @@ export declare enum OtherAction {
      *
      * @generated from protobuf enum value: OtherActionRefund = 8;
      */
-    OtherActionRefund = 8
+    OtherActionRefund = 8,
+    /**
+     * Indicates damage taken; used for rage gen.
+     *
+     * @generated from protobuf enum value: OtherActionDamageTaken = 9;
+     */
+    OtherActionDamageTaken = 9
 }
 declare class RaidBuffs$Type extends MessageType<RaidBuffs> {
     constructor();

@@ -59,20 +59,20 @@ export class SpellMetricsTable extends MetricsTable {
             {
                 name: 'Hits',
                 tooltip: 'Hits',
-                getValue: (metric) => metric.hits,
-                getDisplayString: (metric) => metric.hits.toFixed(1),
-            },
-            {
-                name: 'Crit %',
-                tooltip: 'Crits / Hits',
-                getValue: (metric) => metric.critPercent,
-                getDisplayString: (metric) => metric.critPercent.toFixed(2) + '%',
+                getValue: (metric) => metric.landedHits,
+                getDisplayString: (metric) => metric.landedHits.toFixed(1),
             },
             {
                 name: 'Miss %',
                 tooltip: 'Misses / (Hits + Misses)',
                 getValue: (metric) => metric.missPercent,
                 getDisplayString: (metric) => metric.missPercent.toFixed(2) + '%',
+            },
+            {
+                name: 'Crit %',
+                tooltip: 'Crits / Hits',
+                getValue: (metric) => metric.critPercent,
+                getDisplayString: (metric) => metric.critPercent.toFixed(2) + '%',
             },
         ]);
     }
@@ -88,9 +88,9 @@ export class SpellMetricsTable extends MetricsTable {
         return actionGroups.concat(petGroups);
     }
     mergeMetrics(metrics) {
-        return ActionMetrics.merge(metrics, true, metrics[0].player?.petActionId || undefined);
+        return ActionMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
     }
     shouldCollapse(metric) {
-        return !metric.player?.isPet;
+        return !metric.unit?.isPet;
     }
 }

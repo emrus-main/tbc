@@ -2,13 +2,9 @@ import { Consumes } from '/tbc/core/proto/common.js';
 import { EquipmentSpec } from '/tbc/core/proto/common.js';
 import { Flask } from '/tbc/core/proto/common.js';
 import { Food } from '/tbc/core/proto/common.js';
-import { ItemSpec } from '/tbc/core/proto/common.js';
 import { Potions } from '/tbc/core/proto/common.js';
-import { Warrior_Rotation as WarriorRotation, Warrior_Options as WarriorOptions } from '/tbc/core/proto/warrior.js';
-import { Warrior_Rotation_Type as RotationType, Warrior_Rotation_ArmsSlamRotation as ArmsSlamRotation, Warrior_Rotation_ArmsDWRotation as ArmsDWRotation, Warrior_Rotation_FuryRotation as FuryRotation } from '/tbc/core/proto/warrior.js';
-import { Warrior_Rotation_FuryRotation_PrimaryInstant as PrimaryInstant } from '/tbc/core/proto/warrior.js';
-import * as Enchants from '/tbc/core/constants/enchants.js';
-import * as Gems from '/tbc/core/proto_utils/gems.js';
+import { WeaponImbue } from '/tbc/core/proto/common.js';
+import { WarriorShout, Warrior_Rotation as WarriorRotation, Warrior_Rotation_SunderArmor as SunderArmor, Warrior_Options as WarriorOptions, } from '/tbc/core/proto/warrior.js';
 import * as Tooltips from '/tbc/core/constants/tooltips.js';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -25,395 +21,1038 @@ export const ArmsDWTalents = {
 };
 export const FuryTalents = {
     name: 'Fury',
-    data: '32003301302-055000055050120531151',
+    data: '3500501130201-05050005505012050115',
 };
-export const DefaultFuryRotation = WarriorRotation.create({
-    type: RotationType.Fury,
-    fury: FuryRotation.create({
-        primaryInstant: PrimaryInstant.Whirlwind,
-        useBtDuringExecute: true,
-        rampageCdThreshold: 5,
-    }),
-    useWwDuringExecute: true,
-    useHsDuringExecute: true,
-    hsRageThreshold: 60,
+export const DefaultRotation = WarriorRotation.create({
     useOverpower: false,
-    overpowerRageThreshold: 25,
-    useHamstring: false,
-    hamstringRageThreshold: 70
+    useHamstring: true,
+    prioritizeWw: false,
+    sunderArmor: SunderArmor.SunderArmorMaintain,
+    hsRageThreshold: 60,
+    overpowerRageThreshold: 10,
+    hamstringRageThreshold: 75,
+    rampageCdThreshold: 5,
+    slamLatency: 150,
+    slamGcdDelay: 400,
+    slamMsWwDelay: 2000,
+    useHsDuringExecute: true,
+    useMsDuringExecute: true,
+    useBtDuringExecute: true,
+    useWwDuringExecute: true,
+    useSlamDuringExecute: true,
 });
-export const DefaultFuryOptions = WarriorOptions.create({
+export const ArmsRotation = WarriorRotation.create({
+    useOverpower: false,
+    useHamstring: true,
+    useSlam: true,
+    prioritizeWw: false,
+    sunderArmor: SunderArmor.SunderArmorMaintain,
+    hsRageThreshold: 60,
+    overpowerRageThreshold: 10,
+    hamstringRageThreshold: 75,
+    rampageCdThreshold: 5,
+    slamLatency: 150,
+    slamGcdDelay: 400,
+    slamMsWwDelay: 2000,
+    useHsDuringExecute: true,
+    useMsDuringExecute: true,
+    useBtDuringExecute: true,
+    useWwDuringExecute: true,
+    useSlamDuringExecute: true,
+});
+export const DefaultOptions = WarriorOptions.create({
     startingRage: 0,
-    precastSapphire: false,
-    precastT2: false,
+    useRecklessness: true,
+    shout: WarriorShout.WarriorShoutBattle,
+    precastShout: true,
+    precastShoutSapphire: false,
+    precastShoutT2: false,
 });
-export const DefaultFuryConsumes = Consumes.create({
+export const DefaultConsumes = Consumes.create({
     flask: Flask.FlaskOfRelentlessAssault,
     food: Food.FoodRoastedClefthoof,
     defaultPotion: Potions.HastePotion,
-});
-export const DefaultArmsSlamRotation = WarriorRotation.create({
-    type: RotationType.ArmsSlam,
-    armsSlam: ArmsSlamRotation.create({
-        useSlamDuringExecute: true,
-        slamLatency: 150,
-        useMsDuringExecute: true,
-    }),
-    useWwDuringExecute: true,
-    useHsDuringExecute: true,
-    hsRageThreshold: 60,
-    useOverpower: false,
-    overpowerRageThreshold: 25,
-    useHamstring: false,
-    hamstringRageThreshold: 70
-});
-export const DefaultArmsSlamOptions = WarriorOptions.create({
-    startingRage: 0,
-    precastSapphire: false,
-    precastT2: false,
-});
-export const DefaultArmsSlamConsumes = Consumes.create({
-    defaultPotion: Potions.HastePotion,
-    flask: Flask.FlaskOfRelentlessAssault,
-    food: Food.FoodRoastedClefthoof,
-});
-export const DefaultArmsDWRotation = WarriorRotation.create({
-    type: RotationType.ArmsSlam,
-    armsDw: ArmsDWRotation.create({
-        useMsDuringExecute: false,
-    }),
-    useWwDuringExecute: true,
-    useHsDuringExecute: true,
-    hsRageThreshold: 60,
-    useOverpower: false,
-    overpowerRageThreshold: 25,
-    useHamstring: false,
-    hamstringRageThreshold: 70
-});
-export const DefaultArmsDWOptions = WarriorOptions.create({
-    startingRage: 0,
-    precastSapphire: false,
-    precastT2: false,
-});
-export const DefaultArmsDWConsumes = Consumes.create({
-    defaultPotion: Potions.HastePotion,
-    flask: Flask.FlaskOfRelentlessAssault,
-    food: Food.FoodRoastedClefthoof,
+    mainHandImbue: WeaponImbue.WeaponImbueAdamantiteSharpeningStone,
+    offHandImbue: WeaponImbue.WeaponImbueAdamantiteSharpeningStone,
 });
 export const P1_FURY_PRESET = {
     name: 'P1 Fury Preset',
     tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
-    enableWhen: (player) => player.getRotation().type == RotationType.Fury,
-    gear: EquipmentSpec.create({
-        items: [
-            ItemSpec.create({
-                id: 29021,
-                enchant: Enchants.GLYPH_OF_FEROCITY,
-                gems: [
-                    Gems.RELENTLESS_EARTHSTORM_DIAMOND,
-                    // Gems.SMOOTH_DAWWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 29381, // Choker of Vile Intent
-            }),
-            ItemSpec.create({
-                id: 29023,
-                enchant: Enchants.GREATER_INSCRIPTION_OF_VENGEANCE,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 24259,
-                enchant: Enchants.CLOAK_GREATER_AGILITY,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ
-                ],
-            }),
-            ItemSpec.create({
-                id: 29019,
-                enchant: Enchants.CHEST_EXCEPTIONAL_STATS,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28795,
-                enchant: Enchants.WRIST_BRAWN,
-                gems: [
-                    // Gems.JAGGED_TALASITE,
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28824,
-                enchant: Enchants.GLOVES_STRENGTH,
-                gems: [
-                // Gems.JAGGED_TALASITE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28779,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28741,
-                enchant: Enchants.NETHERCOBRA_LEG_ARMOR,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28608,
-                enchant: Enchants.FEET_CATS_SWIFTNESS,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28757, // Ring of a Thousand Marks
-            }),
-            ItemSpec.create({
-                id: 30834, // Shapeshifter's Signet
-            }),
-            ItemSpec.create({
-                id: 29383, // Bloodlust Brooch
-            }),
-            ItemSpec.create({
-                id: 28830, // Dragonspine Trophy
-            }),
-            ItemSpec.create({
-                id: 28438,
-                enchant: Enchants.MONGOOSE,
-            }),
-            ItemSpec.create({
-                id: 28729,
-                enchant: Enchants.MONGOOSE,
-            }),
-            ItemSpec.create({
-                id: 30279, // Mama's Insurance
-            }),
-        ],
-    }),
+    enableWhen: (player) => player.getTalents().bloodthirst,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+	  {
+			"id": 29021,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				24048
+			]
+		},
+		{
+			"id": 29381
+		},
+		{
+			"id": 29023,
+			"enchant": 28888,
+			"gems": [
+				24048,
+				24067
+			]
+		},
+		{
+			"id": 24259,
+			"enchant": 34004,
+			"gems": [
+				24058
+			]
+		},
+		{
+			"id": 29019,
+			"enchant": 24003,
+			"gems": [
+				24048,
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 28795,
+			"enchant": 27899,
+			"gems": [
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 28824,
+			"enchant": 33995,
+			"gems": [
+				24067,
+				24048
+			]
+		},
+		{
+			"id": 28779,
+			"gems": [
+				24058,
+				24067
+			]
+		},
+		{
+			"id": 28741,
+			"enchant": 29535,
+			"gems": [
+				24048,
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 28608,
+			"enchant": 28279,
+			"gems": [
+				24058,
+				24048
+			]
+		},
+		{
+			"id": 28757
+		},
+		{
+			"id": 30834
+		},
+		{
+			"id": 29383
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 28438,
+			"enchant": 22559
+		},
+		{
+			"id": 28729,
+			"enchant": 22559
+		},
+		{
+			"id": 30279
+		}
+	]}`),
 };
-export const P1_ARMSSLAM_PRESET = {
-    name: 'P1 Arms Slam Preset',
+export const P2_FURY_PRESET = {
+    name: 'P2 Fury Preset',
     tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
-    enableWhen: (player) => player.getRotation().type == RotationType.ArmsSlam,
-    gear: EquipmentSpec.create({
-        items: [
-            ItemSpec.create({
-                id: 29021,
-                enchant: Enchants.GLYPH_OF_FEROCITY,
-                gems: [
-                    Gems.RELENTLESS_EARTHSTORM_DIAMOND,
-                    // Gems.SMOOTH_DAWWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 29349, // Adamantine Chain of the Unbroken
-            }),
-            ItemSpec.create({
-                id: 29023,
-                enchant: Enchants.GREATER_INSCRIPTION_OF_VENGEANCE,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 24259,
-                enchant: Enchants.CLOAK_GREATER_AGILITY,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ
-                ],
-            }),
-            ItemSpec.create({
-                id: 29019,
-                enchant: Enchants.CHEST_EXCEPTIONAL_STATS,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28795,
-                enchant: Enchants.WRIST_BRAWN,
-                gems: [
-                    // Gems.JAGGED_TALASITE,
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28824,
-                enchant: Enchants.GLOVES_STRENGTH,
-                gems: [
-                // Gems.JAGGED_TALASITE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28779,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28741,
-                enchant: Enchants.NETHERCOBRA_LEG_ARMOR,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28608,
-                enchant: Enchants.FEET_CATS_SWIFTNESS,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28757, // Ring of a Thousand Marks
-            }),
-            ItemSpec.create({
-                id: 28730, // Mithril Band of the Unscarred
-            }),
-            ItemSpec.create({
-                id: 29383, // Bloodlust Brooch
-            }),
-            ItemSpec.create({
-                id: 28830, // Dragonspine Trophy
-            }),
-            ItemSpec.create({
-                id: 28429,
-                enchant: Enchants.MONGOOSE,
-            }),
-            ItemSpec.create({
-                id: 30279, // Mama's Insurance
-            }),
-        ],
-    }),
+    enableWhen: (player) => player.getTalents().bloodthirst,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+	  {
+			"id": 30120,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				24067
+			]
+		},
+		{
+			"id": 30022
+		},
+		{
+			"id": 30122,
+			"enchant": 28888,
+			"gems": [
+				24058,
+				24067
+			]
+		},
+		{
+			"id": 24259,
+			"enchant": 34004,
+			"gems": [
+				24058
+			]
+		},
+		{
+			"id": 30118,
+			"enchant": 24003,
+			"gems": [
+				24048,
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 28795,
+			"enchant": 27899,
+			"gems": [
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 30119,
+			"enchant": 33995
+		},
+		{
+			"id": 30106,
+			"gems": [
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 29995,
+			"enchant": 29535
+		},
+		{
+			"id": 30081,
+			"enchant": 28279
+		},
+		{
+			"id": 29997
+		},
+		{
+			"id": 28757
+		},
+		{
+			"id": 30627
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 28439,
+			"enchant": 22559
+		},
+		{
+			"id": 30082,
+			"enchant": 22559
+		},
+		{
+			"id": 30105
+		}
+	]}`),
 };
-export const P1_ARMSDW_PRESET = {
-    name: 'P1 Arms DW Preset',
+export const P3_FURY_PRESET = {
+    name: 'P3 Fury Preset',
     tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
-    enableWhen: (player) => player.getRotation().type == RotationType.ArmsDW,
-    gear: EquipmentSpec.create({
-        items: [
-            ItemSpec.create({
-                id: 29021,
-                enchant: Enchants.GLYPH_OF_FEROCITY,
-                gems: [
-                    Gems.RELENTLESS_EARTHSTORM_DIAMOND,
-                    // Gems.SMOOTH_DAWWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 29349, // Adamantine Chain of the Unbroken
-            }),
-            ItemSpec.create({
-                id: 29023,
-                enchant: Enchants.GREATER_INSCRIPTION_OF_VENGEANCE,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 24259,
-                enchant: Enchants.CLOAK_GREATER_AGILITY,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ
-                ],
-            }),
-            ItemSpec.create({
-                id: 29019,
-                enchant: Enchants.CHEST_EXCEPTIONAL_STATS,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28795,
-                enchant: Enchants.WRIST_BRAWN,
-                gems: [
-                    // Gems.JAGGED_TALASITE,
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28824,
-                enchant: Enchants.GLOVES_STRENGTH,
-                gems: [
-                // Gems.JAGGED_TALASITE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28779,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.JAGGED_TALASITE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28741,
-                enchant: Enchants.NETHERCOBRA_LEG_ARMOR,
-                gems: [
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28608,
-                enchant: Enchants.FEET_CATS_SWIFTNESS,
-                gems: [
-                    Gems.INSCRIBED_NOBLE_TOPAZ,
-                    // Gems.SMOOTH_DAWNSTONE,
-                ],
-            }),
-            ItemSpec.create({
-                id: 28757, // Ring of a Thousand Marks
-            }),
-            ItemSpec.create({
-                id: 28730, // Mithril Band of the Unscarred
-            }),
-            ItemSpec.create({
-                id: 29383, // Bloodlust Brooch
-            }),
-            ItemSpec.create({
-                id: 28830, // Dragonspine Trophy
-            }),
-            ItemSpec.create({
-                id: 28729,
-                enchant: Enchants.MONGOOSE,
-            }),
-            ItemSpec.create({
-                id: 28295,
-                enchant: Enchants.MONGOOSE,
-            }),
-            ItemSpec.create({
-                id: 30279, // Mama's Insurance
-            }),
-        ],
-    }),
+    enableWhen: (player) => player.getTalents().bloodthirst,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 30972,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				32205
+			]
+		},
+		{
+			"id": 32260
+		},
+		{
+			"id": 30979,
+			"enchant": 28888,
+			"gems": [
+				32205,
+				32226
+			]
+		},
+		{
+			"id": 32323,
+			"enchant": 34004
+		},
+		{
+			"id": 30975,
+			"enchant": 24003,
+			"gems": [
+				32217,
+				32226,
+				32226
+			]
+		},
+		{
+			"id": 30863,
+			"enchant": 27899,
+			"gems": [
+				32205
+			]
+		},
+		{
+			"id": 30969,
+			"enchant": 33995,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 30106,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32341,
+			"enchant": 29535
+		},
+		{
+			"id": 32345,
+			"enchant": 28279,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32497
+		},
+		{
+			"id": 32335
+		},
+		{
+			"id": 32505
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 28439,
+			"enchant": 22559
+		},
+		{
+			"id": 30881,
+			"enchant": 22559
+		},
+		{
+			"id": 30105
+		}
+	]}`),
+};
+export const P4_FURY_PRESET = {
+    name: 'P4 Fury Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().bloodthirst,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 30972,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				32205
+			]
+		},
+		{
+			"id": 32260
+		},
+		{
+			"id": 30979,
+			"enchant": 28888,
+			"gems": [
+				32205,
+				32226
+			]
+		},
+		{
+			"id": 32323,
+			"enchant": 34004
+		},
+		{
+			"id": 30975,
+			"enchant": 24003,
+			"gems": [
+				32217,
+				32226,
+				32226
+			]
+		},
+		{
+			"id": 30863,
+			"enchant": 27899,
+			"gems": [
+				32205
+			]
+		},
+		{
+			"id": 30969,
+			"enchant": 33995,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 30106,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32341,
+			"enchant": 29535
+		},
+		{
+			"id": 32345,
+			"enchant": 28279,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32497
+		},
+		{
+			"id": 33496
+		},
+		{
+			"id": 32505
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 28439,
+			"enchant": 22559
+		},
+		{
+			"id": 30881,
+			"enchant": 22559
+		},
+		{
+			"id": 33474
+		}
+	]}`),
+};
+export const P5_FURY_PRESET = {
+    name: 'P5 Fury Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().bloodthirst,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 34333,
+			"enchant": 29192,
+			"gems": [
+				32193,
+				32409
+			]
+		},
+		{
+			"id": 34358,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34392,
+			"enchant": 28910,
+			"gems": [
+				32193,
+				32211
+			]
+		},
+		{
+			"id": 34241,
+			"enchant": 34004,
+			"gems": [
+				33143
+			]
+		},
+		{
+			"id": 34397,
+			"enchant": 24003,
+			"gems": [
+				32211,
+				32217,
+				32193
+			]
+		},
+		{
+			"id": 34441,
+			"enchant": 27899,
+			"gems": [
+				32193
+			]
+		},
+		{
+			"id": 34343,
+			"enchant": 33995,
+			"gems": [
+				32193,
+				32217
+			]
+		},
+		{
+			"id": 34546,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34188,
+			"enchant": 29535,
+			"gems": [
+				32193,
+				32193,
+				32193
+			]
+		},
+		{
+			"id": 34569,
+			"enchant": 28279,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34189
+		},
+		{
+			"id": 34361
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 34427
+		},
+		{
+			"id": 34331,
+			"enchant": 33307,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 34203,
+			"enchant": 22559
+		},
+		{
+			"id": 34196
+		}
+	]}`),
+};
+export const P1_ARMS_PRESET = {
+    name: 'P1 Arms Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().mortalStrike,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 29021,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				24048
+			]
+		},
+		{
+			"id": 29349
+		},
+		{
+			"id": 29023,
+			"enchant": 28888,
+			"gems": [
+				24048,
+				24067
+			]
+		},
+		{
+			"id": 24259,
+			"enchant": 34004,
+			"gems": [
+				24058
+			]
+		},
+		{
+			"id": 29019,
+			"enchant": 24003,
+			"gems": [
+				24048,
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 28795,
+			"enchant": 27899,
+			"gems": [
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 28824,
+			"enchant": 33995,
+			"gems": [
+				24067,
+				24048
+			]
+		},
+		{
+			"id": 28779,
+			"gems": [
+				24058,
+				24067
+			]
+		},
+		{
+			"id": 28741,
+			"enchant": 29535,
+			"gems": [
+				24048,
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 28608,
+			"enchant": 28279,
+			"gems": [
+				24058,
+				24048
+			]
+		},
+		{
+			"id": 28757
+		},
+		{
+			"id": 28730
+		},
+		{
+			"id": 29383
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 28429,
+			"enchant": 22559
+		},
+		{
+			"id": 30279
+		}
+	]}`),
+};
+export const P2_ARMS_PRESET = {
+    name: 'P2 Arms Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().mortalStrike,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 30120,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				24067
+			]
+		},
+		{
+			"id": 30022
+		},
+		{
+			"id": 30122,
+			"enchant": 28888,
+			"gems": [
+				24058,
+				24067
+			]
+		},
+		{
+			"id": 24259,
+			"enchant": 34004,
+			"gems": [
+				24058
+			]
+		},
+		{
+			"id": 30118,
+			"enchant": 24003,
+			"gems": [
+				24048,
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 28795,
+			"enchant": 27899,
+			"gems": [
+				24067,
+				24058
+			]
+		},
+		{
+			"id": 30119,
+			"enchant": 33995
+		},
+		{
+			"id": 30106,
+			"gems": [
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 30121,
+			"enchant": 29535,
+			"gems": [
+				24058
+			]
+		},
+		{
+			"id": 30081,
+			"enchant": 28279
+		},
+		{
+			"id": 29997
+		},
+		{
+			"id": 28757
+		},
+		{
+			"id": 30627
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 29993,
+			"enchant": 22559,
+			"gems": [
+				24048,
+				24048,
+				24048
+			]
+		},
+		{
+			"id": 30105
+		}
+	]}`),
+};
+export const P3_ARMS_PRESET = {
+    name: 'P3 Arms Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().mortalStrike,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 30972,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				32205
+			]
+		},
+		{
+			"id": 32260
+		},
+		{
+			"id": 30979,
+			"enchant": 28888,
+			"gems": [
+				32205,
+				32226
+			]
+		},
+		{
+			"id": 32323,
+			"enchant": 34004
+		},
+		{
+			"id": 30975,
+			"enchant": 24003,
+			"gems": [
+				32217,
+				32226,
+				32226
+			]
+		},
+		{
+			"id": 30863,
+			"enchant": 27899,
+			"gems": [
+				32205
+			]
+		},
+		{
+			"id": 30969,
+			"enchant": 33995,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 30106,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32341,
+			"enchant": 29535
+		},
+		{
+			"id": 32345,
+			"enchant": 28279,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32497
+		},
+		{
+			"id": 32335
+		},
+		{
+			"id": 32505
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 30902,
+			"enchant": 22559
+		},
+		{
+			"id": 30105
+		}
+	]}`),
+};
+export const P4_ARMS_PRESET = {
+    name: 'P4 Arms Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().mortalStrike,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+	  {
+			"id": 30972,
+			"enchant": 29192,
+			"gems": [
+				32409,
+				32205
+			]
+		},
+		{
+			"id": 32260
+		},
+		{
+			"id": 30979,
+			"enchant": 28888,
+			"gems": [
+				32205,
+				32226
+			]
+		},
+		{
+			"id": 32323,
+			"enchant": 34004
+		},
+		{
+			"id": 30975,
+			"enchant": 24003,
+			"gems": [
+				32217,
+				32226,
+				32226
+			]
+		},
+		{
+			"id": 30863,
+			"enchant": 27899,
+			"gems": [
+				32205
+			]
+		},
+		{
+			"id": 30969,
+			"enchant": 33995,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 30106,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32341,
+			"enchant": 29535
+		},
+		{
+			"id": 32345,
+			"enchant": 28279,
+			"gems": [
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 32497
+		},
+		{
+			"id": 33496
+		},
+		{
+			"id": 32505
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 30902,
+			"enchant": 22559
+		},
+		{
+			"id": 33474
+		}
+	]}`),
+};
+export const P5_ARMS_PRESET = {
+    name: 'P5 Arms Preset',
+    tooltip: Tooltips.BASIC_BIS_DISCLAIMER,
+    enableWhen: (player) => player.getTalents().mortalStrike,
+    gear: EquipmentSpec.fromJsonString(`{"items": [
+		{
+			"id": 34333,
+			"enchant": 29192,
+			"gems": [
+				32193,
+				32409
+			]
+		},
+		{
+			"id": 34358,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34392,
+			"enchant": 28910,
+			"gems": [
+				32193,
+				32211
+			]
+		},
+		{
+			"id": 34241,
+			"enchant": 34004,
+			"gems": [
+				33143
+			]
+		},
+		{
+			"id": 34397,
+			"enchant": 24003,
+			"gems": [
+				32211,
+				32217,
+				32193
+			]
+		},
+		{
+			"id": 34441,
+			"enchant": 27899,
+			"gems": [
+				32193
+			]
+		},
+		{
+			"id": 34343,
+			"enchant": 33995,
+			"gems": [
+				32193,
+				32217
+			]
+		},
+		{
+			"id": 34546,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34188,
+			"enchant": 29535,
+			"gems": [
+				32193,
+				32193,
+				32193
+			]
+		},
+		{
+			"id": 34569,
+			"enchant": 28279,
+			"gems": [
+				32217
+			]
+		},
+		{
+			"id": 34189
+		},
+		{
+			"id": 34361
+		},
+		{
+			"id": 28830
+		},
+		{
+			"id": 34427
+		},
+		{
+			"id": 34247,
+			"enchant": 33307,
+			"gems": [
+				32205,
+				32205,
+				32205
+			]
+		},
+		{
+			"id": 34196
+		}
+	]}`),
 };

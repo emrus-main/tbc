@@ -1,33 +1,48 @@
 import { Debuffs } from '/tbc/core/proto/common.js';
 import { MobType } from '/tbc/core/proto/common.js';
+import { Stat } from '/tbc/core/proto/common.js';
 import { Target as TargetProto } from '/tbc/core/proto/common.js';
+import { Stats } from '/tbc/core/proto_utils/stats.js';
+import * as Mechanics from '/tbc/core/constants/mechanics.js';
 import { TypedEvent } from './typed_event.js';
 // Manages all the settings for a single Target.
 export class Target {
     constructor(sim) {
-        this.armor = 7684;
+        this.level = Mechanics.BOSS_LEVEL;
         this.mobType = MobType.MobTypeDemon;
+        this.stats = new Stats();
         this.debuffs = Debuffs.create();
-        this.armorChangeEmitter = new TypedEvent();
+        this.levelChangeEmitter = new TypedEvent();
+        this.statsChangeEmitter = new TypedEvent();
         this.mobTypeChangeEmitter = new TypedEvent();
         this.debuffsChangeEmitter = new TypedEvent();
         // Emits when any of the above emitters emit.
         this.changeEmitter = new TypedEvent();
         this.sim = sim;
         [
-            this.armorChangeEmitter,
+            this.levelChangeEmitter,
+            this.statsChangeEmitter,
             this.mobTypeChangeEmitter,
             this.debuffsChangeEmitter,
         ].forEach(emitter => emitter.on(eventID => this.changeEmitter.emit(eventID)));
     }
-    getArmor() {
-        return this.armor;
+    getLevel() {
+        return this.level;
     }
-    setArmor(eventID, newArmor) {
-        if (newArmor == this.armor)
+    setLevel(eventID, newLevel) {
+        if (newLevel == this.level)
             return;
-        this.armor = newArmor;
-        this.armorChangeEmitter.emit(eventID);
+        this.level = newLevel;
+        this.levelChangeEmitter.emit(eventID);
+    }
+    getStats() {
+        return this.stats;
+    }
+    setStats(eventID, newStats) {
+        if (newStats.equals(this.stats))
+            return;
+        this.stats = newStats;
+        this.statsChangeEmitter.emit(eventID);
     }
     getMobType() {
         return this.mobType;
@@ -51,14 +66,20 @@ export class Target {
     }
     toProto() {
         return TargetProto.create({
-            armor: this.armor,
+            level: this.level,
+            stats: this.stats.asArray(),
             mobType: this.mobType,
             debuffs: this.debuffs,
         });
     }
     fromProto(eventID, proto) {
         TypedEvent.freezeAllAndDo(() => {
-            this.setArmor(eventID, proto.armor);
+            let stats = new Stats(proto.stats);
+            if (proto.armor) {
+                stats = stats.withStat(Stat.StatArmor, proto.armor);
+            }
+            this.setLevel(eventID, proto.level);
+            this.setStats(eventID, stats);
             this.setMobType(eventID, proto.mobType);
             this.setDebuffs(eventID, proto.debuffs || Debuffs.create());
         });

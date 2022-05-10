@@ -196,8 +196,12 @@ export class MageSimUI extends IndividualSimUI {
                 ],
             },
             encounterPicker: {
-                // Whether to include 'Target Armor' in the 'Encounter' section of the settings tab.
-                showTargetArmor: false,
+                // Target stats to show for 'Simple' encounters.
+                simpleTargetStats: [
+                    Stat.StatArcaneResistance,
+                    Stat.StatFireResistance,
+                    Stat.StatFrostResistance,
+                ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: true,
                 // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
@@ -220,14 +224,17 @@ export class MageSimUI extends IndividualSimUI {
                     Presets.P2_ARCANE_PRESET,
                     Presets.P3_ARCANE_PRESET,
                     Presets.P4_ARCANE_PRESET,
+                    Presets.P5_ARCANE_PRESET,
                     Presets.P1_FIRE_PRESET,
                     Presets.P2_FIRE_PRESET,
                     Presets.P3_FIRE_PRESET,
                     Presets.P4_FIRE_PRESET,
+                    Presets.P5_FIRE_PRESET,
                     Presets.P1_FROST_PRESET,
                     Presets.P2_FROST_PRESET,
                     Presets.P3_FROST_PRESET,
                     Presets.P4_FROST_PRESET,
+                    Presets.P5_FROST_PRESET,
                 ],
             },
         });

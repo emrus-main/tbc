@@ -32,15 +32,15 @@ export class CastMetricsTable extends MetricsTable {
             return [];
         }
         const player = players[0];
-        const actions = player.actions;
+        const actions = player.actions.filter(action => action.casts != 0);
         const actionGroups = ActionMetrics.groupById(actions);
-        const petGroups = player.pets.map(pet => pet.actions);
+        const petGroups = player.pets.map(pet => pet.actions.filter(action => action.casts != 0));
         return actionGroups.concat(petGroups);
     }
     mergeMetrics(metrics) {
-        return ActionMetrics.merge(metrics, true, metrics[0].player?.petActionId || undefined);
+        return ActionMetrics.merge(metrics, true, metrics[0].unit?.petActionId || undefined);
     }
     shouldCollapse(metric) {
-        return !metric.player?.isPet;
+        return !metric.unit?.isPet;
     }
 }

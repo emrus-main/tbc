@@ -1,10 +1,10 @@
-import { TalentsPicker } from './talents_picker.js';
+import { TalentsPicker, newTalentsConfig } from './talents_picker.js';
 export class WarlockTalentsPicker extends TalentsPicker {
     constructor(parent, player) {
         super(parent, player, warlockTalentsConfig);
     }
 }
-export const warlockTalentsConfig = [
+export const warlockTalentsConfig = newTalentsConfig([
     {
         name: 'Affliction',
         backgroundUrl: 'https://wow.zamimg.com/images/wow/talents/backgrounds/tbc/302.jpg',
@@ -271,7 +271,7 @@ export const warlockTalentsConfig = [
                 maxPoints: 3,
             },
             {
-                fieldName: 'improvedSuccubus',
+                fieldName: 'improvedSayaad',
                 location: {
                     rowIdx: 2,
                     colIdx: 0,
@@ -514,7 +514,7 @@ export const warlockTalentsConfig = [
                 maxPoints: 2,
             },
             {
-                //fieldName: 'destructiveReach',
+                fieldName: 'destructiveReach',
                 location: {
                     rowIdx: 3,
                     colIdx: 1,
@@ -600,7 +600,7 @@ export const warlockTalentsConfig = [
                     colIdx: 1,
                 },
                 prereqLocation: {
-                    rowIdx: 6,
+                    rowIdx: 4,
                     colIdx: 1,
                 },
                 spellIds: [17962],
@@ -612,7 +612,7 @@ export const warlockTalentsConfig = [
                     rowIdx: 6,
                     colIdx: 2,
                 },
-                spellIds: [30293],
+                spellIds: [30293, 30295],
                 maxPoints: 3,
             },
             {
@@ -639,4 +639,4 @@ export const warlockTalentsConfig = [
             },
         ],
     },
-];
+]);

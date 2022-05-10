@@ -100,6 +100,7 @@ export class SimLog {
             return DamageDealtLog.parse(params)
                 || ResourceChangedLog.parse(params)
                 || AuraEventLog.parse(params)
+                || AuraStacksChangeLog.parse(params)
                 || MajorCooldownUsedLog.parse(params)
                 || CastBeganLog.parse(params)
                 || CastCompletedLog.parse(params)
@@ -115,6 +116,9 @@ export class SimLog {
     }
     isAuraEvent() {
         return this instanceof AuraEventLog;
+    }
+    isAuraStacksChange() {
+        return this instanceof AuraStacksChangeLog;
     }
     isMajorCooldownUsed() {
         return this instanceof MajorCooldownUsedLog;
@@ -148,7 +152,7 @@ export class SimLog {
     }
 }
 export class DamageDealtLog extends SimLog {
-    constructor(params, amount, miss, crit, glance, dodge, parry, block, tick, partialResist1_4, partialResist2_4, partialResist3_4) {
+    constructor(params, amount, miss, crit, crush, glance, dodge, parry, block, tick, partialResist1_4, partialResist2_4, partialResist3_4) {
         super(params);
         this.amount = amount;
         this.miss = miss;
@@ -158,6 +162,7 @@ export class DamageDealtLog extends SimLog {
         this.block = block;
         this.hit = !miss && !crit;
         this.crit = crit;
+        this.crush = crush;
         this.tick = tick;
         this.partialResist1_4 = partialResist1_4;
         this.partialResist2_4 = partialResist2_4;
@@ -168,10 +173,11 @@ export class DamageDealtLog extends SimLog {
             : this.dodge ? 'Dodge'
                 : this.parry ? 'Parry'
                     : this.glance ? 'Glance'
-                        : this.crit ? 'Crit'
-                            : this.block ? 'Block'
-                                : this.tick ? 'Tick'
-                                    : 'Hit';
+                        : this.block ? (this.crit ? 'Critical Block' : 'Block')
+                            : this.crit ? 'Crit'
+                                : this.crush ? 'Crush'
+                                    : this.tick ? 'Tick'
+                                        : 'Hit';
         if (!this.miss && !this.dodge && !this.parry) {
             result += ` for ${this.amount.toFixed(2)}`;
             if (this.partialResist1_4) {
@@ -191,15 +197,15 @@ export class DamageDealtLog extends SimLog {
         return `${this.toStringPrefix()} ${this.actionId.name} ${this.resultString()} (${this.threat.toFixed(2)} Threat)`;
     }
     static parse(params) {
-        const match = params.raw.match(/] (.*?) (tick )?((Miss)|(Hit)|(Crit)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) damage)?/);
+        const match = params.raw.match(/] (.*?) (tick )?((Miss)|(Hit)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(Block)|(CriticalBlock))( \((\d+)% Resist\))?( for (\d+\.\d+) damage)?/);
         if (match) {
             return ActionId.fromLogString(match[1]).fill(params.source?.index).then(cause => {
                 params.actionId = cause;
                 let amount = 0;
-                if (match[14]) {
-                    amount = parseFloat(match[14]);
+                if (match[16]) {
+                    amount = parseFloat(match[16]);
                 }
-                return new DamageDealtLog(params, amount, match[3] == 'Miss', match[3] == 'Crit', match[3] == 'Glance', match[3] == 'Dodge', match[3] == 'Parry', match[3] == 'Block', Boolean(match[2]) && match[2].includes('tick'), match[12] == '25', match[12] == '50', match[12] == '75');
+                return new DamageDealtLog(params, amount, match[3] == 'Miss', match[3] == 'Crit' || match[3] == 'CriticalBlock', match[3] == 'Crush', match[3] == 'Glance', match[3] == 'Dodge', match[3] == 'Parry', match[3] == 'Block' || match[3] == 'CriticalBlock', Boolean(match[2]) && match[2].includes('tick'), match[14] == '25', match[14] == '50', match[14] == '75');
             });
         }
         else {
@@ -295,6 +301,28 @@ export class AuraEventLog extends SimLog {
                 params.actionId = aura;
                 const event = match[1];
                 return new AuraEventLog(params, event == 'gained', event == 'faded', event == 'refreshed');
+            });
+        }
+        else {
+            return null;
+        }
+    }
+}
+export class AuraStacksChangeLog extends SimLog {
+    constructor(params, oldStacks, newStacks) {
+        super(params);
+        this.oldStacks = oldStacks;
+        this.newStacks = newStacks;
+    }
+    toString() {
+        return `${this.toStringPrefix()} ${this.actionId.name} stacks: ${this.oldStacks} --> ${this.newStacks}.`;
+    }
+    static parse(params) {
+        const match = params.raw.match(/(.*) stacks: ([0-9]+) --> ([0-9]+)/);
+        if (match && match[1]) {
+            return ActionId.fromLogString(match[1]).fill(params.source?.index).then(aura => {
+                params.actionId = aura;
+                return new AuraStacksChangeLog(params, parseInt(match[2]), parseInt(match[3]));
             });
         }
         else {

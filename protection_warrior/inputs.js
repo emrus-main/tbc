@@ -1,5 +1,5 @@
 import { TypedEvent } from '/tbc/core/typed_event.js';
-import { WarriorShout, ProtectionWarrior_Rotation_DemoShout as DemoShout, ProtectionWarrior_Rotation_ThunderClap as ThunderClap } from '/tbc/core/proto/warrior.js';
+import { WarriorShout, ProtectionWarrior_Rotation_DemoShout as DemoShout, ProtectionWarrior_Rotation_ShieldBlock as ShieldBlock, ProtectionWarrior_Rotation_ThunderClap as ThunderClap } from '/tbc/core/proto/warrior.js';
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 export const ShoutPicker = {
@@ -50,10 +50,10 @@ export const PrecastShoutWithSapphire = {
         label: 'Precast with Sapphire',
         labelTooltip: 'Snapshot bonus from Solarian\'s Sapphire (+70 attack power) with precast shout.',
         changedEvent: (player) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.gearChangeEmitter]),
-        getValue: (player) => player.getSpecOptions().precastShoutT2,
+        getValue: (player) => player.getSpecOptions().precastShoutSapphire,
         setValue: (eventID, player, newValue) => {
             const newOptions = player.getSpecOptions();
-            newOptions.precastShoutT2 = newValue;
+            newOptions.precastShoutSapphire = newValue;
             player.setSpecOptions(eventID, newOptions);
         },
         enableWhen: (player) => player.getSpecOptions().shout == WarriorShout.WarriorShoutBattle && player.getSpecOptions().precastShout && !player.getGear().hasTrinket(30446),
@@ -86,7 +86,7 @@ export const ProtectionWarriorRotationConfig = {
             config: {
                 label: 'Demo Shout',
                 values: [
-                    { name: 'None', value: DemoShout.DemoShoutNone },
+                    { name: 'Never', value: DemoShout.DemoShoutNone },
                     { name: 'Maintain Debuff', value: DemoShout.DemoShoutMaintain },
                     { name: 'Filler', value: DemoShout.DemoShoutFiller },
                 ],
@@ -105,7 +105,7 @@ export const ProtectionWarriorRotationConfig = {
             config: {
                 label: 'Thunder Clap',
                 values: [
-                    { name: 'None', value: ThunderClap.ThunderClapNone },
+                    { name: 'Never', value: ThunderClap.ThunderClapNone },
                     { name: 'Maintain Debuff', value: ThunderClap.ThunderClapMaintain },
                     { name: 'On CD', value: ThunderClap.ThunderClapOnCD },
                 ],
@@ -119,16 +119,36 @@ export const ProtectionWarriorRotationConfig = {
             },
         },
         {
+            type: 'enum', cssClass: 'shield-block-picker',
+            getModObject: (simUI) => simUI.player,
+            config: {
+                label: 'Shield Block',
+                labelTooltip: 'When to use shield block.',
+                values: [
+                    { name: 'Never', value: ShieldBlock.ShieldBlockNone },
+                    { name: 'To Proc Revenge', value: ShieldBlock.ShieldBlockToProcRevenge },
+                    { name: 'On CD', value: ShieldBlock.ShieldBlockOnCD },
+                ],
+                changedEvent: (player) => player.rotationChangeEmitter,
+                getValue: (player) => player.getRotation().shieldBlock,
+                setValue: (eventID, player, newValue) => {
+                    const newRotation = player.getRotation();
+                    newRotation.shieldBlock = newValue;
+                    player.setRotation(eventID, newRotation);
+                },
+            },
+        },
+        {
             type: 'number', cssClass: 'heroic-strike-threshold-picker',
             getModObject: (simUI) => simUI.player,
             config: {
                 label: 'HS Threshold',
-                labelTooltip: 'Minimum Rage requires to queue Heroic Strike or Cleave.',
+                labelTooltip: 'Heroic Strike when rage is above:',
                 changedEvent: (player) => player.rotationChangeEmitter,
-                getValue: (player) => player.getRotation().heroicStrikeThreshold,
+                getValue: (player) => player.getRotation().hsRageThreshold,
                 setValue: (eventID, player, newValue) => {
                     const newRotation = player.getRotation();
-                    newRotation.heroicStrikeThreshold = newValue;
+                    newRotation.hsRageThreshold = newValue;
                     player.setRotation(eventID, newRotation);
                 },
             },

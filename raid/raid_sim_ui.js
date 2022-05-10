@@ -1,5 +1,6 @@
 import { Sim } from '/tbc/core/sim.js';
 import { SimUI } from '/tbc/core/sim_ui.js';
+import { Stat } from '/tbc/core/proto/common.js';
 import { TypedEvent } from '/tbc/core/typed_event.js';
 import { Raid as RaidProto } from '/tbc/core/proto/api.js';
 import { Blessings } from '/tbc/core/proto/ui.js';
@@ -163,7 +164,14 @@ export class RaidSimUI extends SimUI {
 		`);
         const encounterSectionElem = this.rootElem.getElementsByClassName('raid-encounter-section')[0];
         new EncounterPicker(encounterSectionElem, this.sim.encounter, {
-            showTargetArmor: true,
+            simpleTargetStats: [
+                Stat.StatArmor,
+                Stat.StatArcaneResistance,
+                Stat.StatFireResistance,
+                Stat.StatFrostResistance,
+                Stat.StatNatureResistance,
+                Stat.StatShadowResistance,
+            ],
             showExecuteProportion: true,
             showNumTargets: true,
         });
@@ -289,7 +297,7 @@ export class RaidSimUI extends SimUI {
     toProto() {
         return RaidSimSettings.create({
             settings: this.sim.toProto(),
-            raid: this.sim.raid.toProto(),
+            raid: this.sim.raid.toProto(true),
             buffBots: this.getBuffBots().map(b => b.toProto()),
             blessings: this.blessingsPicker.getAssignments(),
             encounter: this.sim.encounter.toProto(),
