@@ -41,6 +41,7 @@ export class ShadowPriestSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatSpellPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStamina,
                 Stat.StatIntellect,
                 Stat.StatSpirit,
@@ -182,6 +183,7 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                     OtherInputs.StartingPotion,
                     OtherInputs.NumStartingPotions,
                     OtherInputs.SnapshotImprovedWrathOfAirTotem,
+                    OtherInputs.TankAssignment,
                 ],
             },
             encounterPicker: {
@@ -191,8 +193,6 @@ export class ShadowPriestSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: false,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.

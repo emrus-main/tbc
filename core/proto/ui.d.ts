@@ -7,6 +7,7 @@ import { MessageType } from "@protobuf-ts/runtime";
 import { RaidSimResult } from "./api";
 import { RaidSimRequest } from "./api";
 import { Raid } from "./api";
+import { Blessings } from "./paladin";
 import { Cooldowns } from "./common";
 import { Race } from "./common";
 import { Consumes } from "./common";
@@ -16,6 +17,7 @@ import { Encounter } from "./common";
 import { Player } from "./api";
 import { PartyBuffs } from "./common";
 import { RaidTarget } from "./common";
+import { Debuffs } from "./common";
 import { RaidBuffs } from "./common";
 /**
  * @generated from protobuf message proto.SimSettings
@@ -56,6 +58,10 @@ export interface IndividualSimSettings {
      * @generated from protobuf field: proto.RaidBuffs raid_buffs = 1;
      */
     raidBuffs?: RaidBuffs;
+    /**
+     * @generated from protobuf field: proto.Debuffs debuffs = 8;
+     */
+    debuffs?: Debuffs;
     /**
      * @generated from protobuf field: repeated proto.RaidTarget tanks = 7;
      */
@@ -106,6 +112,10 @@ export interface SavedSettings {
      * @generated from protobuf field: proto.PartyBuffs party_buffs = 2;
      */
     partyBuffs?: PartyBuffs;
+    /**
+     * @generated from protobuf field: proto.Debuffs debuffs = 7;
+     */
+    debuffs?: Debuffs;
     /**
      * @generated from protobuf field: proto.IndividualBuffs player_buffs = 3;
      */
@@ -300,31 +310,6 @@ export interface DetailedResultsUpdate {
     } | {
         oneofKind: undefined;
     };
-}
-/**
- * @generated from protobuf enum proto.Blessings
- */
-export declare enum Blessings {
-    /**
-     * @generated from protobuf enum value: BlessingUnknown = 0;
-     */
-    BlessingUnknown = 0,
-    /**
-     * @generated from protobuf enum value: BlessingOfKings = 1;
-     */
-    BlessingOfKings = 1,
-    /**
-     * @generated from protobuf enum value: BlessingOfMight = 2;
-     */
-    BlessingOfMight = 2,
-    /**
-     * @generated from protobuf enum value: BlessingOfSalvation = 3;
-     */
-    BlessingOfSalvation = 3,
-    /**
-     * @generated from protobuf enum value: BlessingOfWisdom = 4;
-     */
-    BlessingOfWisdom = 4
 }
 declare class SimSettings$Type extends MessageType<SimSettings> {
     constructor();

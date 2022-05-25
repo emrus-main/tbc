@@ -44,6 +44,7 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatAttackPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStamina,
                 Stat.StatStrength,
                 Stat.StatAgility,
@@ -205,6 +206,7 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                     WeaponImbue.WeaponImbueShamanFlametongue,
                     WeaponImbue.WeaponImbueShamanFrostbrand,
                     WeaponImbue.WeaponImbueShamanRockbiter,
+                    WeaponImbue.WeaponImbueRighteousWeaponCoating,
                 ],
                 other: [
                     IconInputs.ScrollOfStrengthV,
@@ -224,6 +226,7 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                     ShamanInputs.SnapshotT42Pc,
                     OtherInputs.SnapshotBsSolarianSapphire,
                     OtherInputs.SnapshotBsT2,
+                    OtherInputs.TankAssignment,
                     OtherInputs.InFrontOfTarget,
                 ],
             },
@@ -237,8 +240,6 @@ export class EnhancementShamanSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: true,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.

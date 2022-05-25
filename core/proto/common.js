@@ -25,6 +25,10 @@ export var Spec;
      */
     Spec[Spec["SpecFeralDruid"] = 12] = "SpecFeralDruid";
     /**
+     * @generated from protobuf enum value: SpecFeralTankDruid = 14;
+     */
+    Spec[Spec["SpecFeralTankDruid"] = 14] = "SpecFeralTankDruid";
+    /**
      * @generated from protobuf enum value: SpecHunter = 8;
      */
     Spec[Spec["SpecHunter"] = 8] = "SpecHunter";
@@ -32,6 +36,10 @@ export var Spec;
      * @generated from protobuf enum value: SpecMage = 2;
      */
     Spec[Spec["SpecMage"] = 2] = "SpecMage";
+    /**
+     * @generated from protobuf enum value: SpecProtectionPaladin = 13;
+     */
+    Spec[Spec["SpecProtectionPaladin"] = 13] = "SpecProtectionPaladin";
     /**
      * @generated from protobuf enum value: SpecRetributionPaladin = 3;
      */
@@ -706,6 +714,40 @@ export var GemColor;
     GemColor[GemColor["GemColorPrismatic"] = 8] = "GemColorPrismatic";
 })(GemColor || (GemColor = {}));
 /**
+ * @generated from protobuf enum proto.SpellSchool
+ */
+export var SpellSchool;
+(function (SpellSchool) {
+    /**
+     * @generated from protobuf enum value: SpellSchoolPhysical = 0;
+     */
+    SpellSchool[SpellSchool["SpellSchoolPhysical"] = 0] = "SpellSchoolPhysical";
+    /**
+     * @generated from protobuf enum value: SpellSchoolArcane = 1;
+     */
+    SpellSchool[SpellSchool["SpellSchoolArcane"] = 1] = "SpellSchoolArcane";
+    /**
+     * @generated from protobuf enum value: SpellSchoolFire = 2;
+     */
+    SpellSchool[SpellSchool["SpellSchoolFire"] = 2] = "SpellSchoolFire";
+    /**
+     * @generated from protobuf enum value: SpellSchoolFrost = 3;
+     */
+    SpellSchool[SpellSchool["SpellSchoolFrost"] = 3] = "SpellSchoolFrost";
+    /**
+     * @generated from protobuf enum value: SpellSchoolHoly = 4;
+     */
+    SpellSchool[SpellSchool["SpellSchoolHoly"] = 4] = "SpellSchoolHoly";
+    /**
+     * @generated from protobuf enum value: SpellSchoolNature = 5;
+     */
+    SpellSchool[SpellSchool["SpellSchoolNature"] = 5] = "SpellSchoolNature";
+    /**
+     * @generated from protobuf enum value: SpellSchoolShadow = 6;
+     */
+    SpellSchool[SpellSchool["SpellSchoolShadow"] = 6] = "SpellSchoolShadow";
+})(SpellSchool || (SpellSchool = {}));
+/**
  * @generated from protobuf enum proto.TristateEffect
  */
 export var TristateEffect;
@@ -804,6 +846,14 @@ export var Potions;
      * @generated from protobuf enum value: InsaneStrengthPotion = 6;
      */
     Potions[Potions["InsaneStrengthPotion"] = 6] = "InsaneStrengthPotion";
+    /**
+     * @generated from protobuf enum value: IronshieldPotion = 7;
+     */
+    Potions[Potions["IronshieldPotion"] = 7] = "IronshieldPotion";
+    /**
+     * @generated from protobuf enum value: HeroicPotion = 8;
+     */
+    Potions[Potions["HeroicPotion"] = 8] = "HeroicPotion";
 })(Potions || (Potions = {}));
 /**
  * @generated from protobuf enum proto.Conjured
@@ -861,6 +911,10 @@ export var WeaponImbue;
      */
     WeaponImbue[WeaponImbue["WeaponImbueSuperiorWizardOil"] = 4] = "WeaponImbueSuperiorWizardOil";
     /**
+     * @generated from protobuf enum value: WeaponImbueRighteousWeaponCoating = 12;
+     */
+    WeaponImbue[WeaponImbue["WeaponImbueRighteousWeaponCoating"] = 12] = "WeaponImbueRighteousWeaponCoating";
+    /**
      * @generated from protobuf enum value: WeaponImbueRogueDeadlyPoison = 10;
      */
     WeaponImbue[WeaponImbue["WeaponImbueRogueDeadlyPoison"] = 10] = "WeaponImbueRogueDeadlyPoison";
@@ -914,6 +968,10 @@ export var Flask;
      * @generated from protobuf enum value: FlaskOfSupremePower = 5;
      */
     Flask[Flask["FlaskOfSupremePower"] = 5] = "FlaskOfSupremePower";
+    /**
+     * @generated from protobuf enum value: FlaskOfFortification = 6;
+     */
+    Flask[Flask["FlaskOfFortification"] = 6] = "FlaskOfFortification";
 })(Flask || (Flask = {}));
 /**
  * @generated from protobuf enum proto.BattleElixir
@@ -953,6 +1011,10 @@ export var BattleElixir;
      */
     BattleElixir[BattleElixir["ElixirOfMajorStrength"] = 7] = "ElixirOfMajorStrength";
     /**
+     * @generated from protobuf enum value: ElixirOfMastery = 10;
+     */
+    BattleElixir[BattleElixir["ElixirOfMastery"] = 10] = "ElixirOfMastery";
+    /**
      * @generated from protobuf enum value: ElixirOfTheMongoose = 8;
      */
     BattleElixir[BattleElixir["ElixirOfTheMongoose"] = 8] = "ElixirOfTheMongoose";
@@ -975,9 +1037,25 @@ export var GuardianElixir;
      */
     GuardianElixir[GuardianElixir["ElixirOfDraenicWisdom"] = 1] = "ElixirOfDraenicWisdom";
     /**
+     * @generated from protobuf enum value: ElixirOfIronskin = 5;
+     */
+    GuardianElixir[GuardianElixir["ElixirOfIronskin"] = 5] = "ElixirOfIronskin";
+    /**
+     * @generated from protobuf enum value: ElixirOfMajorDefense = 6;
+     */
+    GuardianElixir[GuardianElixir["ElixirOfMajorDefense"] = 6] = "ElixirOfMajorDefense";
+    /**
+     * @generated from protobuf enum value: ElixirOfMajorFortitude = 4;
+     */
+    GuardianElixir[GuardianElixir["ElixirOfMajorFortitude"] = 4] = "ElixirOfMajorFortitude";
+    /**
      * @generated from protobuf enum value: ElixirOfMajorMageblood = 2;
      */
     GuardianElixir[GuardianElixir["ElixirOfMajorMageblood"] = 2] = "ElixirOfMajorMageblood";
+    /**
+     * @generated from protobuf enum value: GiftOfArthas = 3;
+     */
+    GuardianElixir[GuardianElixir["GiftOfArthas"] = 3] = "GiftOfArthas";
 })(GuardianElixir || (GuardianElixir = {}));
 /**
  * @generated from protobuf enum proto.Food
@@ -1012,6 +1090,10 @@ export var Food;
      * @generated from protobuf enum value: FoodSpicyHotTalbuk = 6;
      */
     Food[Food["FoodSpicyHotTalbuk"] = 6] = "FoodSpicyHotTalbuk";
+    /**
+     * @generated from protobuf enum value: FoodFishermansFeast = 7;
+     */
+    Food[Food["FoodFishermansFeast"] = 7] = "FoodFishermansFeast";
 })(Food || (Food = {}));
 /**
  * @generated from protobuf enum proto.PetFood
@@ -1193,12 +1275,15 @@ class RaidBuffs$Type extends MessageType {
     constructor() {
         super("proto.RaidBuffs", [
             { no: 1, name: "arcane_brilliance", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 7, name: "power_word_fortitude", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 8, name: "shadow_protection", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "divine_spirit", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
-            { no: 5, name: "gift_of_the_wild", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] }
+            { no: 5, name: "gift_of_the_wild", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 6, name: "thorns", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] }
         ]);
     }
     create(value) {
-        const message = { arcaneBrilliance: false, divineSpirit: 0, giftOfTheWild: 0 };
+        const message = { arcaneBrilliance: false, powerWordFortitude: 0, shadowProtection: false, divineSpirit: 0, giftOfTheWild: 0, thorns: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -1212,11 +1297,20 @@ class RaidBuffs$Type extends MessageType {
                 case /* bool arcane_brilliance */ 1:
                     message.arcaneBrilliance = reader.bool();
                     break;
+                case /* proto.TristateEffect power_word_fortitude */ 7:
+                    message.powerWordFortitude = reader.int32();
+                    break;
+                case /* bool shadow_protection */ 8:
+                    message.shadowProtection = reader.bool();
+                    break;
                 case /* proto.TristateEffect divine_spirit */ 4:
                     message.divineSpirit = reader.int32();
                     break;
                 case /* proto.TristateEffect gift_of_the_wild */ 5:
                     message.giftOfTheWild = reader.int32();
+                    break;
+                case /* proto.TristateEffect thorns */ 6:
+                    message.thorns = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1233,12 +1327,21 @@ class RaidBuffs$Type extends MessageType {
         /* bool arcane_brilliance = 1; */
         if (message.arcaneBrilliance !== false)
             writer.tag(1, WireType.Varint).bool(message.arcaneBrilliance);
+        /* proto.TristateEffect power_word_fortitude = 7; */
+        if (message.powerWordFortitude !== 0)
+            writer.tag(7, WireType.Varint).int32(message.powerWordFortitude);
+        /* bool shadow_protection = 8; */
+        if (message.shadowProtection !== false)
+            writer.tag(8, WireType.Varint).bool(message.shadowProtection);
         /* proto.TristateEffect divine_spirit = 4; */
         if (message.divineSpirit !== 0)
             writer.tag(4, WireType.Varint).int32(message.divineSpirit);
         /* proto.TristateEffect gift_of_the_wild = 5; */
         if (message.giftOfTheWild !== 0)
             writer.tag(5, WireType.Varint).int32(message.giftOfTheWild);
+        /* proto.TristateEffect thorns = 6; */
+        if (message.thorns !== 0)
+            writer.tag(6, WireType.Varint).int32(message.thorns);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1255,9 +1358,12 @@ class PartyBuffs$Type extends MessageType {
         super("proto.PartyBuffs", [
             { no: 1, name: "bloodlust", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 22, name: "ferocious_inspiration", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 34, name: "blood_pact", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 2, name: "moonkin_aura", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 19, name: "leader_of_the_pack", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 20, name: "sanctity_aura", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 35, name: "devotion_aura", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 36, name: "retribution_aura", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 21, name: "trueshot_aura", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 3, name: "draenei_racial_melee", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "draenei_racial_caster", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
@@ -1288,7 +1394,7 @@ class PartyBuffs$Type extends MessageType {
         ]);
     }
     create(value) {
-        const message = { bloodlust: 0, ferociousInspiration: 0, moonkinAura: 0, leaderOfThePack: 0, sanctityAura: 0, trueshotAura: false, draeneiRacialMelee: false, draeneiRacialCaster: false, drums: 0, atieshMage: 0, atieshWarlock: 0, braidedEterniumChain: false, eyeOfTheNight: false, chainOfTheTwilightOwl: false, jadePendantOfBlasting: false, manaSpringTotem: 0, manaTideTotems: 0, totemOfWrath: 0, wrathOfAirTotem: 0, snapshotImprovedWrathOfAirTotem: false, graceOfAirTotem: 0, strengthOfEarthTotem: 0, snapshotImprovedStrengthOfEarthTotem: false, tranquilAirTotem: false, windfuryTotemRank: 0, windfuryTotemIwt: 0, battleShout: 0, bsSolarianSapphire: false, snapshotBsSolarianSapphire: false, snapshotBsT2: false, snapshotBsBoomingVoiceRank: 0, commandingShout: 0 };
+        const message = { bloodlust: 0, ferociousInspiration: 0, bloodPact: 0, moonkinAura: 0, leaderOfThePack: 0, sanctityAura: 0, devotionAura: 0, retributionAura: 0, trueshotAura: false, draeneiRacialMelee: false, draeneiRacialCaster: false, drums: 0, atieshMage: 0, atieshWarlock: 0, braidedEterniumChain: false, eyeOfTheNight: false, chainOfTheTwilightOwl: false, jadePendantOfBlasting: false, manaSpringTotem: 0, manaTideTotems: 0, totemOfWrath: 0, wrathOfAirTotem: 0, snapshotImprovedWrathOfAirTotem: false, graceOfAirTotem: 0, strengthOfEarthTotem: 0, snapshotImprovedStrengthOfEarthTotem: false, tranquilAirTotem: false, windfuryTotemRank: 0, windfuryTotemIwt: 0, battleShout: 0, bsSolarianSapphire: false, snapshotBsSolarianSapphire: false, snapshotBsT2: false, snapshotBsBoomingVoiceRank: 0, commandingShout: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -1305,6 +1411,9 @@ class PartyBuffs$Type extends MessageType {
                 case /* int32 ferocious_inspiration */ 22:
                     message.ferociousInspiration = reader.int32();
                     break;
+                case /* proto.TristateEffect blood_pact */ 34:
+                    message.bloodPact = reader.int32();
+                    break;
                 case /* proto.TristateEffect moonkin_aura */ 2:
                     message.moonkinAura = reader.int32();
                     break;
@@ -1313,6 +1422,12 @@ class PartyBuffs$Type extends MessageType {
                     break;
                 case /* proto.TristateEffect sanctity_aura */ 20:
                     message.sanctityAura = reader.int32();
+                    break;
+                case /* proto.TristateEffect devotion_aura */ 35:
+                    message.devotionAura = reader.int32();
+                    break;
+                case /* proto.TristateEffect retribution_aura */ 36:
+                    message.retributionAura = reader.int32();
                     break;
                 case /* bool trueshot_aura */ 21:
                     message.trueshotAura = reader.bool();
@@ -1413,6 +1528,9 @@ class PartyBuffs$Type extends MessageType {
         /* int32 ferocious_inspiration = 22; */
         if (message.ferociousInspiration !== 0)
             writer.tag(22, WireType.Varint).int32(message.ferociousInspiration);
+        /* proto.TristateEffect blood_pact = 34; */
+        if (message.bloodPact !== 0)
+            writer.tag(34, WireType.Varint).int32(message.bloodPact);
         /* proto.TristateEffect moonkin_aura = 2; */
         if (message.moonkinAura !== 0)
             writer.tag(2, WireType.Varint).int32(message.moonkinAura);
@@ -1422,6 +1540,12 @@ class PartyBuffs$Type extends MessageType {
         /* proto.TristateEffect sanctity_aura = 20; */
         if (message.sanctityAura !== 0)
             writer.tag(20, WireType.Varint).int32(message.sanctityAura);
+        /* proto.TristateEffect devotion_aura = 35; */
+        if (message.devotionAura !== 0)
+            writer.tag(35, WireType.Varint).int32(message.devotionAura);
+        /* proto.TristateEffect retribution_aura = 36; */
+        if (message.retributionAura !== 0)
+            writer.tag(36, WireType.Varint).int32(message.retributionAura);
         /* bool trueshot_aura = 21; */
         if (message.trueshotAura !== false)
             writer.tag(21, WireType.Varint).bool(message.trueshotAura);
@@ -1519,6 +1643,7 @@ class IndividualBuffs$Type extends MessageType {
         super("proto.IndividualBuffs", [
             { no: 1, name: "blessing_of_kings", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 8, name: "blessing_of_salvation", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 9, name: "blessing_of_sanctuary", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 2, name: "blessing_of_wisdom", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 3, name: "blessing_of_might", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 4, name: "shadow_priest_dps", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
@@ -1528,7 +1653,7 @@ class IndividualBuffs$Type extends MessageType {
         ]);
     }
     create(value) {
-        const message = { blessingOfKings: false, blessingOfSalvation: false, blessingOfWisdom: 0, blessingOfMight: 0, shadowPriestDps: 0, unleashedRage: false, innervates: 0, powerInfusions: 0 };
+        const message = { blessingOfKings: false, blessingOfSalvation: false, blessingOfSanctuary: false, blessingOfWisdom: 0, blessingOfMight: 0, shadowPriestDps: 0, unleashedRage: false, innervates: 0, powerInfusions: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -1544,6 +1669,9 @@ class IndividualBuffs$Type extends MessageType {
                     break;
                 case /* bool blessing_of_salvation */ 8:
                     message.blessingOfSalvation = reader.bool();
+                    break;
+                case /* bool blessing_of_sanctuary */ 9:
+                    message.blessingOfSanctuary = reader.bool();
                     break;
                 case /* proto.TristateEffect blessing_of_wisdom */ 2:
                     message.blessingOfWisdom = reader.int32();
@@ -1581,6 +1709,9 @@ class IndividualBuffs$Type extends MessageType {
         /* bool blessing_of_salvation = 8; */
         if (message.blessingOfSalvation !== false)
             writer.tag(8, WireType.Varint).bool(message.blessingOfSalvation);
+        /* bool blessing_of_sanctuary = 9; */
+        if (message.blessingOfSanctuary !== false)
+            writer.tag(9, WireType.Varint).bool(message.blessingOfSanctuary);
         /* proto.TristateEffect blessing_of_wisdom = 2; */
         if (message.blessingOfWisdom !== 0)
             writer.tag(2, WireType.Varint).int32(message.blessingOfWisdom);
@@ -1624,6 +1755,7 @@ class Consumes$Type extends MessageType {
             { no: 44, name: "scroll_of_agility", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 43, name: "scroll_of_strength", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 45, name: "scroll_of_spirit", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 53, name: "scroll_of_protection", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 46, name: "pet_scroll_of_agility", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 47, name: "pet_scroll_of_strength", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 15, name: "default_potion", kind: "enum", T: () => ["proto.Potions", Potions] },
@@ -1639,7 +1771,7 @@ class Consumes$Type extends MessageType {
         ]);
     }
     create(value) {
-        const message = { flask: 0, battleElixir: 0, guardianElixir: 0, mainHandImbue: 0, offHandImbue: 0, food: 0, petFood: 0, alchohol: 0, scrollOfAgility: 0, scrollOfStrength: 0, scrollOfSpirit: 0, petScrollOfAgility: 0, petScrollOfStrength: 0, defaultPotion: 0, startingPotion: 0, numStartingPotions: 0, defaultConjured: 0, startingConjured: 0, numStartingConjured: 0, drums: 0, superSapper: false, goblinSapper: false, fillerExplosive: 0 };
+        const message = { flask: 0, battleElixir: 0, guardianElixir: 0, mainHandImbue: 0, offHandImbue: 0, food: 0, petFood: 0, alchohol: 0, scrollOfAgility: 0, scrollOfStrength: 0, scrollOfSpirit: 0, scrollOfProtection: 0, petScrollOfAgility: 0, petScrollOfStrength: 0, defaultPotion: 0, startingPotion: 0, numStartingPotions: 0, defaultConjured: 0, startingConjured: 0, numStartingConjured: 0, drums: 0, superSapper: false, goblinSapper: false, fillerExplosive: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -1682,6 +1814,9 @@ class Consumes$Type extends MessageType {
                     break;
                 case /* int32 scroll_of_spirit */ 45:
                     message.scrollOfSpirit = reader.int32();
+                    break;
+                case /* int32 scroll_of_protection */ 53:
+                    message.scrollOfProtection = reader.int32();
                     break;
                 case /* int32 pet_scroll_of_agility */ 46:
                     message.petScrollOfAgility = reader.int32();
@@ -1764,6 +1899,9 @@ class Consumes$Type extends MessageType {
         /* int32 scroll_of_spirit = 45; */
         if (message.scrollOfSpirit !== 0)
             writer.tag(45, WireType.Varint).int32(message.scrollOfSpirit);
+        /* int32 scroll_of_protection = 53; */
+        if (message.scrollOfProtection !== 0)
+            writer.tag(53, WireType.Varint).int32(message.scrollOfProtection);
         /* int32 pet_scroll_of_agility = 46; */
         if (message.petScrollOfAgility !== 0)
             writer.tag(46, WireType.Varint).int32(message.petScrollOfAgility);
@@ -1815,6 +1953,7 @@ class Debuffs$Type extends MessageType {
     constructor() {
         super("proto.Debuffs", [
             { no: 1, name: "judgement_of_wisdom", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 25, name: "judgement_of_light", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 2, name: "improved_seal_of_the_crusader", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 3, name: "misery", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 4, name: "curse_of_elements", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
@@ -1831,11 +1970,17 @@ class Debuffs$Type extends MessageType {
             { no: 12, name: "curse_of_recklessness", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 15, name: "hunters_mark", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
             { no: 13, name: "expose_weakness_uptime", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
-            { no: 14, name: "expose_weakness_hunter_agility", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+            { no: 14, name: "expose_weakness_hunter_agility", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 19, name: "demoralizing_roar", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 20, name: "demoralizing_shout", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 21, name: "thunder_clap", kind: "enum", T: () => ["proto.TristateEffect", TristateEffect] },
+            { no: 22, name: "insect_swarm", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 23, name: "scorpid_sting", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 24, name: "shadow_embrace", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { judgementOfWisdom: false, improvedSealOfTheCrusader: false, misery: false, curseOfElements: 0, isbUptime: 0, shadowWeaving: false, improvedScorch: false, wintersChill: false, bloodFrenzy: false, giftOfArthas: false, mangle: false, exposeArmor: 0, faerieFire: 0, sunderArmor: false, curseOfRecklessness: false, huntersMark: 0, exposeWeaknessUptime: 0, exposeWeaknessHunterAgility: 0 };
+        const message = { judgementOfWisdom: false, judgementOfLight: false, improvedSealOfTheCrusader: false, misery: false, curseOfElements: 0, isbUptime: 0, shadowWeaving: false, improvedScorch: false, wintersChill: false, bloodFrenzy: false, giftOfArthas: false, mangle: false, exposeArmor: 0, faerieFire: 0, sunderArmor: false, curseOfRecklessness: false, huntersMark: 0, exposeWeaknessUptime: 0, exposeWeaknessHunterAgility: 0, demoralizingRoar: 0, demoralizingShout: 0, thunderClap: 0, insectSwarm: false, scorpidSting: false, shadowEmbrace: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -1848,6 +1993,9 @@ class Debuffs$Type extends MessageType {
             switch (fieldNo) {
                 case /* bool judgement_of_wisdom */ 1:
                     message.judgementOfWisdom = reader.bool();
+                    break;
+                case /* bool judgement_of_light */ 25:
+                    message.judgementOfLight = reader.bool();
                     break;
                 case /* bool improved_seal_of_the_crusader */ 2:
                     message.improvedSealOfTheCrusader = reader.bool();
@@ -1900,6 +2048,24 @@ class Debuffs$Type extends MessageType {
                 case /* double expose_weakness_hunter_agility */ 14:
                     message.exposeWeaknessHunterAgility = reader.double();
                     break;
+                case /* proto.TristateEffect demoralizing_roar */ 19:
+                    message.demoralizingRoar = reader.int32();
+                    break;
+                case /* proto.TristateEffect demoralizing_shout */ 20:
+                    message.demoralizingShout = reader.int32();
+                    break;
+                case /* proto.TristateEffect thunder_clap */ 21:
+                    message.thunderClap = reader.int32();
+                    break;
+                case /* bool insect_swarm */ 22:
+                    message.insectSwarm = reader.bool();
+                    break;
+                case /* bool scorpid_sting */ 23:
+                    message.scorpidSting = reader.bool();
+                    break;
+                case /* bool shadow_embrace */ 24:
+                    message.shadowEmbrace = reader.bool();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -1915,6 +2081,9 @@ class Debuffs$Type extends MessageType {
         /* bool judgement_of_wisdom = 1; */
         if (message.judgementOfWisdom !== false)
             writer.tag(1, WireType.Varint).bool(message.judgementOfWisdom);
+        /* bool judgement_of_light = 25; */
+        if (message.judgementOfLight !== false)
+            writer.tag(25, WireType.Varint).bool(message.judgementOfLight);
         /* bool improved_seal_of_the_crusader = 2; */
         if (message.improvedSealOfTheCrusader !== false)
             writer.tag(2, WireType.Varint).bool(message.improvedSealOfTheCrusader);
@@ -1966,6 +2135,24 @@ class Debuffs$Type extends MessageType {
         /* double expose_weakness_hunter_agility = 14; */
         if (message.exposeWeaknessHunterAgility !== 0)
             writer.tag(14, WireType.Bit64).double(message.exposeWeaknessHunterAgility);
+        /* proto.TristateEffect demoralizing_roar = 19; */
+        if (message.demoralizingRoar !== 0)
+            writer.tag(19, WireType.Varint).int32(message.demoralizingRoar);
+        /* proto.TristateEffect demoralizing_shout = 20; */
+        if (message.demoralizingShout !== 0)
+            writer.tag(20, WireType.Varint).int32(message.demoralizingShout);
+        /* proto.TristateEffect thunder_clap = 21; */
+        if (message.thunderClap !== 0)
+            writer.tag(21, WireType.Varint).int32(message.thunderClap);
+        /* bool insect_swarm = 22; */
+        if (message.insectSwarm !== false)
+            writer.tag(22, WireType.Varint).bool(message.insectSwarm);
+        /* bool scorpid_sting = 23; */
+        if (message.scorpidSting !== false)
+            writer.tag(23, WireType.Varint).bool(message.scorpidSting);
+        /* bool shadow_embrace = 24; */
+        if (message.shadowEmbrace !== false)
+            writer.tag(24, WireType.Varint).bool(message.shadowEmbrace);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1980,16 +2167,26 @@ export const Debuffs = new Debuffs$Type();
 class Target$Type extends MessageType {
     constructor() {
         super("proto.Target", [
+            { no: 14, name: "id", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 15, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 1, name: "armor", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
             { no: 4, name: "level", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 3, name: "mob_type", kind: "enum", T: () => ["proto.MobType", MobType] },
             { no: 5, name: "stats", kind: "scalar", repeat: 1 /*RepeatType.PACKED*/, T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 7, name: "min_base_damage", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 8, name: "swing_speed", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 9, name: "dual_wield", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 10, name: "dual_wield_penalty", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 11, name: "can_crush", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 12, name: "parry_haste", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 16, name: "suppress_dodge", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 13, name: "spell_school", kind: "enum", T: () => ["proto.SpellSchool", SpellSchool] },
             { no: 6, name: "tank_index", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 2, name: "debuffs", kind: "message", T: () => Debuffs }
         ]);
     }
     create(value) {
-        const message = { armor: 0, level: 0, mobType: 0, stats: [], tankIndex: 0 };
+        const message = { id: 0, name: "", armor: 0, level: 0, mobType: 0, stats: [], minBaseDamage: 0, swingSpeed: 0, dualWield: false, dualWieldPenalty: false, canCrush: false, parryHaste: false, suppressDodge: false, spellSchool: 0, tankIndex: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -2000,6 +2197,12 @@ class Target$Type extends MessageType {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
+                case /* int32 id */ 14:
+                    message.id = reader.int32();
+                    break;
+                case /* string name */ 15:
+                    message.name = reader.string();
+                    break;
                 case /* double armor */ 1:
                     message.armor = reader.double();
                     break;
@@ -2015,6 +2218,30 @@ class Target$Type extends MessageType {
                             message.stats.push(reader.double());
                     else
                         message.stats.push(reader.double());
+                    break;
+                case /* double min_base_damage */ 7:
+                    message.minBaseDamage = reader.double();
+                    break;
+                case /* double swing_speed */ 8:
+                    message.swingSpeed = reader.double();
+                    break;
+                case /* bool dual_wield */ 9:
+                    message.dualWield = reader.bool();
+                    break;
+                case /* bool dual_wield_penalty */ 10:
+                    message.dualWieldPenalty = reader.bool();
+                    break;
+                case /* bool can_crush */ 11:
+                    message.canCrush = reader.bool();
+                    break;
+                case /* bool parry_haste */ 12:
+                    message.parryHaste = reader.bool();
+                    break;
+                case /* bool suppress_dodge */ 16:
+                    message.suppressDodge = reader.bool();
+                    break;
+                case /* proto.SpellSchool spell_school */ 13:
+                    message.spellSchool = reader.int32();
                     break;
                 case /* int32 tank_index */ 6:
                     message.tankIndex = reader.int32();
@@ -2034,6 +2261,12 @@ class Target$Type extends MessageType {
         return message;
     }
     internalBinaryWrite(message, writer, options) {
+        /* int32 id = 14; */
+        if (message.id !== 0)
+            writer.tag(14, WireType.Varint).int32(message.id);
+        /* string name = 15; */
+        if (message.name !== "")
+            writer.tag(15, WireType.LengthDelimited).string(message.name);
         /* double armor = 1; */
         if (message.armor !== 0)
             writer.tag(1, WireType.Bit64).double(message.armor);
@@ -2050,6 +2283,30 @@ class Target$Type extends MessageType {
                 writer.double(message.stats[i]);
             writer.join();
         }
+        /* double min_base_damage = 7; */
+        if (message.minBaseDamage !== 0)
+            writer.tag(7, WireType.Bit64).double(message.minBaseDamage);
+        /* double swing_speed = 8; */
+        if (message.swingSpeed !== 0)
+            writer.tag(8, WireType.Bit64).double(message.swingSpeed);
+        /* bool dual_wield = 9; */
+        if (message.dualWield !== false)
+            writer.tag(9, WireType.Varint).bool(message.dualWield);
+        /* bool dual_wield_penalty = 10; */
+        if (message.dualWieldPenalty !== false)
+            writer.tag(10, WireType.Varint).bool(message.dualWieldPenalty);
+        /* bool can_crush = 11; */
+        if (message.canCrush !== false)
+            writer.tag(11, WireType.Varint).bool(message.canCrush);
+        /* bool parry_haste = 12; */
+        if (message.parryHaste !== false)
+            writer.tag(12, WireType.Varint).bool(message.parryHaste);
+        /* bool suppress_dodge = 16; */
+        if (message.suppressDodge !== false)
+            writer.tag(16, WireType.Varint).bool(message.suppressDodge);
+        /* proto.SpellSchool spell_school = 13; */
+        if (message.spellSchool !== 0)
+            writer.tag(13, WireType.Varint).int32(message.spellSchool);
         /* int32 tank_index = 6; */
         if (message.tankIndex !== 0)
             writer.tag(6, WireType.Varint).int32(message.tankIndex);

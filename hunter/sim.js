@@ -40,6 +40,7 @@ export class HunterSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatRangedAttackPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStamina,
                 Stat.StatAgility,
                 Stat.StatStrength,
@@ -182,6 +183,7 @@ export class HunterSimUI extends IndividualSimUI {
                 weaponImbues: [
                     WeaponImbue.WeaponImbueAdamantiteSharpeningStone,
                     WeaponImbue.WeaponImbueAdamantiteWeightstone,
+                    WeaponImbue.WeaponImbueRighteousWeaponCoating,
                 ],
                 pet: [
                     IconInputs.KiblersBits,
@@ -209,6 +211,7 @@ export class HunterSimUI extends IndividualSimUI {
                     OtherInputs.SnapshotImprovedStrengthOfEarthTotem,
                     OtherInputs.SnapshotBsSolarianSapphire,
                     OtherInputs.SnapshotBsT2,
+                    OtherInputs.TankAssignment,
                     OtherInputs.InFrontOfTarget,
                 ],
             },
@@ -219,8 +222,6 @@ export class HunterSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: true,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.

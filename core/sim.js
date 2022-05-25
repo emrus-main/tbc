@@ -1,4 +1,5 @@
 import { Item } from '/tbc/core/proto/common.js';
+import { RaidTarget } from '/tbc/core/proto/common.js';
 import { Spec } from '/tbc/core/proto/common.js';
 import { ComputeStatsRequest } from '/tbc/core/proto/api.js';
 import { GearListRequest } from '/tbc/core/proto/api.js';
@@ -35,6 +36,8 @@ export class Sim {
         this.items = {};
         this.enchants = {};
         this.gems = {};
+        this.presetEncounters = {};
+        this.presetTargets = {};
         this.iterationsChangeEmitter = new TypedEvent();
         this.phaseChangeEmitter = new TypedEvent();
         this.fixedRngSeedChangeEmitter = new TypedEvent();
@@ -49,12 +52,13 @@ export class Sim {
         this.lastUsedRngSeed = 0;
         // These callbacks are needed so we can apply BuffBot modifications automatically before sending requests.
         this.modifyRaidProto = () => { };
-        this.modifyEncounterProto = () => { };
         this.workerPool = new WorkerPool(3);
         this._initPromise = this.workerPool.getGearList(GearListRequest.create()).then(result => {
             result.items.forEach(item => this.items[item.id] = item);
             result.enchants.forEach(enchant => this.enchants[enchant.id] = enchant);
             result.gems.forEach(gem => this.gems[gem.id] = gem);
+            result.encounters.forEach(encounter => this.presetEncounters[encounter.path] = encounter);
+            result.encounters.map(e => e.targets).flat().forEach(target => this.presetTargets[target.path] = target);
         });
         this.raid = new Raid(this);
         this.encounter = new Encounter(this);
@@ -98,24 +102,14 @@ export class Sim {
         });
         return raidProto;
     }
-    setModifyEncounterProto(newModFn) {
-        this.modifyEncounterProto = newModFn;
-    }
-    getModifiedEncounterProto() {
-        const encounterProto = this.encounter.toProto();
-        this.modifyEncounterProto(encounterProto);
-        return encounterProto;
-    }
     makeRaidSimRequest(debug) {
         const raid = this.getModifiedRaidProto();
-        const encounter = this.getModifiedEncounterProto();
+        const encounter = this.encounter.toProto();
         const hunters = raid.parties.map(party => party.players).flat().filter(player => player.name && playerToSpec(player) == Spec.SpecHunter);
         if (hunters.some(hunter => specTypeFunctions[Spec.SpecHunter].talentsFromPlayer(hunter).exposeWeakness > 0)) {
-            encounter.targets.forEach(target => {
-                if (target.debuffs) {
-                    target.debuffs.exposeWeaknessUptime = 0;
-                }
-            });
+            if (raid.debuffs) {
+                raid.debuffs.exposeWeaknessUptime = 0;
+            }
         }
         return RaidSimRequest.create({
             raid: raid,
@@ -187,16 +181,21 @@ export class Sim {
             return StatWeightsResult.create();
         }
         else {
+            const tanks = this.raid.getTanks().map(tank => tank.targetIndex).includes(player.getRaidIndex())
+                ? [RaidTarget.create({ targetIndex: 0 })]
+                : [];
             const request = StatWeightsRequest.create({
                 player: player.toProto(),
                 raidBuffs: this.raid.getBuffs(),
                 partyBuffs: player.getParty().getBuffs(),
+                debuffs: this.raid.getDebuffs(),
                 encounter: this.encounter.toProto(),
                 simOptions: SimOptions.create({
                     iterations: this.getIterations(),
                     randomSeed: BigInt(this.nextRngSeed()),
                     debug: false,
                 }),
+                tanks: tanks,
                 statsToWeigh: epStats,
                 epReferenceStat: epReferenceStat,
             });
@@ -231,6 +230,18 @@ export class Sim {
     }
     getMatchingGems(socketColor) {
         return Object.values(this.gems).filter(gem => gemMatchesSocket(gem, socketColor));
+    }
+    getPresetEncounter(path) {
+        return this.presetEncounters[path] || null;
+    }
+    getPresetTarget(path) {
+        return this.presetTargets[path] || null;
+    }
+    getAllPresetEncounters() {
+        return Object.values(this.presetEncounters);
+    }
+    getAllPresetTargets() {
+        return Object.values(this.presetTargets);
     }
     getPhase() {
         return this.phase;

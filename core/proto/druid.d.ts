@@ -82,9 +82,21 @@ export interface DruidTalents {
      */
     ferocity: number;
     /**
-     * @generated from protobuf field: int32 feral_aggresion = 18;
+     * @generated from protobuf field: int32 feral_aggression = 18;
      */
-    feralAggresion: number;
+    feralAggression: number;
+    /**
+     * @generated from protobuf field: int32 feral_instinct = 41;
+     */
+    feralInstinct: number;
+    /**
+     * @generated from protobuf field: int32 thick_hide = 42;
+     */
+    thickHide: number;
+    /**
+     * @generated from protobuf field: int32 feral_swiftness = 43;
+     */
+    feralSwiftness: number;
     /**
      * @generated from protobuf field: int32 sharpened_claws = 19;
      */
@@ -290,25 +302,21 @@ export interface FeralDruid_Rotation {
      */
     biteweave: boolean;
     /**
-     * @generated from protobuf field: bool mangle_bot = 4;
+     * @generated from protobuf field: bool ripweave = 8;
      */
-    mangleBot: boolean;
+    ripweave: boolean;
     /**
-     * @generated from protobuf field: int32 rip_cp = 5;
+     * @generated from protobuf field: int32 rip_min_combo_points = 5;
      */
-    ripCp: number;
+    ripMinComboPoints: number;
     /**
-     * @generated from protobuf field: int32 bite_cp = 6;
+     * @generated from protobuf field: int32 bite_min_combo_points = 6;
      */
-    biteCp: number;
+    biteMinComboPoints: number;
     /**
      * @generated from protobuf field: bool rake_trick = 7;
      */
     rakeTrick: boolean;
-    /**
-     * @generated from protobuf field: bool ripweave = 8;
-     */
-    ripweave: boolean;
 }
 /**
  * @generated from protobuf enum proto.FeralDruid.Rotation.FinishingMove
@@ -339,6 +347,80 @@ export interface FeralDruid_Options {
      * @generated from protobuf field: int32 latency_ms = 2;
      */
     latencyMs: number;
+}
+/**
+ * @generated from protobuf message proto.FeralTankDruid
+ */
+export interface FeralTankDruid {
+    /**
+     * @generated from protobuf field: proto.FeralTankDruid.Rotation rotation = 1;
+     */
+    rotation?: FeralTankDruid_Rotation;
+    /**
+     * @generated from protobuf field: proto.DruidTalents talents = 2;
+     */
+    talents?: DruidTalents;
+    /**
+     * @generated from protobuf field: proto.FeralTankDruid.Options options = 3;
+     */
+    options?: FeralTankDruid_Options;
+}
+/**
+ * @generated from protobuf message proto.FeralTankDruid.Rotation
+ */
+export interface FeralTankDruid_Rotation {
+    /**
+     * Minimum rage to queue HS or Cleave.
+     *
+     * @generated from protobuf field: int32 maul_rage_threshold = 1;
+     */
+    maulRageThreshold: number;
+    /**
+     * @generated from protobuf field: bool maintain_demoralizing_roar = 2;
+     */
+    maintainDemoralizingRoar: boolean;
+    /**
+     * @generated from protobuf field: bool maintain_faerie_fire = 3;
+     */
+    maintainFaerieFire: boolean;
+    /**
+     * @generated from protobuf field: proto.FeralTankDruid.Rotation.Swipe swipe = 4;
+     */
+    swipe: FeralTankDruid_Rotation_Swipe;
+    /**
+     * @generated from protobuf field: double swipe_ap_threshold = 5;
+     */
+    swipeApThreshold: number;
+}
+/**
+ * @generated from protobuf enum proto.FeralTankDruid.Rotation.Swipe
+ */
+export declare enum FeralTankDruid_Rotation_Swipe {
+    /**
+     * @generated from protobuf enum value: SwipeNone = 0;
+     */
+    SwipeNone = 0,
+    /**
+     * @generated from protobuf enum value: SwipeWithEnoughAP = 1;
+     */
+    SwipeWithEnoughAP = 1,
+    /**
+     * @generated from protobuf enum value: SwipeSpam = 2;
+     */
+    SwipeSpam = 2
+}
+/**
+ * @generated from protobuf message proto.FeralTankDruid.Options
+ */
+export interface FeralTankDruid_Options {
+    /**
+     * @generated from protobuf field: proto.RaidTarget innervate_target = 1;
+     */
+    innervateTarget?: RaidTarget;
+    /**
+     * @generated from protobuf field: double starting_rage = 2;
+     */
+    startingRage: number;
 }
 declare class DruidTalents$Type extends MessageType<DruidTalents> {
     constructor();
@@ -410,4 +492,34 @@ declare class FeralDruid_Options$Type extends MessageType<FeralDruid_Options> {
  * @generated MessageType for protobuf message proto.FeralDruid.Options
  */
 export declare const FeralDruid_Options: FeralDruid_Options$Type;
+declare class FeralTankDruid$Type extends MessageType<FeralTankDruid> {
+    constructor();
+    create(value?: PartialMessage<FeralTankDruid>): FeralTankDruid;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FeralTankDruid): FeralTankDruid;
+    internalBinaryWrite(message: FeralTankDruid, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid
+ */
+export declare const FeralTankDruid: FeralTankDruid$Type;
+declare class FeralTankDruid_Rotation$Type extends MessageType<FeralTankDruid_Rotation> {
+    constructor();
+    create(value?: PartialMessage<FeralTankDruid_Rotation>): FeralTankDruid_Rotation;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FeralTankDruid_Rotation): FeralTankDruid_Rotation;
+    internalBinaryWrite(message: FeralTankDruid_Rotation, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid.Rotation
+ */
+export declare const FeralTankDruid_Rotation: FeralTankDruid_Rotation$Type;
+declare class FeralTankDruid_Options$Type extends MessageType<FeralTankDruid_Options> {
+    constructor();
+    create(value?: PartialMessage<FeralTankDruid_Options>): FeralTankDruid_Options;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FeralTankDruid_Options): FeralTankDruid_Options;
+    internalBinaryWrite(message: FeralTankDruid_Options, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid.Options
+ */
+export declare const FeralTankDruid_Options: FeralTankDruid_Options$Type;
 export {};

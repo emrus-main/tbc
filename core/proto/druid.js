@@ -48,6 +48,24 @@ export var FeralDruid_Rotation_FinishingMove;
      */
     FeralDruid_Rotation_FinishingMove[FeralDruid_Rotation_FinishingMove["None"] = 2] = "None";
 })(FeralDruid_Rotation_FinishingMove || (FeralDruid_Rotation_FinishingMove = {}));
+/**
+ * @generated from protobuf enum proto.FeralTankDruid.Rotation.Swipe
+ */
+export var FeralTankDruid_Rotation_Swipe;
+(function (FeralTankDruid_Rotation_Swipe) {
+    /**
+     * @generated from protobuf enum value: SwipeNone = 0;
+     */
+    FeralTankDruid_Rotation_Swipe[FeralTankDruid_Rotation_Swipe["SwipeNone"] = 0] = "SwipeNone";
+    /**
+     * @generated from protobuf enum value: SwipeWithEnoughAP = 1;
+     */
+    FeralTankDruid_Rotation_Swipe[FeralTankDruid_Rotation_Swipe["SwipeWithEnoughAP"] = 1] = "SwipeWithEnoughAP";
+    /**
+     * @generated from protobuf enum value: SwipeSpam = 2;
+     */
+    FeralTankDruid_Rotation_Swipe[FeralTankDruid_Rotation_Swipe["SwipeSpam"] = 2] = "SwipeSpam";
+})(FeralTankDruid_Rotation_Swipe || (FeralTankDruid_Rotation_Swipe = {}));
 // @generated message type with reflection information, may provide speed optimized methods
 class DruidTalents$Type extends MessageType {
     constructor() {
@@ -69,7 +87,10 @@ class DruidTalents$Type extends MessageType {
             { no: 15, name: "wrath_of_cenarius", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 16, name: "force_of_nature", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 17, name: "ferocity", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 18, name: "feral_aggresion", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 18, name: "feral_aggression", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 41, name: "feral_instinct", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 42, name: "thick_hide", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 43, name: "feral_swiftness", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 19, name: "sharpened_claws", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 20, name: "shredding_attacks", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
             { no: 21, name: "predatory_strikes", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
@@ -95,7 +116,7 @@ class DruidTalents$Type extends MessageType {
         ]);
     }
     create(value) {
-        const message = { starlightWrath: 0, focusedStarlight: 0, improvedMoonfire: 0, brambles: 0, insectSwarm: false, vengeance: 0, lunarGuidance: 0, naturesGrace: false, moonglow: 0, moonfury: 0, balanceOfPower: 0, dreamstate: 0, moonkinForm: false, improvedFaerieFire: 0, wrathOfCenarius: 0, forceOfNature: false, ferocity: 0, feralAggresion: 0, sharpenedClaws: 0, shreddingAttacks: 0, predatoryStrikes: 0, primalFury: 0, savageFury: 0, faerieFire: false, heartOfTheWild: 0, survivalOfTheFittest: 0, leaderOfThePack: false, improvedLeaderOfThePack: 0, predatoryInstincts: 0, mangle: false, improvedMarkOfTheWild: 0, furor: 0, naturalist: 0, naturalShapeshifter: 0, intensity: 0, subtlety: 0, omenOfClarity: false, naturesSwiftness: false, livingSpirit: 0, naturalPerfection: 0 };
+        const message = { starlightWrath: 0, focusedStarlight: 0, improvedMoonfire: 0, brambles: 0, insectSwarm: false, vengeance: 0, lunarGuidance: 0, naturesGrace: false, moonglow: 0, moonfury: 0, balanceOfPower: 0, dreamstate: 0, moonkinForm: false, improvedFaerieFire: 0, wrathOfCenarius: 0, forceOfNature: false, ferocity: 0, feralAggression: 0, feralInstinct: 0, thickHide: 0, feralSwiftness: 0, sharpenedClaws: 0, shreddingAttacks: 0, predatoryStrikes: 0, primalFury: 0, savageFury: 0, faerieFire: false, heartOfTheWild: 0, survivalOfTheFittest: 0, leaderOfThePack: false, improvedLeaderOfThePack: 0, predatoryInstincts: 0, mangle: false, improvedMarkOfTheWild: 0, furor: 0, naturalist: 0, naturalShapeshifter: 0, intensity: 0, subtlety: 0, omenOfClarity: false, naturesSwiftness: false, livingSpirit: 0, naturalPerfection: 0 };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -157,8 +178,17 @@ class DruidTalents$Type extends MessageType {
                 case /* int32 ferocity */ 17:
                     message.ferocity = reader.int32();
                     break;
-                case /* int32 feral_aggresion */ 18:
-                    message.feralAggresion = reader.int32();
+                case /* int32 feral_aggression */ 18:
+                    message.feralAggression = reader.int32();
+                    break;
+                case /* int32 feral_instinct */ 41:
+                    message.feralInstinct = reader.int32();
+                    break;
+                case /* int32 thick_hide */ 42:
+                    message.thickHide = reader.int32();
+                    break;
+                case /* int32 feral_swiftness */ 43:
+                    message.feralSwiftness = reader.int32();
                     break;
                 case /* int32 sharpened_claws */ 19:
                     message.sharpenedClaws = reader.int32();
@@ -289,9 +319,18 @@ class DruidTalents$Type extends MessageType {
         /* int32 ferocity = 17; */
         if (message.ferocity !== 0)
             writer.tag(17, WireType.Varint).int32(message.ferocity);
-        /* int32 feral_aggresion = 18; */
-        if (message.feralAggresion !== 0)
-            writer.tag(18, WireType.Varint).int32(message.feralAggresion);
+        /* int32 feral_aggression = 18; */
+        if (message.feralAggression !== 0)
+            writer.tag(18, WireType.Varint).int32(message.feralAggression);
+        /* int32 feral_instinct = 41; */
+        if (message.feralInstinct !== 0)
+            writer.tag(41, WireType.Varint).int32(message.feralInstinct);
+        /* int32 thick_hide = 42; */
+        if (message.thickHide !== 0)
+            writer.tag(42, WireType.Varint).int32(message.thickHide);
+        /* int32 feral_swiftness = 43; */
+        if (message.feralSwiftness !== 0)
+            writer.tag(43, WireType.Varint).int32(message.feralSwiftness);
         /* int32 sharpened_claws = 19; */
         if (message.sharpenedClaws !== 0)
             writer.tag(19, WireType.Varint).int32(message.sharpenedClaws);
@@ -626,15 +665,14 @@ class FeralDruid_Rotation$Type extends MessageType {
             { no: 1, name: "finishing_move", kind: "enum", T: () => ["proto.FeralDruid.Rotation.FinishingMove", FeralDruid_Rotation_FinishingMove] },
             { no: 2, name: "mangle_trick", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 3, name: "biteweave", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 4, name: "mangle_bot", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 5, name: "rip_cp", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 6, name: "bite_cp", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
-            { no: 7, name: "rake_trick", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 8, name: "ripweave", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+            { no: 8, name: "ripweave", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 5, name: "rip_min_combo_points", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 6, name: "bite_min_combo_points", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 7, name: "rake_trick", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value) {
-        const message = { finishingMove: 0, mangleTrick: false, biteweave: false, mangleBot: false, ripCp: 0, biteCp: 0, rakeTrick: false, ripweave: false };
+        const message = { finishingMove: 0, mangleTrick: false, biteweave: false, ripweave: false, ripMinComboPoints: 0, biteMinComboPoints: 0, rakeTrick: false };
         Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
         if (value !== undefined)
             reflectionMergePartial(this, message, value);
@@ -654,20 +692,17 @@ class FeralDruid_Rotation$Type extends MessageType {
                 case /* bool biteweave */ 3:
                     message.biteweave = reader.bool();
                     break;
-                case /* bool mangle_bot */ 4:
-                    message.mangleBot = reader.bool();
+                case /* bool ripweave */ 8:
+                    message.ripweave = reader.bool();
                     break;
-                case /* int32 rip_cp */ 5:
-                    message.ripCp = reader.int32();
+                case /* int32 rip_min_combo_points */ 5:
+                    message.ripMinComboPoints = reader.int32();
                     break;
-                case /* int32 bite_cp */ 6:
-                    message.biteCp = reader.int32();
+                case /* int32 bite_min_combo_points */ 6:
+                    message.biteMinComboPoints = reader.int32();
                     break;
                 case /* bool rake_trick */ 7:
                     message.rakeTrick = reader.bool();
-                    break;
-                case /* bool ripweave */ 8:
-                    message.ripweave = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -690,21 +725,18 @@ class FeralDruid_Rotation$Type extends MessageType {
         /* bool biteweave = 3; */
         if (message.biteweave !== false)
             writer.tag(3, WireType.Varint).bool(message.biteweave);
-        /* bool mangle_bot = 4; */
-        if (message.mangleBot !== false)
-            writer.tag(4, WireType.Varint).bool(message.mangleBot);
-        /* int32 rip_cp = 5; */
-        if (message.ripCp !== 0)
-            writer.tag(5, WireType.Varint).int32(message.ripCp);
-        /* int32 bite_cp = 6; */
-        if (message.biteCp !== 0)
-            writer.tag(6, WireType.Varint).int32(message.biteCp);
-        /* bool rake_trick = 7; */
-        if (message.rakeTrick !== false)
-            writer.tag(7, WireType.Varint).bool(message.rakeTrick);
         /* bool ripweave = 8; */
         if (message.ripweave !== false)
             writer.tag(8, WireType.Varint).bool(message.ripweave);
+        /* int32 rip_min_combo_points = 5; */
+        if (message.ripMinComboPoints !== 0)
+            writer.tag(5, WireType.Varint).int32(message.ripMinComboPoints);
+        /* int32 bite_min_combo_points = 6; */
+        if (message.biteMinComboPoints !== 0)
+            writer.tag(6, WireType.Varint).int32(message.biteMinComboPoints);
+        /* bool rake_trick = 7; */
+        if (message.rakeTrick !== false)
+            writer.tag(7, WireType.Varint).bool(message.rakeTrick);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -769,3 +801,193 @@ class FeralDruid_Options$Type extends MessageType {
  * @generated MessageType for protobuf message proto.FeralDruid.Options
  */
 export const FeralDruid_Options = new FeralDruid_Options$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FeralTankDruid$Type extends MessageType {
+    constructor() {
+        super("proto.FeralTankDruid", [
+            { no: 1, name: "rotation", kind: "message", T: () => FeralTankDruid_Rotation },
+            { no: 2, name: "talents", kind: "message", T: () => DruidTalents },
+            { no: 3, name: "options", kind: "message", T: () => FeralTankDruid_Options }
+        ]);
+    }
+    create(value) {
+        const message = {};
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* proto.FeralTankDruid.Rotation rotation */ 1:
+                    message.rotation = FeralTankDruid_Rotation.internalBinaryRead(reader, reader.uint32(), options, message.rotation);
+                    break;
+                case /* proto.DruidTalents talents */ 2:
+                    message.talents = DruidTalents.internalBinaryRead(reader, reader.uint32(), options, message.talents);
+                    break;
+                case /* proto.FeralTankDruid.Options options */ 3:
+                    message.options = FeralTankDruid_Options.internalBinaryRead(reader, reader.uint32(), options, message.options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* proto.FeralTankDruid.Rotation rotation = 1; */
+        if (message.rotation)
+            FeralTankDruid_Rotation.internalBinaryWrite(message.rotation, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* proto.DruidTalents talents = 2; */
+        if (message.talents)
+            DruidTalents.internalBinaryWrite(message.talents, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        /* proto.FeralTankDruid.Options options = 3; */
+        if (message.options)
+            FeralTankDruid_Options.internalBinaryWrite(message.options, writer.tag(3, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid
+ */
+export const FeralTankDruid = new FeralTankDruid$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FeralTankDruid_Rotation$Type extends MessageType {
+    constructor() {
+        super("proto.FeralTankDruid.Rotation", [
+            { no: 1, name: "maul_rage_threshold", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "maintain_demoralizing_roar", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 3, name: "maintain_faerie_fire", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 4, name: "swipe", kind: "enum", T: () => ["proto.FeralTankDruid.Rotation.Swipe", FeralTankDruid_Rotation_Swipe] },
+            { no: 5, name: "swipe_ap_threshold", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value) {
+        const message = { maulRageThreshold: 0, maintainDemoralizingRoar: false, maintainFaerieFire: false, swipe: 0, swipeApThreshold: 0 };
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 maul_rage_threshold */ 1:
+                    message.maulRageThreshold = reader.int32();
+                    break;
+                case /* bool maintain_demoralizing_roar */ 2:
+                    message.maintainDemoralizingRoar = reader.bool();
+                    break;
+                case /* bool maintain_faerie_fire */ 3:
+                    message.maintainFaerieFire = reader.bool();
+                    break;
+                case /* proto.FeralTankDruid.Rotation.Swipe swipe */ 4:
+                    message.swipe = reader.int32();
+                    break;
+                case /* double swipe_ap_threshold */ 5:
+                    message.swipeApThreshold = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* int32 maul_rage_threshold = 1; */
+        if (message.maulRageThreshold !== 0)
+            writer.tag(1, WireType.Varint).int32(message.maulRageThreshold);
+        /* bool maintain_demoralizing_roar = 2; */
+        if (message.maintainDemoralizingRoar !== false)
+            writer.tag(2, WireType.Varint).bool(message.maintainDemoralizingRoar);
+        /* bool maintain_faerie_fire = 3; */
+        if (message.maintainFaerieFire !== false)
+            writer.tag(3, WireType.Varint).bool(message.maintainFaerieFire);
+        /* proto.FeralTankDruid.Rotation.Swipe swipe = 4; */
+        if (message.swipe !== 0)
+            writer.tag(4, WireType.Varint).int32(message.swipe);
+        /* double swipe_ap_threshold = 5; */
+        if (message.swipeApThreshold !== 0)
+            writer.tag(5, WireType.Bit64).double(message.swipeApThreshold);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid.Rotation
+ */
+export const FeralTankDruid_Rotation = new FeralTankDruid_Rotation$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FeralTankDruid_Options$Type extends MessageType {
+    constructor() {
+        super("proto.FeralTankDruid.Options", [
+            { no: 1, name: "innervate_target", kind: "message", T: () => RaidTarget },
+            { no: 2, name: "starting_rage", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ }
+        ]);
+    }
+    create(value) {
+        const message = { startingRage: 0 };
+        Object.defineProperty(message, MESSAGE_TYPE, { enumerable: false, value: this });
+        if (value !== undefined)
+            reflectionMergePartial(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader, length, options, target) {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* proto.RaidTarget innervate_target */ 1:
+                    message.innervateTarget = RaidTarget.internalBinaryRead(reader, reader.uint32(), options, message.innervateTarget);
+                    break;
+                case /* double starting_rage */ 2:
+                    message.startingRage = reader.double();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message, writer, options) {
+        /* proto.RaidTarget innervate_target = 1; */
+        if (message.innervateTarget)
+            RaidTarget.internalBinaryWrite(message.innervateTarget, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* double starting_rage = 2; */
+        if (message.startingRage !== 0)
+            writer.tag(2, WireType.Bit64).double(message.startingRage);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message proto.FeralTankDruid.Options
+ */
+export const FeralTankDruid_Options = new FeralTankDruid_Options$Type();

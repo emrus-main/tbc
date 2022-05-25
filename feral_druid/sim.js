@@ -45,6 +45,7 @@ export class FeralDruidSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatAttackPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStrength,
                 Stat.StatAgility,
                 Stat.StatIntellect,
@@ -117,8 +118,8 @@ export class FeralDruidSimUI extends IndividualSimUI {
                     sunderArmor: true,
                     curseOfRecklessness: true,
                     huntersMark: TristateEffect.TristateEffectImproved,
-                    exposeWeaknessUptime: 1.0,
-                    exposeWeaknessHunterAgility: 1000,
+                    exposeWeaknessUptime: 0.95,
+                    exposeWeaknessHunterAgility: 1200,
                 }),
             },
             // IconInputs to include in the 'Self Buffs' section on the settings tab.
@@ -192,6 +193,7 @@ export class FeralDruidSimUI extends IndividualSimUI {
                 ],
                 weaponImbues: [
                     WeaponImbue.WeaponImbueAdamantiteWeightstone,
+                    WeaponImbue.WeaponImbueRighteousWeaponCoating,
                 ],
                 other: [
                     IconInputs.ScrollOfAgilityV,
@@ -209,6 +211,7 @@ export class FeralDruidSimUI extends IndividualSimUI {
                     OtherInputs.ExposeWeaknessUptime,
                     OtherInputs.ExposeWeaknessHunterAgility,
                     OtherInputs.SnapshotBsSolarianSapphire,
+                    OtherInputs.TankAssignment,
                     OtherInputs.InFrontOfTarget,
                 ],
             },
@@ -219,8 +222,6 @@ export class FeralDruidSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: false,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.
@@ -232,7 +233,11 @@ export class FeralDruidSimUI extends IndividualSimUI {
                 ],
                 // Preset gear configurations that the user can quickly select.
                 gear: [
+                    Presets.P1_PRESET,
+                    Presets.P2_PRESET,
+                    Presets.P3_PRESET,
                     Presets.P4_PRESET,
+                    Presets.P5_PRESET,
                 ],
             },
         });

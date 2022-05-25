@@ -12,28 +12,20 @@ export class Title extends Component {
 			<div class="dropdown-panel sim-title-dropdown within-raid-sim-hide"></div>
     `;
         this.buttonElem = this.rootElem.getElementsByClassName('sim-title-button')[0];
-        this.dropdownElem = this.rootElem.getElementsByClassName('sim-title-dropdown')[0];
+        const dropdownPanel = this.rootElem.getElementsByClassName('dropdown-panel')[0];
         this.buttonElem.addEventListener('click', event => {
             event.preventDefault();
         });
-        const orderedLaunchedSpecs = naturalSpecOrder.filter(spec => launchedSpecs.includes(spec));
-        let currentOption = null;
-        let otherOptions = [];
-        if (currentSpec == null) {
-            currentOption = this.makeOptionData(null, true);
-            otherOptions = orderedLaunchedSpecs.map(spec => this.makeOptionData(spec, false));
-        }
-        else {
-            currentOption = this.makeOptionData(currentSpec, true);
-            otherOptions = orderedLaunchedSpecs
-                .filter(spec => spec != currentSpec)
-                .map(spec => this.makeOptionData(spec, false))
-                .concat([this.makeOptionData(null, false)]);
-        }
+        const orderedLaunchedSpecs = naturalSpecOrder
+            .filter(spec => launchedSpecs.includes(spec))
+            .concat([null]); // Null represents the raid sim.
+        dropdownPanel.style.gridTemplateRows = `repeat(${Math.ceil(orderedLaunchedSpecs.length / 2)}, 1fr)`;
+        const currentOption = this.makeOptionData(currentSpec, true);
+        const otherOptions = orderedLaunchedSpecs.map(spec => this.makeOptionData(spec, false));
         this.buttonElem.appendChild(Title.makeOptionElem(currentOption));
         const isWithinRaidSim = this.rootElem.closest('.within-raid-sim') != null;
         if (!isWithinRaidSim) {
-            otherOptions.forEach(option => this.dropdownElem.appendChild(this.makeOption(option)));
+            otherOptions.forEach((option, i) => dropdownPanel.appendChild(this.makeOption(option)));
         }
     }
     makeOptionData(spec, isButton) {

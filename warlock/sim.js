@@ -19,6 +19,7 @@ import { WeaponImbue } from '/tbc/core/proto/common.js';
 import { Warlock_Options as WarlockOptions, Warlock_Options_Armor, Warlock_Options_Summon } from '/tbc/core/proto/warlock.js';
 import * as IconInputs from '/tbc/core/components/icon_inputs.js';
 import * as OtherInputs from '/tbc/core/components/other_inputs.js';
+import * as Tooltips from '/tbc/core/constants/tooltips.js';
 import * as WarlockInputs from './inputs.js';
 import * as Presets from './presets.js';
 export class WarlockSimUI extends IndividualSimUI {
@@ -30,9 +31,9 @@ export class WarlockSimUI extends IndividualSimUI {
             warnings: [
                 (simUI) => {
                     return {
-                        updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter]),
+                        updateOn: new TypedEvent(),
                         shouldDisplay: () => true,
-                        getContent: () => 'This sim is newly released, and there are likely a few bugs. Please let us know if you encounter any issues!',
+                        getContent: () => Tooltips.NEWLY_RELEASED_WARNING,
                     };
                 },
             ],
@@ -51,6 +52,7 @@ export class WarlockSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatSpellPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStamina,
                 Stat.StatIntellect,
                 Stat.StatSpirit,
@@ -215,6 +217,7 @@ export class WarlockSimUI extends IndividualSimUI {
                     OtherInputs.StartingPotion,
                     OtherInputs.NumStartingPotions,
                     OtherInputs.SnapshotImprovedWrathOfAirTotem,
+                    OtherInputs.TankAssignment,
                 ],
             },
             encounterPicker: {
@@ -226,8 +229,6 @@ export class WarlockSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: true,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.

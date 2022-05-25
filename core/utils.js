@@ -25,6 +25,10 @@ export function sum(arr) {
 export function maxIndex(arr) {
     return arr.reduce((cur, v, i, arr) => v > arr[cur] ? i : cur, 0);
 }
+// Swaps two elements in the given array.
+export function swap(arr, i, j) {
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+}
 // Returns a new array containing only elements present in both a and b.
 export function arrayEquals(a, b, comparator) {
     comparator = comparator || ((a, b) => a == b);
@@ -107,9 +111,9 @@ export function downloadString(data, fileName) {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
 }
-export function formatDeltaTextElem(elem, before, after) {
+export function formatDeltaTextElem(elem, before, after, precision) {
     const delta = after - before;
-    const deltaStr = delta.toFixed(2);
+    const deltaStr = delta.toFixed(precision);
     if (delta >= 0) {
         elem.textContent = '+' + deltaStr;
         elem.classList.remove('negative');

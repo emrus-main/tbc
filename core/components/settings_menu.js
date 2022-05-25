@@ -1,10 +1,6 @@
-import { Stat } from '/tbc/core/proto/common.js';
-import { IndividualSimUI } from '/tbc/core/individual_sim_ui.js';
-import { statNames } from '/tbc/core/proto_utils/names.js';
 import { TypedEvent } from '/tbc/core/typed_event.js';
 import { BooleanPicker } from '/tbc/core/components/boolean_picker.js';
 import { NumberPicker } from '/tbc/core/components/number_picker.js';
-import { getEnumValues } from '/tbc/core/utils.js';
 import { Popup } from './popup.js';
 export class SettingsMenu extends Popup {
     constructor(parent, simUI) {
@@ -13,7 +9,7 @@ export class SettingsMenu extends Popup {
         this.simUI = simUI;
         this.rootElem.innerHTML = `
 			<div class="settings-menu-title">
-				<span>SETTINGS</span>
+				<span>OPTIONS</span>
 			</div>
 			<div class="settings-menu-content">
 				<div class="settings-menu-content-left">
@@ -60,7 +56,8 @@ export class SettingsMenu extends Popup {
         this.simUI.sim.lastUsedRngSeedChangeEmitter.on(() => lastUsedRngSeed.textContent = String(this.simUI.sim.getLastUsedRngSeed()));
         const showThreatMetrics = this.rootElem.getElementsByClassName('show-threat-metrics-picker')[0];
         new BooleanPicker(showThreatMetrics, this.simUI.sim, {
-            label: 'Show Threat Metrics',
+            label: 'Show Threat/Tank Options',
+            labelTooltip: 'Shows all options and metrics relevant to tanks, like TPS/DTPS.',
             changedEvent: (sim) => sim.showThreatMetricsChangeEmitter,
             getValue: (sim) => sim.getShowThreatMetrics(),
             setValue: (eventID, sim, newValue) => {
@@ -77,34 +74,5 @@ export class SettingsMenu extends Popup {
                 sim.setShowExperimental(eventID, newValue);
             },
         });
-        this.setupEpWeightsSettings();
-    }
-    setupEpWeightsSettings() {
-        const sectionRoot = this.rootElem.getElementsByClassName('settings-menu-ep-weights')[0];
-        if (!(this.simUI instanceof IndividualSimUI) || this.simUI.isWithinRaidSim) {
-            sectionRoot.classList.add('hide');
-            return;
-        }
-        const individualSimUI = this.simUI;
-        const label = document.createElement('span');
-        label.classList.add('ep-weights-label');
-        label.textContent = 'EP Weights';
-        tippy(label, {
-            'content': 'EP Weights for sorting the item selector.',
-            'allowHTML': true,
-        });
-        sectionRoot.appendChild(label);
-        //const epStats = this.simUI.individualConfig.epStats;
-        const epStats = getEnumValues(Stat).filter(stat => ![Stat.StatMana, Stat.StatEnergy, Stat.StatRage].includes(stat));
-        const weightPickers = epStats.map(stat => new NumberPicker(sectionRoot, individualSimUI.player, {
-            float: true,
-            label: statNames[stat],
-            changedEvent: (player) => player.epWeightsChangeEmitter,
-            getValue: (player) => player.getEpWeights().getStat(stat),
-            setValue: (eventID, player, newValue) => {
-                const epWeights = player.getEpWeights().withStat(stat, newValue);
-                player.setEpWeights(eventID, epWeights);
-            },
-        }));
     }
 }

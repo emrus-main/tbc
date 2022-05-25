@@ -4,6 +4,7 @@ import { CharacterStats } from '/tbc/core/components/character_stats.js';
 import { Consumes } from '/tbc/core/proto/common.js';
 import { Cooldowns } from '/tbc/core/proto/common.js';
 import { CooldownsPicker } from '/tbc/core/components/cooldowns_picker.js';
+import { Debuffs } from '/tbc/core/proto/common.js';
 import { DetailedResults } from '/tbc/core/components/detailed_results.js';
 import { Encounter as EncounterProto } from '/tbc/core/proto/common.js';
 import { EncounterPicker } from '/tbc/core/components/encounter_picker.js';
@@ -79,6 +80,8 @@ export class IndividualSimUI extends SimUI {
         this.individualConfig = config;
         this.raidSimResultsManager = null;
         this.settingsMuuri = null;
+        this.prevEpIterations = 0;
+        this.prevEpSimResult = null;
         if (!launchedSpecs.includes(this.player.spec)) {
             this.addWarning({
                 updateOn: new TypedEvent(),
@@ -178,16 +181,16 @@ export class IndividualSimUI extends SimUI {
     addTopbarComponents() {
         this.addToolbarItem(newIndividualImporters(this));
         this.addToolbarItem(newIndividualExporters(this));
-        const settingsMenu = document.createElement('span');
-        settingsMenu.classList.add('fas', 'fa-cog');
-        tippy(settingsMenu, {
-            'content': 'Settings',
+        const optionsMenu = document.createElement('span');
+        optionsMenu.classList.add('fas', 'fa-cog');
+        tippy(optionsMenu, {
+            'content': 'Options',
             'allowHTML': true,
         });
-        settingsMenu.addEventListener('click', event => {
+        optionsMenu.addEventListener('click', event => {
             new SettingsMenu(this.rootElem, this);
         });
-        this.addToolbarItem(settingsMenu);
+        this.addToolbarItem(optionsMenu);
     }
     addGearTab() {
         this.addTab('GEAR', 'gear-tab', `
@@ -364,7 +367,7 @@ export class IndividualSimUI extends SimUI {
             this.individualConfig.partyBuffInputs.map(iconInput => new IndividualSimIconPicker(buffsSection, this.player.getParty(), iconInput, this)),
         ].flat(), Tooltips.OTHER_BUFFS_SECTION);
         const debuffsSection = this.rootElem.getElementsByClassName('debuffs-section')[0];
-        configureIconSection(debuffsSection, this.individualConfig.debuffInputs.map(iconInput => new IndividualSimIconPicker(debuffsSection, this.sim.encounter.primaryTarget, iconInput, this)), Tooltips.DEBUFFS_SECTION);
+        configureIconSection(debuffsSection, this.individualConfig.debuffInputs.map(iconInput => new IndividualSimIconPicker(debuffsSection, this.sim.raid, iconInput, this)), Tooltips.DEBUFFS_SECTION);
         if (this.individualConfig.consumeOptions?.potions.length) {
             const elem = this.rootElem.getElementsByClassName('consumes-potions')[0];
             new IconEnumPicker(elem, this.player, IconInputs.makePotionsInput(this.individualConfig.consumeOptions.potions));
@@ -508,6 +511,7 @@ export class IndividualSimUI extends SimUI {
                     raidBuffs: simUI.sim.raid.getBuffs(),
                     partyBuffs: simUI.player.getParty()?.getBuffs() || PartyBuffs.create(),
                     playerBuffs: simUI.player.getBuffs(),
+                    debuffs: simUI.sim.raid.getDebuffs(),
                     consumes: simUI.player.getConsumes(),
                     race: simUI.player.getRace(),
                     cooldowns: simUI.player.getCooldowns(),
@@ -516,6 +520,7 @@ export class IndividualSimUI extends SimUI {
             setData: (eventID, simUI, newSettings) => {
                 TypedEvent.freezeAllAndDo(() => {
                     simUI.sim.raid.setBuffs(eventID, newSettings.raidBuffs || RaidBuffs.create());
+                    simUI.sim.raid.setDebuffs(eventID, newSettings.debuffs || Debuffs.create());
                     const party = simUI.player.getParty();
                     if (party) {
                         party.setBuffs(eventID, newSettings.partyBuffs || PartyBuffs.create());
@@ -528,6 +533,7 @@ export class IndividualSimUI extends SimUI {
             },
             changeEmitters: [
                 this.sim.raid.buffsChangeEmitter,
+                this.sim.raid.debuffsChangeEmitter,
                 this.player.getParty().buffsChangeEmitter,
                 this.player.buffsChangeEmitter,
                 this.player.consumesChangeEmitter,
@@ -655,7 +661,7 @@ export class IndividualSimUI extends SimUI {
             this.player.setInFrontOfTarget(eventID, tankSpec);
             if (!this.isWithinRaidSim) {
                 this.sim.encounter.applyDefaults(eventID);
-                this.sim.encounter.primaryTarget.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
+                this.sim.raid.setDebuffs(eventID, this.individualConfig.defaults.debuffs);
                 this.sim.applyDefaults(eventID, tankSpec);
                 if (tankSpec) {
                     this.sim.raid.setTanks(eventID, [this.player.makeRaidTarget()]);
@@ -713,6 +719,7 @@ export class IndividualSimUI extends SimUI {
             settings: this.sim.toProto(),
             player: this.player.toProto(true),
             raidBuffs: this.sim.raid.getBuffs(),
+            debuffs: this.sim.raid.getDebuffs(),
             tanks: this.sim.raid.getTanks(),
             partyBuffs: this.player.getParty()?.getBuffs() || PartyBuffs.create(),
             encounter: this.sim.encounter.toProto(),
@@ -721,6 +728,11 @@ export class IndividualSimUI extends SimUI {
     }
     fromProto(eventID, settings) {
         TypedEvent.freezeAllAndDo(() => {
+            // TODO: Deprecate this
+            if (settings.encounter.targets[0] && settings.encounter.targets[0].debuffs) {
+                settings.debuffs = settings.encounter.targets[0].debuffs;
+                settings.encounter.targets[0].debuffs = undefined;
+            }
             if (!settings.player) {
                 return;
             }
@@ -735,6 +747,7 @@ export class IndividualSimUI extends SimUI {
                 this.player.setEpWeights(eventID, this.individualConfig.defaults.epWeights);
             }
             this.sim.raid.setBuffs(eventID, settings.raidBuffs || RaidBuffs.create());
+            this.sim.raid.setDebuffs(eventID, settings.debuffs || Debuffs.create());
             this.sim.raid.setTanks(eventID, settings.tanks || []);
             const party = this.player.getParty();
             if (party) {

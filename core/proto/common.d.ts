@@ -15,6 +15,14 @@ export interface RaidBuffs {
      */
     arcaneBrilliance: boolean;
     /**
+     * @generated from protobuf field: proto.TristateEffect power_word_fortitude = 7;
+     */
+    powerWordFortitude: TristateEffect;
+    /**
+     * @generated from protobuf field: bool shadow_protection = 8;
+     */
+    shadowProtection: boolean;
+    /**
      * @generated from protobuf field: proto.TristateEffect divine_spirit = 4;
      */
     divineSpirit: TristateEffect;
@@ -22,6 +30,10 @@ export interface RaidBuffs {
      * @generated from protobuf field: proto.TristateEffect gift_of_the_wild = 5;
      */
     giftOfTheWild: TristateEffect;
+    /**
+     * @generated from protobuf field: proto.TristateEffect thorns = 6;
+     */
+    thorns: TristateEffect;
 }
 /**
  * Buffs that affect a single party.
@@ -38,6 +50,10 @@ export interface PartyBuffs {
      */
     ferociousInspiration: number;
     /**
+     * @generated from protobuf field: proto.TristateEffect blood_pact = 34;
+     */
+    bloodPact: TristateEffect;
+    /**
      * @generated from protobuf field: proto.TristateEffect moonkin_aura = 2;
      */
     moonkinAura: TristateEffect;
@@ -49,6 +65,14 @@ export interface PartyBuffs {
      * @generated from protobuf field: proto.TristateEffect sanctity_aura = 20;
      */
     sanctityAura: TristateEffect;
+    /**
+     * @generated from protobuf field: proto.TristateEffect devotion_aura = 35;
+     */
+    devotionAura: TristateEffect;
+    /**
+     * @generated from protobuf field: proto.TristateEffect retribution_aura = 36;
+     */
+    retributionAura: TristateEffect;
     /**
      * @generated from protobuf field: bool trueshot_aura = 21;
      */
@@ -182,6 +206,10 @@ export interface IndividualBuffs {
      */
     blessingOfSalvation: boolean;
     /**
+     * @generated from protobuf field: bool blessing_of_sanctuary = 9;
+     */
+    blessingOfSanctuary: boolean;
+    /**
      * @generated from protobuf field: proto.TristateEffect blessing_of_wisdom = 2;
      */
     blessingOfWisdom: TristateEffect;
@@ -260,6 +288,10 @@ export interface Consumes {
      */
     scrollOfSpirit: number;
     /**
+     * @generated from protobuf field: int32 scroll_of_protection = 53;
+     */
+    scrollOfProtection: number;
+    /**
      * @generated from protobuf field: int32 pet_scroll_of_agility = 46;
      */
     petScrollOfAgility: number;
@@ -316,6 +348,10 @@ export interface Debuffs {
      * @generated from protobuf field: bool judgement_of_wisdom = 1;
      */
     judgementOfWisdom: boolean;
+    /**
+     * @generated from protobuf field: bool judgement_of_light = 25;
+     */
+    judgementOfLight: boolean;
     /**
      * @generated from protobuf field: bool improved_seal_of_the_crusader = 2;
      */
@@ -384,11 +420,45 @@ export interface Debuffs {
      * @generated from protobuf field: double expose_weakness_hunter_agility = 14;
      */
     exposeWeaknessHunterAgility: number;
+    /**
+     * @generated from protobuf field: proto.TristateEffect demoralizing_roar = 19;
+     */
+    demoralizingRoar: TristateEffect;
+    /**
+     * @generated from protobuf field: proto.TristateEffect demoralizing_shout = 20;
+     */
+    demoralizingShout: TristateEffect;
+    /**
+     * @generated from protobuf field: proto.TristateEffect thunder_clap = 21;
+     */
+    thunderClap: TristateEffect;
+    /**
+     * @generated from protobuf field: bool insect_swarm = 22;
+     */
+    insectSwarm: boolean;
+    /**
+     * @generated from protobuf field: bool scorpid_sting = 23;
+     */
+    scorpidSting: boolean;
+    /**
+     * @generated from protobuf field: bool shadow_embrace = 24;
+     */
+    shadowEmbrace: boolean;
 }
 /**
  * @generated from protobuf message proto.Target
  */
 export interface Target {
+    /**
+     * The in-game NPC ID.
+     *
+     * @generated from protobuf field: int32 id = 14;
+     */
+    id: number;
+    /**
+     * @generated from protobuf field: string name = 15;
+     */
+    name: string;
     /**
      * TODO: Deprecate this after 1 month (2022/6/6)
      *
@@ -408,6 +478,40 @@ export interface Target {
      */
     stats: number[];
     /**
+     * Auto attack parameters.
+     *
+     * @generated from protobuf field: double min_base_damage = 7;
+     */
+    minBaseDamage: number;
+    /**
+     * @generated from protobuf field: double swing_speed = 8;
+     */
+    swingSpeed: number;
+    /**
+     * @generated from protobuf field: bool dual_wield = 9;
+     */
+    dualWield: boolean;
+    /**
+     * @generated from protobuf field: bool dual_wield_penalty = 10;
+     */
+    dualWieldPenalty: boolean;
+    /**
+     * @generated from protobuf field: bool can_crush = 11;
+     */
+    canCrush: boolean;
+    /**
+     * @generated from protobuf field: bool parry_haste = 12;
+     */
+    parryHaste: boolean;
+    /**
+     * @generated from protobuf field: bool suppress_dodge = 16;
+     */
+    suppressDodge: boolean;
+    /**
+     * @generated from protobuf field: proto.SpellSchool spell_school = 13;
+     */
+    spellSchool: SpellSchool;
+    /**
      * Index in Raid.tanks indicating the player tanking this mob.
      * -1 or invalid index indicates not being tanked.
      *
@@ -415,6 +519,8 @@ export interface Target {
      */
     tankIndex: number;
     /**
+     * TODO: Deprecate after 1 month (2022/06/14).
+     *
      * @generated from protobuf field: proto.Debuffs debuffs = 2;
      */
     debuffs?: Debuffs;
@@ -442,6 +548,8 @@ export interface Encounter {
      */
     executeProportion: number;
     /**
+     * If type != Simple or Custom, then this may be empty.
+     *
      * @generated from protobuf field: repeated proto.Target targets = 2;
      */
     targets: Target[];
@@ -743,6 +851,10 @@ export declare enum Spec {
      */
     SpecFeralDruid = 12,
     /**
+     * @generated from protobuf enum value: SpecFeralTankDruid = 14;
+     */
+    SpecFeralTankDruid = 14,
+    /**
      * @generated from protobuf enum value: SpecHunter = 8;
      */
     SpecHunter = 8,
@@ -750,6 +862,10 @@ export declare enum Spec {
      * @generated from protobuf enum value: SpecMage = 2;
      */
     SpecMage = 2,
+    /**
+     * @generated from protobuf enum value: SpecProtectionPaladin = 13;
+     */
+    SpecProtectionPaladin = 13,
     /**
      * @generated from protobuf enum value: SpecRetributionPaladin = 3;
      */
@@ -1412,6 +1528,39 @@ export declare enum GemColor {
     GemColorPrismatic = 8
 }
 /**
+ * @generated from protobuf enum proto.SpellSchool
+ */
+export declare enum SpellSchool {
+    /**
+     * @generated from protobuf enum value: SpellSchoolPhysical = 0;
+     */
+    SpellSchoolPhysical = 0,
+    /**
+     * @generated from protobuf enum value: SpellSchoolArcane = 1;
+     */
+    SpellSchoolArcane = 1,
+    /**
+     * @generated from protobuf enum value: SpellSchoolFire = 2;
+     */
+    SpellSchoolFire = 2,
+    /**
+     * @generated from protobuf enum value: SpellSchoolFrost = 3;
+     */
+    SpellSchoolFrost = 3,
+    /**
+     * @generated from protobuf enum value: SpellSchoolHoly = 4;
+     */
+    SpellSchoolHoly = 4,
+    /**
+     * @generated from protobuf enum value: SpellSchoolNature = 5;
+     */
+    SpellSchoolNature = 5,
+    /**
+     * @generated from protobuf enum value: SpellSchoolShadow = 6;
+     */
+    SpellSchoolShadow = 6
+}
+/**
  * @generated from protobuf enum proto.TristateEffect
  */
 export declare enum TristateEffect {
@@ -1505,7 +1654,15 @@ export declare enum Potions {
     /**
      * @generated from protobuf enum value: InsaneStrengthPotion = 6;
      */
-    InsaneStrengthPotion = 6
+    InsaneStrengthPotion = 6,
+    /**
+     * @generated from protobuf enum value: IronshieldPotion = 7;
+     */
+    IronshieldPotion = 7,
+    /**
+     * @generated from protobuf enum value: HeroicPotion = 8;
+     */
+    HeroicPotion = 8
 }
 /**
  * @generated from protobuf enum proto.Conjured
@@ -1561,6 +1718,10 @@ export declare enum WeaponImbue {
      */
     WeaponImbueSuperiorWizardOil = 4,
     /**
+     * @generated from protobuf enum value: WeaponImbueRighteousWeaponCoating = 12;
+     */
+    WeaponImbueRighteousWeaponCoating = 12,
+    /**
      * @generated from protobuf enum value: WeaponImbueRogueDeadlyPoison = 10;
      */
     WeaponImbueRogueDeadlyPoison = 10,
@@ -1612,7 +1773,11 @@ export declare enum Flask {
     /**
      * @generated from protobuf enum value: FlaskOfSupremePower = 5;
      */
-    FlaskOfSupremePower = 5
+    FlaskOfSupremePower = 5,
+    /**
+     * @generated from protobuf enum value: FlaskOfFortification = 6;
+     */
+    FlaskOfFortification = 6
 }
 /**
  * @generated from protobuf enum proto.BattleElixir
@@ -1651,6 +1816,10 @@ export declare enum BattleElixir {
      */
     ElixirOfMajorStrength = 7,
     /**
+     * @generated from protobuf enum value: ElixirOfMastery = 10;
+     */
+    ElixirOfMastery = 10,
+    /**
      * @generated from protobuf enum value: ElixirOfTheMongoose = 8;
      */
     ElixirOfTheMongoose = 8,
@@ -1672,9 +1841,25 @@ export declare enum GuardianElixir {
      */
     ElixirOfDraenicWisdom = 1,
     /**
+     * @generated from protobuf enum value: ElixirOfIronskin = 5;
+     */
+    ElixirOfIronskin = 5,
+    /**
+     * @generated from protobuf enum value: ElixirOfMajorDefense = 6;
+     */
+    ElixirOfMajorDefense = 6,
+    /**
+     * @generated from protobuf enum value: ElixirOfMajorFortitude = 4;
+     */
+    ElixirOfMajorFortitude = 4,
+    /**
      * @generated from protobuf enum value: ElixirOfMajorMageblood = 2;
      */
-    ElixirOfMajorMageblood = 2
+    ElixirOfMajorMageblood = 2,
+    /**
+     * @generated from protobuf enum value: GiftOfArthas = 3;
+     */
+    GiftOfArthas = 3
 }
 /**
  * @generated from protobuf enum proto.Food
@@ -1707,7 +1892,11 @@ export declare enum Food {
     /**
      * @generated from protobuf enum value: FoodSpicyHotTalbuk = 6;
      */
-    FoodSpicyHotTalbuk = 6
+    FoodSpicyHotTalbuk = 6,
+    /**
+     * @generated from protobuf enum value: FoodFishermansFeast = 7;
+     */
+    FoodFishermansFeast = 7
 }
 /**
  * @generated from protobuf enum proto.PetFood

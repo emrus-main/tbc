@@ -279,6 +279,10 @@ export interface RetributionPaladin_Options {
      */
     judgement: RetributionPaladin_Options_Judgement;
     /**
+     * @generated from protobuf field: proto.PaladinAura aura = 5;
+     */
+    aura: PaladinAura;
+    /**
      * @generated from protobuf field: int32 crusader_strike_delay_ms = 2;
      */
     crusaderStrikeDelayMs: number;
@@ -307,6 +311,140 @@ export declare enum RetributionPaladin_Options_Judgement {
      * @generated from protobuf enum value: Crusader = 2;
      */
     Crusader = 2
+}
+/**
+ * @generated from protobuf message proto.ProtectionPaladin
+ */
+export interface ProtectionPaladin {
+    /**
+     * @generated from protobuf field: proto.ProtectionPaladin.Rotation rotation = 1;
+     */
+    rotation?: ProtectionPaladin_Rotation;
+    /**
+     * @generated from protobuf field: proto.PaladinTalents talents = 2;
+     */
+    talents?: PaladinTalents;
+    /**
+     * @generated from protobuf field: proto.ProtectionPaladin.Options options = 3;
+     */
+    options?: ProtectionPaladin_Options;
+}
+/**
+ * @generated from protobuf message proto.ProtectionPaladin.Rotation
+ */
+export interface ProtectionPaladin_Rotation {
+    /**
+     * @generated from protobuf field: bool prioritize_holy_shield = 1;
+     */
+    prioritizeHolyShield: boolean;
+    /**
+     * @generated from protobuf field: int32 consecration_rank = 2;
+     */
+    consecrationRank: number;
+    /**
+     * @generated from protobuf field: bool use_exorcism = 3;
+     */
+    useExorcism: boolean;
+    /**
+     * @generated from protobuf field: proto.PaladinJudgement maintain_judgement = 4;
+     */
+    maintainJudgement: PaladinJudgement;
+}
+/**
+ * @generated from protobuf message proto.ProtectionPaladin.Options
+ */
+export interface ProtectionPaladin_Options {
+    /**
+     * @generated from protobuf field: proto.PaladinAura aura = 1;
+     */
+    aura: PaladinAura;
+    /**
+     * @generated from protobuf field: bool use_avenging_wrath = 2;
+     */
+    useAvengingWrath: boolean;
+}
+/**
+ * @generated from protobuf enum proto.Blessings
+ */
+export declare enum Blessings {
+    /**
+     * @generated from protobuf enum value: BlessingUnknown = 0;
+     */
+    BlessingUnknown = 0,
+    /**
+     * @generated from protobuf enum value: BlessingOfKings = 1;
+     */
+    BlessingOfKings = 1,
+    /**
+     * @generated from protobuf enum value: BlessingOfMight = 2;
+     */
+    BlessingOfMight = 2,
+    /**
+     * @generated from protobuf enum value: BlessingOfSalvation = 3;
+     */
+    BlessingOfSalvation = 3,
+    /**
+     * @generated from protobuf enum value: BlessingOfWisdom = 4;
+     */
+    BlessingOfWisdom = 4,
+    /**
+     * @generated from protobuf enum value: BlessingOfSanctuary = 5;
+     */
+    BlessingOfSanctuary = 5,
+    /**
+     * @generated from protobuf enum value: BlessingOfLight = 6;
+     */
+    BlessingOfLight = 6
+}
+/**
+ * @generated from protobuf enum proto.PaladinAura
+ */
+export declare enum PaladinAura {
+    /**
+     * @generated from protobuf enum value: NoPaladinAura = 0;
+     */
+    NoPaladinAura = 0,
+    /**
+     * @generated from protobuf enum value: SanctityAura = 1;
+     */
+    SanctityAura = 1,
+    /**
+     * @generated from protobuf enum value: DevotionAura = 2;
+     */
+    DevotionAura = 2,
+    /**
+     * @generated from protobuf enum value: RetributionAura = 3;
+     */
+    RetributionAura = 3
+}
+/**
+ * @generated from protobuf enum proto.PaladinJudgement
+ */
+export declare enum PaladinJudgement {
+    /**
+     * @generated from protobuf enum value: NoPaladinJudgement = 0;
+     */
+    NoPaladinJudgement = 0,
+    /**
+     * @generated from protobuf enum value: JudgementOfWisdom = 1;
+     */
+    JudgementOfWisdom = 1,
+    /**
+     * @generated from protobuf enum value: JudgementOfLight = 2;
+     */
+    JudgementOfLight = 2,
+    /**
+     * @generated from protobuf enum value: JudgementOfCrusader = 3;
+     */
+    JudgementOfCrusader = 3,
+    /**
+     * @generated from protobuf enum value: JudgementOfVengeance = 4;
+     */
+    JudgementOfVengeance = 4,
+    /**
+     * @generated from protobuf enum value: JudgementOfRighteousness = 5;
+     */
+    JudgementOfRighteousness = 5
 }
 declare class PaladinTalents$Type extends MessageType<PaladinTalents> {
     constructor();
@@ -348,4 +486,34 @@ declare class RetributionPaladin_Options$Type extends MessageType<RetributionPal
  * @generated MessageType for protobuf message proto.RetributionPaladin.Options
  */
 export declare const RetributionPaladin_Options: RetributionPaladin_Options$Type;
+declare class ProtectionPaladin$Type extends MessageType<ProtectionPaladin> {
+    constructor();
+    create(value?: PartialMessage<ProtectionPaladin>): ProtectionPaladin;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ProtectionPaladin): ProtectionPaladin;
+    internalBinaryWrite(message: ProtectionPaladin, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.ProtectionPaladin
+ */
+export declare const ProtectionPaladin: ProtectionPaladin$Type;
+declare class ProtectionPaladin_Rotation$Type extends MessageType<ProtectionPaladin_Rotation> {
+    constructor();
+    create(value?: PartialMessage<ProtectionPaladin_Rotation>): ProtectionPaladin_Rotation;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ProtectionPaladin_Rotation): ProtectionPaladin_Rotation;
+    internalBinaryWrite(message: ProtectionPaladin_Rotation, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.ProtectionPaladin.Rotation
+ */
+export declare const ProtectionPaladin_Rotation: ProtectionPaladin_Rotation$Type;
+declare class ProtectionPaladin_Options$Type extends MessageType<ProtectionPaladin_Options> {
+    constructor();
+    create(value?: PartialMessage<ProtectionPaladin_Options>): ProtectionPaladin_Options;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ProtectionPaladin_Options): ProtectionPaladin_Options;
+    internalBinaryWrite(message: ProtectionPaladin_Options, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.ProtectionPaladin.Options
+ */
+export declare const ProtectionPaladin_Options: ProtectionPaladin_Options$Type;
 export {};

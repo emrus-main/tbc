@@ -227,7 +227,7 @@ export const druidTalentsConfig = newTalentsConfig([
                 maxPoints: 5,
             },
             {
-                fieldName: 'feralAggresion',
+                fieldName: 'feralAggression',
                 location: {
                     rowIdx: 0,
                     colIdx: 2,
@@ -236,7 +236,7 @@ export const druidTalentsConfig = newTalentsConfig([
                 maxPoints: 5,
             },
             {
-                //fieldName: 'feralInstinct',
+                fieldName: 'feralInstinct',
                 location: {
                     rowIdx: 1,
                     colIdx: 0,
@@ -254,7 +254,7 @@ export const druidTalentsConfig = newTalentsConfig([
                 maxPoints: 2,
             },
             {
-                //fieldName: 'thickHide',
+                fieldName: 'thickHide',
                 location: {
                     rowIdx: 1,
                     colIdx: 2,
@@ -263,7 +263,7 @@ export const druidTalentsConfig = newTalentsConfig([
                 maxPoints: 3,
             },
             {
-                //fieldName: 'feralSwiftness',
+                fieldName: 'feralSwiftness',
                 location: {
                     rowIdx: 2,
                     colIdx: 0,

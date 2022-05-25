@@ -5,12 +5,14 @@ import type { IBinaryReader } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
 import { Stat } from "./common";
+import { Target } from "./common";
 import { Gem } from "./common";
 import { Enchant } from "./common";
 import { Item } from "./common";
 import { Encounter } from "./common";
 import { ActionID } from "./common";
 import { RaidTarget } from "./common";
+import { Debuffs } from "./common";
 import { RaidBuffs } from "./common";
 import { PartyBuffs } from "./common";
 import { Cooldowns } from "./common";
@@ -22,9 +24,11 @@ import { ElementalShaman } from "./shaman";
 import { Rogue } from "./rogue";
 import { SmitePriest } from "./priest";
 import { ShadowPriest } from "./priest";
+import { ProtectionPaladin } from "./paladin";
 import { RetributionPaladin } from "./paladin";
 import { Mage } from "./mage";
 import { Hunter } from "./hunter";
+import { FeralTankDruid } from "./druid";
 import { FeralDruid } from "./druid";
 import { BalanceDruid } from "./druid";
 import { IndividualBuffs } from "./common";
@@ -87,6 +91,12 @@ export interface Player {
          */
         feralDruid: FeralDruid;
     } | {
+        oneofKind: "feralTankDruid";
+        /**
+         * @generated from protobuf field: proto.FeralTankDruid feral_tank_druid = 26;
+         */
+        feralTankDruid: FeralTankDruid;
+    } | {
         oneofKind: "hunter";
         /**
          * @generated from protobuf field: proto.Hunter hunter = 7;
@@ -104,6 +114,12 @@ export interface Player {
          * @generated from protobuf field: proto.RetributionPaladin retribution_paladin = 9;
          */
         retributionPaladin: RetributionPaladin;
+    } | {
+        oneofKind: "protectionPaladin";
+        /**
+         * @generated from protobuf field: proto.ProtectionPaladin protection_paladin = 25;
+         */
+        protectionPaladin: ProtectionPaladin;
     } | {
         oneofKind: "shadowPriest";
         /**
@@ -195,6 +211,13 @@ export interface Raid {
      * @generated from protobuf field: proto.RaidBuffs buffs = 2;
      */
     buffs?: RaidBuffs;
+    /**
+     * Extra debuffs provided by buff bots in this raid.
+     * This is also used for debuffs in the individual sims.
+     *
+     * @generated from protobuf field: proto.Debuffs debuffs = 5;
+     */
+    debuffs?: Debuffs;
     /**
      * Players who will be tanking mobs.
      *
@@ -554,6 +577,36 @@ export interface GearListResult {
      * @generated from protobuf field: repeated proto.Gem gems = 3;
      */
     gems: Gem[];
+    /**
+     * @generated from protobuf field: repeated proto.PresetEncounter encounters = 4;
+     */
+    encounters: PresetEncounter[];
+}
+/**
+ * @generated from protobuf message proto.PresetTarget
+ */
+export interface PresetTarget {
+    /**
+     * @generated from protobuf field: string path = 1;
+     */
+    path: string;
+    /**
+     * @generated from protobuf field: proto.Target target = 2;
+     */
+    target?: Target;
+}
+/**
+ * @generated from protobuf message proto.PresetEncounter
+ */
+export interface PresetEncounter {
+    /**
+     * @generated from protobuf field: string path = 1;
+     */
+    path: string;
+    /**
+     * @generated from protobuf field: repeated proto.PresetTarget targets = 2;
+     */
+    targets: PresetTarget[];
 }
 /**
  * RPC ComputeStats
@@ -643,6 +696,10 @@ export interface StatWeightsRequest {
      */
     partyBuffs?: PartyBuffs;
     /**
+     * @generated from protobuf field: proto.Debuffs debuffs = 9;
+     */
+    debuffs?: Debuffs;
+    /**
      * @generated from protobuf field: proto.Encounter encounter = 4;
      */
     encounter?: Encounter;
@@ -650,6 +707,10 @@ export interface StatWeightsRequest {
      * @generated from protobuf field: proto.SimOptions sim_options = 5;
      */
     simOptions?: SimOptions;
+    /**
+     * @generated from protobuf field: repeated proto.RaidTarget tanks = 8;
+     */
+    tanks: RaidTarget[];
     /**
      * @generated from protobuf field: repeated proto.Stat stats_to_weigh = 6;
      */
@@ -663,6 +724,23 @@ export interface StatWeightsRequest {
  * @generated from protobuf message proto.StatWeightsResult
  */
 export interface StatWeightsResult {
+    /**
+     * @generated from protobuf field: proto.StatWeightValues dps = 1;
+     */
+    dps?: StatWeightValues;
+    /**
+     * @generated from protobuf field: proto.StatWeightValues tps = 2;
+     */
+    tps?: StatWeightValues;
+    /**
+     * @generated from protobuf field: proto.StatWeightValues dtps = 3;
+     */
+    dtps?: StatWeightValues;
+}
+/**
+ * @generated from protobuf message proto.StatWeightValues
+ */
+export interface StatWeightValues {
     /**
      * @generated from protobuf field: repeated double weights = 1;
      */
@@ -928,6 +1006,26 @@ declare class GearListResult$Type extends MessageType<GearListResult> {
  * @generated MessageType for protobuf message proto.GearListResult
  */
 export declare const GearListResult: GearListResult$Type;
+declare class PresetTarget$Type extends MessageType<PresetTarget> {
+    constructor();
+    create(value?: PartialMessage<PresetTarget>): PresetTarget;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PresetTarget): PresetTarget;
+    internalBinaryWrite(message: PresetTarget, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.PresetTarget
+ */
+export declare const PresetTarget: PresetTarget$Type;
+declare class PresetEncounter$Type extends MessageType<PresetEncounter> {
+    constructor();
+    create(value?: PartialMessage<PresetEncounter>): PresetEncounter;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: PresetEncounter): PresetEncounter;
+    internalBinaryWrite(message: PresetEncounter, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.PresetEncounter
+ */
+export declare const PresetEncounter: PresetEncounter$Type;
 declare class ComputeStatsRequest$Type extends MessageType<ComputeStatsRequest> {
     constructor();
     create(value?: PartialMessage<ComputeStatsRequest>): ComputeStatsRequest;
@@ -998,6 +1096,16 @@ declare class StatWeightsResult$Type extends MessageType<StatWeightsResult> {
  * @generated MessageType for protobuf message proto.StatWeightsResult
  */
 export declare const StatWeightsResult: StatWeightsResult$Type;
+declare class StatWeightValues$Type extends MessageType<StatWeightValues> {
+    constructor();
+    create(value?: PartialMessage<StatWeightValues>): StatWeightValues;
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: StatWeightValues): StatWeightValues;
+    internalBinaryWrite(message: StatWeightValues, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter;
+}
+/**
+ * @generated MessageType for protobuf message proto.StatWeightValues
+ */
+export declare const StatWeightValues: StatWeightValues$Type;
 declare class AsyncAPIResult$Type extends MessageType<AsyncAPIResult> {
     constructor();
     create(value?: PartialMessage<AsyncAPIResult>): AsyncAPIResult;

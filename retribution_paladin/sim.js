@@ -6,7 +6,6 @@ import { Stat } from '/tbc/core/proto/common.js';
 import { TristateEffect } from '/tbc/core/proto/common.js';
 import { Stats } from '/tbc/core/proto_utils/stats.js';
 import { IndividualSimUI } from '/tbc/core/individual_sim_ui.js';
-import { TypedEvent } from '/tbc/core/typed_event.js';
 import { Alchohol } from '/tbc/core/proto/common.js';
 import { BattleElixir } from '/tbc/core/proto/common.js';
 import { Flask } from '/tbc/core/proto/common.js';
@@ -31,15 +30,6 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
 				<p>Seal of Command aura will log at expiring at a longer duration than 400ms when changing seals.\
 				However, the 400ms duration is correctly calculated internally for determining procs and damage.</p>"
             ],
-            warnings: [
-                (simUI) => {
-                    return {
-                        updateOn: TypedEvent.onAny([simUI.player.rotationChangeEmitter]),
-                        shouldDisplay: () => true,
-                        getContent: () => 'This sim is newly released, and there are likely a few bugs. Please let us know if you encounter any issues!',
-                    };
-                },
-            ],
             // All stats for which EP should be calculated.
             epStats: [
                 Stat.StatStrength,
@@ -59,6 +49,7 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
             epReferenceStat: Stat.StatAttackPower,
             // Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
             displayStats: [
+                Stat.StatHealth,
                 Stat.StatStamina,
                 Stat.StatStrength,
                 Stat.StatAgility,
@@ -85,7 +76,6 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                     [Stat.StatAgility]: 1.88,
                     [Stat.StatIntellect]: 0,
                     [Stat.StatAttackPower]: 1,
-                    [Stat.StatMeleeHit]: 5.38,
                     [Stat.StatMeleeCrit]: 1.98,
                     [Stat.StatExpertise]: 4.70,
                     [Stat.StatMeleeHaste]: 3.27,
@@ -219,6 +209,7 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                     WeaponImbue.WeaponImbueAdamantiteWeightstone,
                     WeaponImbue.WeaponImbueBrilliantWizardOil,
                     WeaponImbue.WeaponImbueSuperiorWizardOil,
+                    WeaponImbue.WeaponImbueRighteousWeaponCoating,
                 ],
                 other: [
                     IconInputs.ScrollOfStrengthV,
@@ -230,12 +221,15 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
             // Inputs to include in the 'Other' section on the settings tab.
             otherInputs: {
                 inputs: [
+                    RetributionPaladinInputs.AuraSelection,
                     RetributionPaladinInputs.JudgementSelection,
                     RetributionPaladinInputs.CrusaderStrikeDelayMS,
                     RetributionPaladinInputs.DamgeTakenPerSecond,
                     OtherInputs.ExposeWeaknessUptime,
                     OtherInputs.ExposeWeaknessHunterAgility,
                     OtherInputs.ISBUptime,
+                    OtherInputs.SnapshotImprovedStrengthOfEarthTotem,
+                    OtherInputs.TankAssignment,
                     OtherInputs.InFrontOfTarget,
                 ],
             },
@@ -246,8 +240,6 @@ export class RetributionPaladinSimUI extends IndividualSimUI {
                 ],
                 // Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
                 showExecuteProportion: false,
-                // Whether to include 'Num Targets' in the 'Encounter' section of the settings tab.
-                showNumTargets: true,
             },
             // If true, the talents on the talents tab will not be individually modifiable by the user.
             // Note that the use can still pick between preset talents, if there is more than 1.
