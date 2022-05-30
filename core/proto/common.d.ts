@@ -1826,7 +1826,11 @@ export declare enum BattleElixir {
     /**
      * @generated from protobuf enum value: FelStrengthElixir = 9;
      */
-    FelStrengthElixir = 9
+    FelStrengthElixir = 9,
+    /**
+     * @generated from protobuf enum value: GreaterArcaneElixir = 11;
+     */
+    GreaterArcaneElixir = 11
 }
 /**
  * @generated from protobuf enum proto.GuardianElixir
@@ -2036,6 +2040,18 @@ export declare enum OtherAction {
      * @generated from protobuf enum value: OtherActionFocusRegen = 6;
      */
     OtherActionFocusRegen = 6,
+    /**
+     * For threat generated from mana gains.
+     *
+     * @generated from protobuf enum value: OtherActionManaGain = 10;
+     */
+    OtherActionManaGain = 10,
+    /**
+     * For threat generated from rage gains.
+     *
+     * @generated from protobuf enum value: OtherActionRageGain = 11;
+     */
+    OtherActionRageGain = 11,
     /**
      * A white hit, can be main hand or off hand.
      *
